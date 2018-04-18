@@ -3,7 +3,7 @@ const { Sequelize } = conn;
 
 const Order = conn.define("Order", {
   status: {
-    type: Sequelize.string,
+    type: Sequelize.STRING,
     defaultValue: "cart"
   }
 });
