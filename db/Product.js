@@ -1,6 +1,5 @@
-const Sequelize = require('sequelize');
-
-const conn = require('../conn');
+const conn = require('./conn');
+const { Sequelize } = conn;
 
 const Product = conn.define('product', {
   name: {
