@@ -1,7 +1,7 @@
 const conn = require('./conn');
 
 const Category = require('./Category');
-const Product = require('./Products');
+const Product = require('./Product');
 const Order = require('./Order')
 const LineItem = require('./LineItem');
 const User = require('./User');
