@@ -6,20 +6,22 @@ const Order = require('./Order')
 const LineItem = require('./LineItem');
 const User = require('./User');
 
-conn.syncAndSeed = ()=>{
-  return conn.seed({ force: true })
+const syncAndSeed = ()=>{
+  return conn.sync({ force: true })
 }
 
-Product.hasMany(Category);
-Product.belongsTo(Category, {alias: categoryId});
+Category.hasMany(Product);
+Product.belongsToMany(Category)
+
 
 Order.hasMany(LineItem);
-LineItem.hasOne(Product);
+LineItem.belongsTo(Order);
+
+
 
 User.hasMany(Order);
 
 module.exports = {
-  db,
   syncAndSeed,
   models: {
     Category,
