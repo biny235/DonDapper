@@ -1,15 +1,15 @@
 const router = require('express').Router();
-const Product = require('../../db/models');
+const User = require('../../db/models');
 
 router.get('', (req, res, next) => {
-  Product.findAll()
-    .then(products => res.send(products))
+  User.findAll()
+    .then(users => res.send(users))
     .catch(next);
 });
 
 router.get('/:id', (req, res, next) => {
-  Product.findById(req.params.id)
-    .then(product => res.send(product))
+  User.findById(req.params.id)
+    .then(user => res.send(user))
     .catch(next);
 });
 
