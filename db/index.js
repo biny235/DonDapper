@@ -6,15 +6,17 @@ const Order = require("./Order");
 const LineItem = require("./LineItem");
 const User = require("./User");
 
-const syncAndSeed = () => {
-  return conn.sync({ force: true });
-};
+const syncAndSeed = ()=>{
+  return conn.sync({ force: true })
+}
 
-Product.hasMany(Category);
-Product.belongsTo(Category);
+Category.hasMany(Product);
+Product.belongsToMany(Category)
 
 Order.hasMany(LineItem);
-LineItem.hasOne(Product);
+LineItem.belongsTo(Order);
+
+
 
 User.hasMany(Order);
 
