@@ -10,12 +10,15 @@ const syncAndSeed = ()=>{
   return conn.sync({ force: true })
 }
 
-Category.hasMany(Product);
-Product.belongsToMany(Category)
+Category.belongsToMany(Product, {through: 'ProductCategory'});
+
+Product.belongsToMany(Category, {through: 'ProductCategory'})
+Product.hasMany(LineItem)
 
 
 Order.hasMany(LineItem);
 LineItem.belongsTo(Order);
+LineItem.belongsTo(Product);
 
 
 
