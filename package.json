@@ -23,7 +23,9 @@
     "pg": "^7.4.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "redux": "^4.0.0",
     "sequelize": "^4.35.1",
     "webpack": "^3.11.0"
   }
