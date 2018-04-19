@@ -1,11 +1,15 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-const Home = () => {
+const Nav = ({ counter }) => {
+  counter = 4;
   return (
     <div>
-      <h1>nav</h1>
+      <ul>
+        <NavLink to={'/'}>Home </NavLink>
+      </ul>
     </div>
   );
 };
 
-export default Home;
+export default Nav;

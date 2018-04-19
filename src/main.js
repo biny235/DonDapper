@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 //import { listProducts, listCategories } from './store';
-import Nav from './nav';
-import Products from './products';
-import Categories from './categories';
-import User from './user';
-import Orders from './orders';
-import Home from './home';
+import Nav from './Nav';
+import Products from './Products';
+import Categories from './Categories';
+import User from './User';
+import Orders from './Orders';
+import Home from './Home';
 
 class Main extends Component {
   //======waiting for the store=====//
