@@ -1,15 +1,15 @@
 const router = require('express').Router();
-const Product = require('../../db/models');
+const LineItem = require('../../db/models');
 
 router.get('', (req, res, next) => {
-  Product.findAll()
-    .then(products => res.send(products))
+  LineItem.findAll()
+    .then(lineItems => res.send(lineItems))
     .catch(next);
 });
 
 router.get('/:id', (req, res, next) => {
-  Product.findById(req.params.id)
-    .then(product => res.send(product))
+  LineItem.findById(req.params.id)
+    .then(lineItem => res.send(lineItem))
     .catch(next);
 });
 
