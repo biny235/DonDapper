@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const db = require('../../db');
-const { Order } = db.models
+const { Order } = db.models;
 
 router.get('', (req, res, next) => {
   Order.findAll()
