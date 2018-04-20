@@ -67,6 +67,13 @@ const User = conn.define(
       name() {
         return this.firstName + " " + this.lastName;
       }
+    },
+    setterMethods: {
+      fullName(value) {
+        const names = value.split(' ');
+        this.setDataValue('firstName', names.slice(0, -1).join(' '));
+        this.setDataValue('lastName', names.slice(-1).join(' '));
+      }
     }
   }
 );
