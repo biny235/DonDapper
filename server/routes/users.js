@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const User = require('../../db/models');
+const db = require('../../db');
+const { User } = db.models;
 
 router.get('', (req, res, next) => {
   User.findAll()
