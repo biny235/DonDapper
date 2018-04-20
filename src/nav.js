@@ -1,14 +1,37 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-const Nav = ({ counter }) => {
+const Nav = ({ counter, handleChange }) => {
   counter = 4;
   return (
-    <div>
-      <ul>
-        <NavLink to={'/'}>Home </NavLink>
-      </ul>
-    </div>
+    <MuiThemeProvider>
+      <div>
+        <ul>
+          <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li>
+            <DropDownMenu value={-1} onChange={console.log('y')}>
+              <MenuItem value={-1} primaryText="Products" />
+              <MenuItem value={1} primaryText="category A" />
+              <MenuItem value={2} primaryText="category B" />
+              <MenuItem value={3} primaryText="category C" />
+              <MenuItem value={4} primaryText="category D" />
+              <MenuItem value={5} primaryText="category E" />
+            </DropDownMenu>
+          </li>
+          <li>
+            <NavLink to="/Cart">Cart{counter}</NavLink>
+          </li>
+          <li>
+            <NavLink to="/User">User</NavLink>
+          </li>
+        </ul>
+      </div>
+    </MuiThemeProvider>
   );
 };
 
