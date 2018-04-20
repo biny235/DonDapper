@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const Category = require('../../db/models');
+const db = require('../../db');
+const { Category } = db.models
 
 router.get('', (req, res, next) => {
   Category.findAll()
