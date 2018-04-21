@@ -1,19 +1,20 @@
-const conn = require("./conn");
+const conn = require('./conn');
+const Order = require('./Order');
 const { Sequelize } = conn;
 
 const User = conn.define(
-  "user",
+  'user',
   {
     firstName: {
       type: Sequelize.STRING,
       allowNull: {
         args: false,
-        msg: "you have to enter a firstName"
+        msg: 'you have to enter a firstName'
       },
       validate: {
         notEmpty: {
           args: true,
-          msg: "you have to enter a firstName"
+          msg: 'you have to enter a firstName'
         }
       }
     },
@@ -21,12 +22,12 @@ const User = conn.define(
       type: Sequelize.STRING,
       allowNull: {
         args: false,
-        msg: "you have to enter a lastName"
+        msg: 'you have to enter a lastName'
       },
       validate: {
         notEmpty: {
           args: true,
-          msg: "you have to enter a lastName"
+          msg: 'you have to enter a lastName'
         }
       }
     },
@@ -35,16 +36,16 @@ const User = conn.define(
       unique: true,
       allowNull: {
         args: false,
-        msg: "you must enter a email"
+        msg: 'you must enter a email'
       },
       validate: {
         notEmpty: {
           args: true,
-          msg: "you must  enter a email"
+          msg: 'you must  enter a email'
         },
         isEmail: {
           args: true,
-          msg: "you must enter an email"
+          msg: 'you must enter an email'
         }
       }
     },
@@ -52,12 +53,12 @@ const User = conn.define(
       type: Sequelize.STRING,
       allowNull: {
         args: false,
-        msg: "you have to enter a password"
+        msg: 'you have to enter a password'
       },
       validate: {
         notEmpty: {
           args: true,
-          msg: "you must enter a password"
+          msg: 'you must enter a password'
         }
       }
     }
@@ -65,7 +66,7 @@ const User = conn.define(
   {
     getterMethods: {
       name() {
-        return this.firstName + " " + this.lastName;
+        return this.firstName + ' ' + this.lastName;
       }
     },
     setterMethods: {
@@ -77,5 +78,10 @@ const User = conn.define(
     }
   }
 );
-
+User.prototype.findOrCreateCart = function() {
+  return Order.findOrCreate({
+    where: { userId: this.id },
+    defaults: { status: 'cart', userId: this.id }
+  }).then(order => console.log(order));
+};
 module.exports = User;
