@@ -27,11 +27,16 @@ const productsReducer = (state = [], action)=>{
 const SET_USER = 'SET_USER';
 const LOG_OUT = 'LOG_OUT';
 
-const fetchUser = (userId) =>{
+const fetchUser = (user) =>{
+  let _user
   return dispatch =>{
-    axios.get(`/api/users/${userId}`)
+    axios.post(`/api/users/`, {user})
       .then(res => res.data)
-      .then(user => dispatch({type: setUser, user}))
+      .then(user => {
+        _user = user
+        dispatch({type: SET_USER, user})
+      })
+      .catch(err => console.log(err))
   }
 }
 
@@ -46,14 +51,34 @@ const userReducer = (state = [], action) => {
 }
 
 
+//CART
+const GET_CART = 'GET_CART';
+
+const fetchCart = (userId)=>{
+  return dispatch => {
+    axios.get(`/api/users/${userId}/cart`)
+      .then(res => res.data)
+      .then(cart => dispatch({type: GET_CART, cart}))
+  }
+}
+
+const cartReducer = (state = [], action)=>{
+  switch(action.type){
+    case GET_CART:
+      return action.cart
+  }
+  return state
+}
+
 //REDUCER
 const reducer = combineReducers({
   products: productsReducer,
-  users: userReducer
+  user: userReducer,
+  cart: cartReducer
 })
 
 
 
 
 export default createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
-export { fetchProducts }
+export { fetchProducts, fetchUser }

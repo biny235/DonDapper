@@ -24,7 +24,7 @@ const Nav = ({ counter, handleChange }) => {
             </DropDownMenu>
           </li>
           <li>
-            <NavLink to="/cart">Cart{counter}</NavLink>
+            <NavLink to="/cart">Cart {counter}</NavLink>
           </li>
           <li>
             <NavLink to="/user">User</NavLink>

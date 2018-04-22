@@ -22,7 +22,7 @@ const generateUser = () => {
   return {
     fullName: faker.name.findName(),
     email: faker.internet.email(),
-    password: faker.internet.password()
+    password: '123456'
   };
 };
 
@@ -69,7 +69,8 @@ const seed = () => {
       ]);
     })
     .then(() => {
-      Promise.all([
+      return Promise.all([
+        User.create({fullName: "Test User", email: "test@test.com", password: "123456"}),
         User.create(generateUser()),
         User.create(generateUser()),
         User.create(generateUser()),
@@ -78,7 +79,7 @@ const seed = () => {
       ]);
     })
     .then(() => {
-      Promise.all([
+      return Promise.all([
         Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
         Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
         Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
@@ -110,6 +111,20 @@ LineItem.belongsTo(Order);
 LineItem.belongsTo(Product);
 
 User.hasMany(Order);
+
+User.findOrCreateCart = function(id) {
+  return Order.findOrCreate({
+    where: { userId: id },
+    defaults: { status: 'cart', userId: id },
+    include: [{model: LineItem}]
+  });
+};
+
+User.authenticate = function(user) {
+  const { email, password } = user;
+  return User.find({ where:{ email, password}, attributes: ['id','firstName','lastName', 'email']
+  })
+}
 
 module.exports = {
   syncAndSeed,
