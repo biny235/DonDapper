@@ -1,11 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const Home = () => {
+
+const Products = ({ products }) => {
   return (
-    <div>
-      <h1>products</h1>
-    </div>
+    <ul>
+      {products.map(product=>{
+        return <li key={product.id}>
+          {product.name} {product.price}
+          <img src={product.imageUrl} />
+        </li>
+      })}
+    </ul>
   );
 };
 
-export default Home;
+const mapStateToProps = ({products})=>{
+  return{
+    products
+  }
+}
+
+export default connect(mapStateToProps)(Products);

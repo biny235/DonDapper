@@ -9,7 +9,7 @@ const Product = conn.define('product', {
       notEmpty: true
     }
   },
-  imageURL: {
+  imageUrl: {
     type: Sequelize.STRING,
     defaultValue: '/images/default-photo.jpg'
   },
