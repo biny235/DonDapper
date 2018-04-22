@@ -78,10 +78,11 @@ const User = conn.define(
     }
   }
 );
-User.prototype.findOrCreateCart = function() {
+
+User.findOrCreateCart = function(id) {
   return Order.findOrCreate({
-    where: { userId: this.id },
-    defaults: { status: 'cart', userId: this.id }
+    where: { userId: id },
+    defaults: { status: 'cart', userId: id }
   });
 };
 module.exports = User;

@@ -3,9 +3,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
+// PRODUCTS
 const GET_PRODUCTS = 'GET_PRODUCTS';
-const GET_USERS = 'GET_USERS';
-
 
 const fetchProducts = ()=>{
   return dispatch =>{
@@ -14,8 +13,7 @@ const fetchProducts = ()=>{
       .then(products => dispatch({type: GET_PRODUCTS, products}))
       .catch(err => console.log(err))
   }
-
-}
+};
 
 const productsReducer = (state = [], action)=>{
   switch(action.type){
@@ -25,10 +23,37 @@ const productsReducer = (state = [], action)=>{
   return state
 };
 
+//USER
+const SET_USER = 'SET_USER';
+const LOG_OUT = 'LOG_OUT';
 
+const fetchUser = (userId) =>{
+  return dispatch =>{
+    axios.get(`/api/users/${userId}`)
+      .then(res => res.data)
+      .then(user => dispatch({type: setUser, user}))
+  }
+}
+
+const userReducer = (state = [], action) => {
+  switch(action.type){
+    case SET_USER:
+      return action.user;
+    case LOG_OUT:
+      return []
+  }
+  return state;
+}
+
+
+//REDUCER
 const reducer = combineReducers({
   products: productsReducer,
+  users: userReducer
 })
+
+
+
 
 export default createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 export { fetchProducts }

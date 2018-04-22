@@ -10,7 +10,7 @@ const User = require('./User');
 const generateProduct = () => {
   return {
     name: faker.commerce.product(),
-    imgUrl: faker.image.image(),
+    imageUrl: faker.image.image(),
     description: faker.commerce.productMaterial(),
     price: faker.commerce.price(),
     quantity: 5,
@@ -49,9 +49,9 @@ const generateOrder = () => {
 
 const seed = () => {
   return Promise.all([
-    Category.create({ name: 'Kits', imgUrl: '/img/default.png' }),
-    Category.create({ name: 'Individual', imgUrl: '/img/default.png' }),
-    Category.create({ name: 'Accessories', imgUrl: '/img/default.png' })
+    Category.create({ name: 'Kits', imageUrl: '/img/default.png' }),
+    Category.create({ name: 'Individual', imageUrl: '/img/default.png' }),
+    Category.create({ name: 'Accessories', imageUrl: '/img/default.png' })
   ])
 
     .then(() => {
@@ -87,6 +87,10 @@ const seed = () => {
       ]);
     })
     .then(() => {
+      generateOrder();
+      generateOrder();
+      generateOrder();
+      generateOrder();
       generateOrder();
       generateOrder();
       generateOrder();
