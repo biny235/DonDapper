@@ -11,23 +11,23 @@ const Nav = ({ counter, handleChange }) => {
       <div>
         <ul>
           <li>
-            <NavLink to="/">Home</NavLink>
+            <NavLink to='/'>Home</NavLink>
           </li>
           <li>
             <DropDownMenu value={-1} onChange={console.log('need to wire this up')}>
-              <MenuItem value={-1} primaryText="Products" />
-              <MenuItem value={1} primaryText="category A" />
-              <MenuItem value={2} primaryText="category B" />
-              <MenuItem value={3} primaryText="category C" />
-              <MenuItem value={4} primaryText="category D" />
-              <MenuItem value={5} primaryText="category E" />
+              <MenuItem value={-1} primaryText='Products' />
+              <MenuItem value={1} primaryText='category A' />
+              <MenuItem value={2} primaryText='category B' />
+              <MenuItem value={3} primaryText='category C' />
+              <MenuItem value={4} primaryText='category D' />
+              <MenuItem value={5} primaryText='category E' />
             </DropDownMenu>
           </li>
           <li>
-            <NavLink to="/cart">Cart {counter}</NavLink>
+            <NavLink to='/cart'>Cart {counter}</NavLink>
           </li>
           <li>
-            <NavLink to="/user">User</NavLink>
+            <NavLink to='/user'>Account</NavLink>
           </li>
         </ul>
       </div>

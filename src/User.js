@@ -2,19 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const User = ({ user, userOrders, lineItems }) => {
+const User = ({ user, products, userOrders, lineItems }) => {
   return (
     <div>
-      <h1>{user.name}</h1>
+      <h1>My Account</h1>
+      <h2>{user && user.name}</h2>
       {
-        userOrders.map(order => (
+        user && userOrders.map(order => (
           <div key={order.id}>
             <Link to={`/orders/${order.id}`}>
-              {order.id}
+              Order ID: {order.id}
             </Link>
             <ul>
               {lineItems.filter(lineItem => lineItem.orderId === order.id).map(lineItem => (
-                <ul key={lineItem.id}>{lineItem.name}</ul>
+                <li key={lineItem.id}>{products.find(product => product.id === lineItem.productId).name}</li>
               ))}
             </ul>
           </div>
@@ -25,10 +26,9 @@ const User = ({ user, userOrders, lineItems }) => {
 };
 
 
-const mapStateToProps = ({ users, orders, lineItems }, { id }) => {
-  const user = users.find(user => user.id === id);
-  const userOrders = orders.filter(order => order.userId === id);
-  return { user, userOrders, lineItems };
+const mapStateToProps = ({ user, orders, products, lineItems }) => {
+  const userOrders = orders && orders.filter(order => order.userId === user.id);
+  return { user, userOrders, products, lineItems };
 };
 
 export default connect(mapStateToProps)(User);

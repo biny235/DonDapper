@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { fetchProducts, fetchOrders, fetchLineItems } from './store';
 
 import Nav from './Nav';
 import Products from './Products';
@@ -9,10 +10,14 @@ import User from './User';
 import Orders from './Orders';
 import Home from './Home';
 import Cart from './Cart';
-import LoginForm from './LoginForm'
+import LoginForm from './LoginForm';
 
 class Main extends Component {
-
+  componentDidMount() {
+    this.props.fetchProducts();
+    this.props.fetchOrders();
+    this.props.fetchLineItems();
+  }
 
   render() {
     return (
@@ -20,18 +25,26 @@ class Main extends Component {
       <div>
         <Nav />
         <LoginForm />
-        <Route path="/" exact render={() => <Home />} />
+        <Route path='/' exact render={() => <Home />} />
         <Switch>
-          <Route path="/products" exact render={() => <Products />} />
-          <Route path="/catagories" exact render={() => <Categories />} />
-          <Route path="/cart" exact render={()=> <Cart />} />
-          <Route path="/orders" exact render={() => <Orders />} />
-          <Route path="/user" exact render={() => <User />} />
+          <Route path='/products' exact render={() => <Products />} />
+          <Route path='/catagories' exact render={() => <Categories />} />
+          <Route path='/cart' exact render={() => <Cart />} />
+          <Route path='/orders' exact render={() => <Orders />} />
+          <Route path='/user' exact render={() => <User />} />
         </Switch>
       </div>
-      
+
     );
   }
 }
 
-export default Main;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchProducts: () => dispatch(fetchProducts()),
+    fetchOrders: () => dispatch(fetchOrders()),
+    fetchLineItems: () => dispatch(fetchLineItems())
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Main);
