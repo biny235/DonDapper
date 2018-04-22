@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 app.use(require('body-parser').json());
 
+app.use(require('body-parser').json())
+
 app.use('/', express.static(path.join(__dirname + '/../dist')));
 
 app.get('/', (req, res, next) => {

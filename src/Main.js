@@ -1,46 +1,50 @@
 import React, { Component } from 'react';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-//import { listProducts, listCategories } from './store';
+import { fetchProducts, fetchOrders, fetchLineItems } from './store';
+
 import Nav from './Nav';
 import Products from './Products';
 import Categories from './Categories';
 import User from './User';
 import Orders from './Orders';
 import Home from './Home';
+import Cart from './Cart';
+import LoginForm from './LoginForm';
 
 class Main extends Component {
-  //======waiting for the store=====//
-  //componentDidMount() {
-  // this.props.listProducts();
-  // this.props.listCategoties();
-  // }
+  componentDidMount() {
+    this.props.fetchProducts();
+    this.props.fetchOrders();
+    this.props.fetchLineItems();
+  }
 
   render() {
     return (
-      <Router>
-        <div>
-          <Nav />
-          <Route path="/" exact render={() => <Home />} />
-          <Switch>
-            <Route path="/api/products" exact render={() => <Products />} />
-            <Route path="/api/catagories" exact render={() => <Categories />} />
-            <Route path="/api/orders" exact render={() => <Orders />} />
-            <Route path="/api/user" exact render={() => <User />} />
-          </Switch>
-        </div>
-      </Router>
+
+      <div>
+        <Nav />
+        <LoginForm />
+        <Route path='/' exact render={() => <Home />} />
+        <Switch>
+          <Route path='/products' exact render={() => <Products />} />
+          <Route path='/catagories' exact render={() => <Categories />} />
+          <Route path='/cart' exact render={() => <Cart />} />
+          <Route path='/orders' exact render={() => <Orders />} />
+          <Route path='/user' exact render={() => <User />} />
+        </Switch>
+      </div>
+
     );
   }
 }
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     listProducts: () => dispatch(listProducts()),
-//     listCategoties: () => dispatch(listCategoties())
-//   };
-// };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchProducts: () => dispatch(fetchProducts()),
+    fetchOrders: () => dispatch(fetchOrders()),
+    fetchLineItems: () => dispatch(fetchLineItems())
+  };
+};
 
-// export default connect(null, mapDispatchToProps)(Main);
-
-export default Main;
+export default connect(null, mapDispatchToProps)(Main);

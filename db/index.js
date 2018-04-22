@@ -10,7 +10,7 @@ const User = require('./User');
 const generateProduct = () => {
   return {
     name: faker.commerce.product(),
-    imgUrl: faker.image.image(),
+    imageUrl: faker.image.image(),
     description: faker.commerce.productMaterial(),
     price: faker.commerce.price(),
     quantity: 5,
@@ -22,7 +22,7 @@ const generateUser = () => {
   return {
     fullName: faker.name.findName(),
     email: faker.internet.email(),
-    password: faker.internet.password()
+    password: '123456'
   };
 };
 
@@ -49,9 +49,9 @@ const generateOrder = () => {
 
 const seed = () => {
   return Promise.all([
-    Category.create({ name: 'Kits', imgUrl: '/img/default.png' }),
-    Category.create({ name: 'Individual', imgUrl: '/img/default.png' }),
-    Category.create({ name: 'Accessories', imgUrl: '/img/default.png' })
+    Category.create({ name: 'Kits', imageUrl: '/img/default.png' }),
+    Category.create({ name: 'Individual', imageUrl: '/img/default.png' }),
+    Category.create({ name: 'Accessories', imageUrl: '/img/default.png' })
   ])
 
     .then(() => {
@@ -69,7 +69,8 @@ const seed = () => {
       ]);
     })
     .then(() => {
-      Promise.all([
+      return Promise.all([
+        User.create({fullName: "Test User", email: "test@test.com", password: "123456"}),
         User.create(generateUser()),
         User.create(generateUser()),
         User.create(generateUser()),
@@ -78,7 +79,7 @@ const seed = () => {
       ]);
     })
     .then(() => {
-      Promise.all([
+      return Promise.all([
         Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
         Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
         Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
@@ -87,6 +88,10 @@ const seed = () => {
       ]);
     })
     .then(() => {
+      generateOrder();
+      generateOrder();
+      generateOrder();
+      generateOrder();
       generateOrder();
       generateOrder();
       generateOrder();
@@ -106,6 +111,20 @@ LineItem.belongsTo(Order);
 LineItem.belongsTo(Product);
 
 User.hasMany(Order);
+
+User.findOrCreateCart = function(id) {
+  return Order.findOrCreate({
+    where: { userId: id },
+    defaults: { status: 'cart', userId: id },
+    include: [{model: LineItem}]
+  });
+};
+
+User.authenticate = function(user) {
+  const { email, password } = user;
+  return User.find({ where:{ email, password}, attributes: ['id','firstName','lastName', 'email']
+  })
+}
 
 module.exports = {
   syncAndSeed,
