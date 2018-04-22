@@ -19,18 +19,33 @@ describe('models', () => {
     it('exists', () => {
       expect(User).to.be.ok;
     });
+
     it(' a user has a cart exists', () => {
-      console.log(userList[1].findOrCreateCart());
+      return userList[1]
+        .findOrCreateCart()
+        .then(() => Order.findAll())
+        .then(cart => {
+          expect(cart.length).to.equal(5);
+        });
     });
     it(' a new user gets a new cart ', () => {
       User.create({
         fullName: 'jack jack',
         email: 'j@aol.com',
         password: 'abcd1234'
-      }).then(user => {
-        userList.jack = user;
-        console.log(userList.jack.findOrCreateCart());
-      });
+      })
+        // )
+        .then(user => {
+          return user.findOrCreateCart();
+        })
+        .then(() =>
+          Order.findOne({
+            where: { userId: 6 }
+          })
+        )
+        .then(order => {
+          expect(order).to.be.ok;
+        });
     });
   });
 });

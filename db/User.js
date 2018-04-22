@@ -82,6 +82,6 @@ User.prototype.findOrCreateCart = function() {
   return Order.findOrCreate({
     where: { userId: this.id },
     defaults: { status: 'cart', userId: this.id }
-  }).then(order => console.log(order));
+  });
 };
 module.exports = User;
