@@ -4,7 +4,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-const Nav = ({ counter, handleChange }) => {
+const Nav = ({ counter }) => {
   counter = 4;
   return (
     <MuiThemeProvider>
@@ -14,7 +14,7 @@ const Nav = ({ counter, handleChange }) => {
             <NavLink to='/'>Home</NavLink>
           </li>
           <li>
-            <DropDownMenu value={-1} onChange={console.log('need to wire this up')}>
+            <DropDownMenu value={-1} onChange>
               <MenuItem value={-1} primaryText='Products' />
               <MenuItem value={1} primaryText='category A' />
               <MenuItem value={2} primaryText='category B' />

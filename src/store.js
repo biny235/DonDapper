@@ -89,7 +89,7 @@ const ordersReducer = (state = [], action) => {
   return state;
 };
 
-//LINEITEMS
+//LINE ITEMS
 const GET_LINEITEMS = 'GET_LINEITEMS';
 
 const fetchLineItems = () => {
