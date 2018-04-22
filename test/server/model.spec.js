@@ -21,8 +21,8 @@ describe('models', () => {
     });
 
     it(' a user has a cart exists', () => {
-      return userList[1]
-        .findOrCreateCart()
+      return User
+        .findOrCreateCart(1)
         .then(() => Order.findAll())
         .then(cart => {
           expect(cart.length).to.equal(5);
@@ -36,7 +36,7 @@ describe('models', () => {
       })
         // )
         .then(user => {
-          return user.findOrCreateCart();
+          return User.findOrCreateCart(user.id);
         })
         .then(() =>
           Order.findOne({
