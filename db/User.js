@@ -80,7 +80,7 @@ const User = conn.define(
 );
 User.prototype.findOrCreateCart = function() {
   return Order.findOrCreate({
-    where: { userId: this.id },
+    where: { userId: this.id, status: 'cart' },
     defaults: { status: 'cart', userId: this.id }
   });
 };
