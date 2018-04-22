@@ -7,7 +7,7 @@ const Products = ({ products }) => {
     <ul>
       {products.map(product=>{
         return <li key={product.id}>
-          {product.name} {product.price}
+          {product.name} ${product.price}
         </li>
       })}
     </ul>

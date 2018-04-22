@@ -20,15 +20,14 @@ describe('models', () => {
       expect(User).to.be.ok;
     });
 
-    it(' a user has a cart exists', () => {
+    it('has a findOrCreateCart method', () => {
       return User
         .findOrCreateCart(1)
-        .then(() => Order.findAll())
         .then(cart => {
-          expect(cart.length).to.equal(5);
+          expect(cart).to.be.ok;
         });
     });
-    it(' a new user gets a new cart ', () => {
+    it('is assigned a cart when the findOrCreateCart method is called', () => {
       User.create({
         fullName: 'jack jack',
         email: 'j@aol.com',
