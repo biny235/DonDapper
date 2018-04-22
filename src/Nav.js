@@ -14,7 +14,7 @@ const Nav = ({ counter, handleChange }) => {
             <NavLink to="/">Home</NavLink>
           </li>
           <li>
-            <DropDownMenu value={-1} onChange={console.log('y')}>
+            <DropDownMenu value={-1} onChange={console.log('need to wire this up')}>
               <MenuItem value={-1} primaryText="Products" />
               <MenuItem value={1} primaryText="category A" />
               <MenuItem value={2} primaryText="category B" />
@@ -24,10 +24,10 @@ const Nav = ({ counter, handleChange }) => {
             </DropDownMenu>
           </li>
           <li>
-            <NavLink to="/Cart">Cart{counter}</NavLink>
+            <NavLink to="/cart">Cart {counter}</NavLink>
           </li>
           <li>
-            <NavLink to="/User">User</NavLink>
+            <NavLink to="/user">User</NavLink>
           </li>
         </ul>
       </div>

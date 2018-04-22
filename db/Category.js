@@ -10,7 +10,7 @@ const Category = conn.define('category', {
       notEmpty: true
     }
   },
-  imageURL: {
+  imageUrl: {
     type: Sequelize.STRING,
     defaultValue: '/images/default-photo.jpg'
   }

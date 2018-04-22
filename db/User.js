@@ -1,5 +1,4 @@
 const conn = require('./conn');
-const Order = require('./Order');
 const { Sequelize } = conn;
 
 const User = conn.define(
@@ -78,10 +77,14 @@ const User = conn.define(
     }
   }
 );
+<<<<<<< HEAD
 User.prototype.findOrCreateCart = function() {
   return Order.findOrCreate({
     where: { userId: this.id, status: 'cart' },
     defaults: { status: 'cart', userId: this.id }
   });
 };
+=======
+
+>>>>>>> ebeffee4d0400a45760465ff4567d979f4e75df1
 module.exports = User;
