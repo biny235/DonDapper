@@ -77,4 +77,5 @@ const User = conn.define(
     }
   }
 );
+
 module.exports = User;
