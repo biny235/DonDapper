@@ -9,6 +9,8 @@ CONSTANTS
 
 // PRODUCTS
 const GET_PRODUCTS = 'GET_PRODUCTS';
+// CATEGORIES
+const GET_CATEGORIES = 'GET_CATEGORIES';
 // USER
 const SET_USER = 'SET_USER';
 const LOG_OUT = 'LOG_OUT';
@@ -30,6 +32,17 @@ const fetchProducts = () => {
       .get('/api/products')
       .then(res => res.data)
       .then(products => dispatch({ type: GET_PRODUCTS, products }))
+      .catch(err => console.log(err));
+  };
+};
+
+// CATEGORIES
+const fetchCategories = () => {
+  return dispatch => {
+    axios
+      .get('/api/categories')
+      .then(res => res.data)
+      .then(categories => dispatch({ type: GET_CATEGORIES, categories }))
       .catch(err => console.log(err));
   };
 };
@@ -94,6 +107,14 @@ const productsReducer = (state = [], action) => {
   return state;
 };
 
+const categoriesReducer = (state = [], action) => {
+  switch (action.type) {
+    case GET_CATEGORIES:
+      return action.categories;
+  }
+  return state;
+};
+
 const userReducer = (state = [], action) => {
   switch (action.type) {
     case SET_USER:
@@ -130,6 +151,7 @@ const lineItemsReducer = (state = [], action) => {
 
 const reducer = combineReducers({
   products: productsReducer,
+  categories: categoriesReducer,
   user: userReducer,
   cart: cartReducer,
   orders: ordersReducer,
@@ -140,4 +162,4 @@ export default createStore(
   reducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
-export { fetchProducts, fetchUser, fetchCart, fetchOrders, fetchLineItems };
+export { fetchProducts, fetchCategories, fetchUser, fetchCart, fetchOrders, fetchLineItems };

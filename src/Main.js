@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchOrders, fetchLineItems } from './store';
+import { fetchProducts, fetchCategories, fetchOrders, fetchLineItems } from './store';
 
 import Nav from './Nav';
 import Products from './Products';
@@ -16,6 +16,7 @@ import LoginForm from './LoginForm';
 class Main extends Component {
   componentDidMount() {
     this.props.fetchProducts();
+    this.props.fetchCategories();
     this.props.fetchOrders();
     this.props.fetchLineItems();
   }
@@ -44,6 +45,7 @@ class Main extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
+    fetchCategories: () => dispatch(fetchCategories()),
     fetchOrders: () => dispatch(fetchOrders()),
     fetchLineItems: () => dispatch(fetchLineItems())
   };
