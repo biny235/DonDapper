@@ -21,12 +21,14 @@ router.get('/:id', (req, res, next) => {
     .then(order => res.send(order))
     .catch(next);
 });
+
 router.delete('/:id', (req, res, next) => {
   Order.findById(req.params.id)
     .then(order => order.destroy())
     .then(() => res.sendStatus(204))
     .catch(next);
 });
+
 router.put('/:id', (req, res, next) => {
   Order.findById(req.params.id)
     .then(order => {

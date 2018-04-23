@@ -3,20 +3,27 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
-//======CONST======================
+/*
+CONSTANTS
+*/
 
 // PRODUCTS
 const GET_PRODUCTS = 'GET_PRODUCTS';
-//USER
+// USER
 const SET_USER = 'SET_USER';
 const LOG_OUT = 'LOG_OUT';
-//CART
+// CART
 const GET_CART = 'GET_CART';
-//ORDERS
+// ORDERS
 const GET_ORDERS = 'GET_ORDERS';
-//========THUNKS==========
+// LINE ITEMS
+const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
 
-//PRODUCTS
+/*
+THUNKS
+*/
+
+// PRODUCTS
 const fetchProducts = () => {
   return dispatch => {
     axios
@@ -26,7 +33,8 @@ const fetchProducts = () => {
       .catch(err => console.log(err));
   };
 };
-//USER
+
+// USER
 const fetchUser = user => {
   let _user;
   return dispatch => {
@@ -40,30 +48,43 @@ const fetchUser = user => {
       .catch(err => console.log(err));
   };
 };
-//CART
+
+// CART
 const fetchCart = userId => {
   return dispatch => {
     axios
       .get(`/api/users/${userId}/cart`)
       .then(res => res.data)
-      .then(cart => dispatch({ type: GET_CART, cart }));
+      .then(cart => dispatch({ type: GET_CART, cart }))
+      .catch(err => console.log(err));
   };
 };
-//ORDERS
 
-const fetchOrders = userId => {
+// ORDERS
+const fetchOrders = () => {
   return dispatch => {
     axios
-      .get(`/api/users/${userId}/orders`)
+      .get('/api/orders')
       .then(res => res.data)
-      .then(orders => {
-        console.log('YEY');
-        dispatch({ type: GET_ORDERS, orders });
-      });
+      .then(orders => dispatch({ type: GET_ORDERS, orders }))
+      .catch(err => console.log(err));
   };
 };
 
-//==========REDUCERS====================
+// LINE ITEMS
+const fetchLineItems = () => {
+  return dispatch => {
+    axios
+      .get('/api/lineItems')
+      .then(res => res.data)
+      .then(lineItems => dispatch({ type: GET_LINE_ITEMS, lineItems }))
+      .catch(err => console.log(err));
+  };
+};
+
+/*
+REDUCERS
+*/
 
 const productsReducer = (state = [], action) => {
   switch (action.type) {
@@ -82,6 +103,7 @@ const userReducer = (state = [], action) => {
   }
   return state;
 };
+
 const cartReducer = (state = [], action) => {
   switch (action.type) {
     case GET_CART:
@@ -93,7 +115,15 @@ const cartReducer = (state = [], action) => {
 const ordersReducer = (state = [], action) => {
   switch (action.type) {
     case GET_ORDERS:
-      return action.cart;
+      return action.orders;
+  }
+  return state;
+};
+
+const lineItemsReducer = (state = [], action) => {
+  switch (action.type) {
+    case GET_LINE_ITEMS:
+      return action.lineItems;
   }
   return state;
 };
@@ -102,11 +132,12 @@ const reducer = combineReducers({
   products: productsReducer,
   user: userReducer,
   cart: cartReducer,
-  orders: ordersReducer
+  orders: ordersReducer,
+  lineItems: lineItemsReducer
 });
 
 export default createStore(
   reducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
-export { fetchProducts, fetchUser, fetchCart, fetchOrders };
+export { fetchProducts, fetchUser, fetchCart, fetchOrders, fetchLineItems };
