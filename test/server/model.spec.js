@@ -20,11 +20,9 @@ describe('models', () => {
     });
 
     it('has a findOrCreateCart method', () => {
-      return User
-        .findOrCreateCart(1)
-        .then(cart => {
-          expect(cart).to.be.ok;
-        });
+      return User.findOrCreateCart(1).then(cart => {
+        expect(cart).to.be.ok;
+      });
     });
     it('is assigned a cart when the findOrCreateCart method is called', () => {
       User.create({
