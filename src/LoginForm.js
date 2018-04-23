@@ -12,11 +12,13 @@ class LoginForm extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
   // componentWillReceiveProps({ user }){
   //   if(user !== this.state.user){
   //     this.setState({ user })
   //   }
   // }
+
   onChange(ev) {
     const change = {};
     change[ev.target.name] = ev.target.value;
@@ -34,8 +36,8 @@ class LoginForm extends React.Component {
     }
     return (
       <div>
-        <input onChange={onChange} name="email" type="email" />
-        <input onChange={onChange} name="password" type="password" />
+        <input onChange={onChange} name='email' type='email' />
+        <input onChange={onChange} name='password' type='password' />
         <button onClick={onSubmit}>Submit</button>
       </div>
     );
