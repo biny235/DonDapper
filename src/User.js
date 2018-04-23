@@ -6,10 +6,10 @@ const User = ({ user, products, userOrders, lineItems }) => {
   return (
     <div>
       <h1>Account</h1>
-      <h2>{user && user.name}</h2>
-      <h3>Orders</h3>
+      <h2>{user.name}</h2>
+      <h3>{!user.name ? 'Please sign in.' : 'Orders'}</h3>
       {
-        user && userOrders.map(order => (
+        userOrders.map(order => (
           <div key={order.id}>
             <Link to={`/orders/${order.id}`}>
               Order ID: {order.id}
