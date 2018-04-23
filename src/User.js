@@ -5,8 +5,9 @@ import { Link } from 'react-router-dom';
 const User = ({ user, products, userOrders, lineItems }) => {
   return (
     <div>
-      <h1>My Account</h1>
+      <h1>Account</h1>
       <h2>{user && user.name}</h2>
+      <h3>Orders</h3>
       {
         user && userOrders.map(order => (
           <div key={order.id}>
