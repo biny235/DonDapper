@@ -5,19 +5,19 @@ import { connect } from 'react-redux';
 const Products = ({ products }) => {
   return (
     <ul>
-      {products.map(product=>{
-        return <li key={product.id}>
+      {products.map(product => {
+        return (<li key={product.id}>
           {product.name} ${product.price}
-        </li>
+        </li>);
       })}
     </ul>
   );
 };
 
-const mapStateToProps = ({products})=>{
-  return{
+const mapStateToProps = ({ products }) => {
+  return {
     products
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(Products);
