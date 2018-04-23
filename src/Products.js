@@ -7,14 +7,17 @@ const Products = ({ products }) => {
     <div>
       <h1>Products</h1>
       <ul>
-        {products.map(product => {
-          return (<li key={product.id}>
-            <Link to={`/products/${product.id}`}>
-              {product.name}
-            </Link>
-            <span> - ${product.price}</span>
-          </li>);
-        })}
+        {
+          products.map(product => {
+            return (
+              <li key={product.id}>
+                <Link to={`/products/${product.id}`}>
+                  {product.name}
+                </Link>
+                <span> - ${product.price}</span>
+              </li>);
+          })
+        }
       </ul>
     </div>
   );
