@@ -1,11 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const Categories = () => {
+
+const Categories = ({ categories }) => {
   return (
     <div>
-      <h1>categories</h1>
+      <h1>Categories</h1>
+      <ul>
+        {categories.map(category => {
+          return (<li key={category.id}>
+            {category.name}
+          </li>);
+        })}
+      </ul>
     </div>
   );
 };
 
-export default Categories;
+const mapStateToProps = ({ categories }) => {
+  return {
+    categories
+  };
+};
+
+export default connect(mapStateToProps)(Categories);

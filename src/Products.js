@@ -4,13 +4,16 @@ import { connect } from 'react-redux';
 
 const Products = ({ products }) => {
   return (
-    <ul>
-      {products.map(product => {
-        return (<li key={product.id}>
-          {product.name} ${product.price}
-        </li>);
-      })}
-    </ul>
+    <div>
+      <h1>Products</h1>
+      <ul>
+        {products.map(product => {
+          return (<li key={product.id}>
+            {product.name} - ${product.price}
+          </li>);
+        })}
+      </ul>
+    </div>
   );
 };
 
