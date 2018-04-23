@@ -11,7 +11,7 @@ const Nav = ({ counter }) => {
       <div>
         <ul>
           <li>
-            <NavLink to='/'>Home</NavLink>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li>
             <DropDownMenu value={-1} onChange>
