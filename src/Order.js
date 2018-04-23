@@ -5,15 +5,16 @@ import { Link } from 'react-router-dom';
 const Order = ({ user, products, order, lineItems }) => {
   return (
     <div>
-      <h1>My Account</h1>
-      <h2>Order ID: {order && order.id}</h2>
+      <h1>Account</h1>
+      <h2>{user && user.name}</h2>
+      <h3>Order ID: {order && order.id}</h3>
       {
         order && (
           <div>
             <ul>
               {lineItems.filter(lineItem => lineItem.orderId === order.id).map(lineItem => (
                 <li key={lineItem.id}>
-                  <Link to={`/orders/${order.id}`}>
+                  <Link to={`/products/${lineItem.productId}`}>
                     {products.find(product => product.id === lineItem.productId).name}
                   </Link>
                 </li>
