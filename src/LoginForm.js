@@ -24,21 +24,30 @@ class LoginForm extends React.Component {
     change[ev.target.name] = ev.target.value;
     this.setState(change);
   }
-  onSubmit(ev) {
-    this.props.handleSubmit(this.state);
+
+  onSubmit() {
+    this.props.fetchUser(this.state);
+    this.setState({
+      email: '',
+      password: ''
+    });
   }
 
   render() {
     const { user } = this.props;
     const { onChange, onSubmit } = this;
     if (user.name) {
-      return null;
+      return (
+        <div>
+          <button onClick={onSubmit}>Sign Out</button>
+        </div>
+      );
     }
     return (
       <div>
         <input onChange={onChange} name='email' type='email' />
         <input onChange={onChange} name='password' type='password' />
-        <button onClick={onSubmit}>Submit</button>
+        <button onClick={onSubmit}>Sign In</button>
       </div>
     );
   }
@@ -52,7 +61,7 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleSubmit: user => dispatch(fetchUser(user))
+    fetchUser: user => dispatch(fetchUser(user))
   };
 };
 
