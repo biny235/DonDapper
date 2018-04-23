@@ -7,7 +7,6 @@ let userList;
 beforeEach(() => {
   return db.syncAndSeed();
 });
-
 describe('models', () => {
   User.findAll().then(users => {
     userList = users.reduce((obj, user) => {
@@ -33,7 +32,6 @@ describe('models', () => {
         email: 'j@aol.com',
         password: 'abcd1234'
       })
-        // )
         .then(user => {
           return User.findOrCreateCart(user.id);
         })
