@@ -70,7 +70,11 @@ const seed = () => {
     })
     .then(() => {
       return Promise.all([
-        User.create({fullName: "Test User", email: "test@test.com", password: "123456"}),
+        User.create({
+          fullName: 'Test User',
+          email: 'test@test.com',
+          password: '123456'
+        }),
         User.create(generateUser()),
         User.create(generateUser()),
         User.create(generateUser()),
@@ -99,7 +103,7 @@ const seed = () => {
 };
 
 const syncAndSeed = () => {
-  return conn.sync({ force: true }).then(() => seed());
+  return conn.sync(); //.then(() => seed());
 };
 
 Product.belongsTo(Category);
@@ -116,15 +120,17 @@ User.findOrCreateCart = function(id) {
   return Order.findOrCreate({
     where: { userId: id },
     defaults: { status: 'cart', userId: id },
-    include: [{model: LineItem}]
+    include: [{ model: LineItem }]
   });
 };
 
 User.authenticate = function(user) {
   const { email, password } = user;
-  return User.find({ where:{ email, password}, attributes: ['id','firstName','lastName', 'email']
-  })
-}
+  return User.find({
+    where: { email, password },
+    attributes: ['id', 'firstName', 'lastName', 'email']
+  });
+};
 
 module.exports = {
   syncAndSeed,
