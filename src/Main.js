@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchCategories, fetchOrders, fetchLineItems } from './store';
+import {
+  fetchProducts,
+  fetchCategories,
+  fetchOrders,
+  fetchLineItems
+} from './store';
 
 import Nav from './Nav';
 import Products from './Products';
@@ -27,18 +32,30 @@ class Main extends Component {
     return (
       <Router>
         <div>
-          <Nav />
+          <Nav history={history} />
           <LoginForm />
-          <Route path='/' exact render={() => <Home />} />
+          <Route path="/" exact render={() => <Home />} />
           <Switch>
-            <Route path='/products' exact render={() => <Products />} />
-            <Route path='/products/:id' exact render={({ match }) => <Product id={match.params.id * 1} />} />
-            <Route path='/categories' exact render={() => <Categories />} />
-            <Route path='/categories/:id' exact render={({ match }) => <Category id={match.params.id * 1} />} />
-            <Route path='/cart' exact render={() => <Cart />} />
-            <Route path='/orders' exact render={() => <Orders />} />
-            <Route path='/orders/:id' exact render={({ match }) => <Order id={match.params.id * 1} />} />
-            <Route path='/user' exact render={() => <User />} />
+            <Route path="/products" exact render={() => <Products />} />
+            <Route
+              path="/products/:id"
+              exact
+              render={({ match }) => <Product id={match.params.id * 1} />}
+            />
+            <Route path="/categories" exact render={() => <Categories />} />
+            <Route
+              path="/categories/:id"
+              exact
+              render={({ match }) => <Category id={match.params.id * 1} />}
+            />
+            <Route path="/cart" exact render={() => <Cart />} />
+            <Route path="/orders" exact render={() => <Orders />} />
+            <Route
+              path="/orders/:id"
+              exact
+              render={({ match }) => <Order id={match.params.id * 1} />}
+            />
+            <Route path="/user" exact render={() => <User />} />
           </Switch>
         </div>
       </Router>
@@ -46,7 +63,7 @@ class Main extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchCategories: () => dispatch(fetchCategories()),
