@@ -20,6 +20,8 @@ const GET_CART = 'GET_CART';
 const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
 const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
+const ADD_LINE_ITEM = 'ADD_LINE_ITEM';
+const EDIT_LINE_ITEM = 'EDIT_LINE_ITEM';
 
 /*
 THUNKS
@@ -95,6 +97,26 @@ const fetchLineItems = () => {
   };
 };
 
+const addLineItem = (lineItem) => {
+  return dispatch => {
+    axios
+      .post('/api/lineItems', lineItem)
+      .then(res => res.data)
+      .then(lineItem => dispatch({ type: ADD_LINE_ITEM, lineItem }))
+      .catch(err => console.log(err));
+  };
+};
+
+const editLineItem = (lineItem, id) => {
+  return dispatch => {
+    axios
+      .put(`/api/lineItems/${id}`, lineItem)
+      .then(res => res.data)
+      .then(lineItem => dispatch({ type: EDIT_LINE_ITEM, lineItem }))
+      .catch(err => console.log(err));
+  };
+};
+
 /*
 REDUCERS
 */
@@ -145,6 +167,12 @@ const lineItemsReducer = (state = [], action) => {
   switch (action.type) {
     case GET_LINE_ITEMS:
       return action.lineItems;
+    case ADD_LINE_ITEM:
+      return [...state, action.lineItem];
+    case EDIT_LINE_ITEM:
+      return state.map(lineItem => {
+        return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
+      });
   }
   return state;
 };
@@ -162,4 +190,4 @@ export default createStore(
   reducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
-export { fetchProducts, fetchCategories, fetchUser, fetchCart, fetchOrders, fetchLineItems };
+export { fetchProducts, fetchCategories, fetchUser, fetchCart, fetchOrders, fetchLineItems, addLineItem, editLineItem };

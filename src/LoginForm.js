@@ -39,7 +39,7 @@ class LoginForm extends React.Component {
     if (user.name) {
       return (
         <div>
-          <button onClick={onSubmit}>Sign Out</button>
+          <button type='reset' onClick={onSubmit}>Sign Out</button>
         </div>
       );
     }
@@ -47,7 +47,7 @@ class LoginForm extends React.Component {
       <div>
         <input onChange={onChange} name='email' type='email' />
         <input onChange={onChange} name='password' type='password' />
-        <button onClick={onSubmit}>Sign In</button>
+        <button type='submit' onClick={onSubmit}>Sign In</button>
       </div>
     );
   }
