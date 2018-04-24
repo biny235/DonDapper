@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const db = require('../../db');
-const { Order } = db.models;
+const { Order, LineItem } = db.models;
 
 router.get('/', (req, res, next) => {
   Order.findAll()
@@ -17,7 +17,13 @@ router.post('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  Order.findById(req.params.id)
+  Order.findById(req.params.id, {include:[{all: true}]})
+    .then(order => res.send(order))
+    .catch(next);
+});
+
+router.get('/:id/lineitems', (req, res, next) => {
+  LineItem.findAll({where: {orderId: req.params.id}})
     .then(order => res.send(order))
     .catch(next);
 });

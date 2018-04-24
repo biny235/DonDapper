@@ -7,7 +7,6 @@ import Main from './main';
 
 const app = document.getElementById('app');
 
-store.dispatch(fetchProducts());
 render(
   <Provider store={store}>
     <Router>
