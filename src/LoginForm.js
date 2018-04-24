@@ -13,12 +13,6 @@ class LoginForm extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  // componentWillReceiveProps({ user }){
-  //   if(user !== this.state.user){
-  //     this.setState({ user })
-  //   }
-  // }
-
   onChange(ev) {
     const change = {};
     change[ev.target.name] = ev.target.value;

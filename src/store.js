@@ -20,6 +20,9 @@ const GET_CART = 'GET_CART';
 const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
 const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
+//Loader
+const LOADING = 'LOADING';
+const LOADED = 'LOADED';
 
 /*
 THUNKS
@@ -56,6 +59,7 @@ const fetchUser = user => {
       .then(res => res.data)
       .then(user => {
         _user = user;
+        fetchOrders(_user.id);
         dispatch({ type: SET_USER, user });
       })
       .catch(err => console.log(err));
@@ -74,25 +78,34 @@ const fetchCart = userId => {
 };
 
 // ORDERS
-const fetchOrders = () => {
-  return dispatch => {
+const fetchOrders = userId => {
     axios
-      .get('/api/orders')
+      .get(`/api/users/${userId}/orders`)
       .then(res => res.data)
-      .then(orders => dispatch({ type: GET_ORDERS, orders }))
+      .then(orders => {
+        console.log(orders)
+        store.dispatch({ type: GET_ORDERS, orders })})
       .catch(err => console.log(err));
-  };
 };
 
 // LINE ITEMS
-const fetchLineItems = () => {
+const fetchLineItems = (id) => {
+  
   return dispatch => {
+    dispatch({ type: LOADING })
     axios
-      .get('/api/lineItems')
+      .get(`/api/orders/${id}/lineitems`)
       .then(res => res.data)
-      .then(lineItems => dispatch({ type: GET_LINE_ITEMS, lineItems }))
-      .catch(err => console.log(err));
+      .then(lineItems => {
+        dispatch({ type: LOADED })
+        dispatch({ type: GET_LINE_ITEMS, lineItems })
+      })
+      .catch(err => {
+        console.log(err)
+        dispatch({ type: LOADED })
+      });
   };
+
 };
 
 /*
@@ -149,17 +162,26 @@ const lineItemsReducer = (state = [], action) => {
   return state;
 };
 
+const loadingReducer = (state = false, action) =>{
+  switch(action.type){
+    case LOADING:
+      return true;
+    case LOADED:
+      return false
+  }
+  return state
+}
+
 const reducer = combineReducers({
   products: productsReducer,
   categories: categoriesReducer,
   user: userReducer,
   cart: cartReducer,
   orders: ordersReducer,
-  lineItems: lineItemsReducer
+  lineItems: lineItemsReducer,
+  loading: loadingReducer
 });
-
-export default createStore(
-  reducer,
+const store = createStore( reducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
 export {

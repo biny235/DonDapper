@@ -14,11 +14,6 @@ const User = ({ user, products, userOrders, lineItems }) => {
             <Link to={`/orders/${order.id}`}>
               Order ID: {order.id}
             </Link>
-            <ul>
-              {lineItems.filter(lineItem => lineItem.orderId === order.id).map(lineItem => (
-                <li key={lineItem.id}>{products.find(product => product.id === lineItem.productId).name}</li>
-              ))}
-            </ul>
           </div>
         ))
       }

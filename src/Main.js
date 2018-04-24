@@ -15,7 +15,6 @@ import Categories from './Categories';
 import Category from './Category';
 import User from './User';
 import Orders from './Orders';
-import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
 import LoginForm from './LoginForm';
@@ -24,8 +23,6 @@ class Main extends Component {
   componentDidMount() {
     this.props.fetchProducts();
     this.props.fetchCategories();
-    this.props.fetchOrders();
-    this.props.fetchLineItems();
   }
 
   render() {
@@ -67,9 +64,13 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchCategories: () => dispatch(fetchCategories()),
-    fetchOrders: () => dispatch(fetchOrders()),
-    fetchLineItems: () => dispatch(fetchLineItems())
   };
 };
 
-export default connect(null, mapDispatchToProps)(Main);
+const mapStateToProps = ({ user })=>{
+  return{
+    user
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

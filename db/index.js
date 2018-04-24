@@ -27,7 +27,7 @@ const generateUser = () => {
 };
 
 const generateOrder = () => {
-  orderId = Math.floor(Math.random() * 5) + 1;
+  orderId = Math.floor(Math.random() * 6) + 1;
   return Promise.all([
     LineItem.create({
       quantity: Math.floor(Math.random() * 5) + 1,
@@ -84,7 +84,7 @@ const seed = () => {
     })
     .then(() => {
       return Promise.all([
-        Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
+        Order.create({ userId: 1 }),
         Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
         Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
         Order.create({ userId: Math.floor(Math.random() * 5) + 1 }),
