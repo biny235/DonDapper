@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+
+import { NavLink, Link } from 'react-router-dom';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -17,8 +19,15 @@ class Nav extends Component {
   }
   handleChange(ev, index, value) {
     const { products } = this.props;
+
     let selectedProduct = products.find(product => product.id === value);
-    this.setState({ value, product: selectedProduct });
+    if (location.hash === '#/products' && value !== -1) {
+      const theProduct = document.getElementById(value).scrollIntoView();
+      this.setState({ value: -1, product: {} });
+    } else {
+      this.setState({ value, product: selectedProduct });
+    }
+    console.log(this.state);
   }
 
   render() {
@@ -38,11 +47,20 @@ class Nav extends Component {
                 <MenuItem
                   value={-1}
                   primaryText="products"
-                  containerElement={<NavLink to={'/products'} />}
+                  containerElement={<Link to={'/products'} />}
                 />
                 {products.length
                   ? products.map(product => {
-                      return (
+                      return location.hash !== '#/products' ? (
+                        <MenuItem
+                          key={product.id}
+                          value={product.id}
+                          primaryText={product.name}
+                          containerElement={
+                            <Link to={`/products/${product.id}`} />
+                          }
+                        />
+                      ) : (
                         <MenuItem
                           key={product.id}
                           value={product.id}

@@ -162,4 +162,11 @@ export default createStore(
   reducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
-export { fetchProducts, fetchCategories, fetchUser, fetchCart, fetchOrders, fetchLineItems };
+export {
+  fetchProducts,
+  fetchCategories,
+  fetchUser,
+  fetchCart,
+  fetchOrders,
+  fetchLineItems
+};
