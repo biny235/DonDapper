@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import { NavLink, Link } from 'react-router-dom';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -9,7 +11,6 @@ import { render } from 'react-dom';
 class Nav extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       product: {},
       value: -1
