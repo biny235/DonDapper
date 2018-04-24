@@ -184,6 +184,11 @@ const reducer = combineReducers({
 const store = createStore( reducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
-
-export default store
-export { fetchProducts, fetchCategories, fetchUser, fetchCart, fetchOrders, fetchLineItems };
+export {
+  fetchProducts,
+  fetchCategories,
+  fetchUser,
+  fetchCart,
+  fetchOrders,
+  fetchLineItems
+};
