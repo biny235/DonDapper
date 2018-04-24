@@ -50,7 +50,7 @@ class Main extends Component {
             <Route
               path="/orders/:id"
               exact
-              render={({ match }) => <Order id={match.params.id * 1} />}
+              render={({ match }) => <Orders id={match.params.id * 1} />}
             />
             <Route path="/user" exact render={() => <User />} />
           </Switch>
