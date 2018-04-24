@@ -6,21 +6,16 @@ import LineItem from './LineItem';
 const Order = (props) => {
   
   const { user, products, order, lineItems, id } = props;
-  console.log(lineItems)
   return (
     <div>
       <h3>Order ID: {order && order.id}</h3>
-        <table>
-          <tbody>
-            <tr>
-              <th>Item</th>
-              <th>Price</th>
-              <th>Qty</th>
-              <th>Total</th>
-            </tr>
+        <div className='order'>
+            <div className='orderheader'>Item</div>
+            <div className='orderheader'>Price</div>
+            <div className='orderheader'>Qty</div>
+            <div className='orderheader'>Total</div>
             {lineItems && lineItems.map(lineItem => <LineItem key={lineItem.id} line={lineItem}/>) }
-          </tbody>
-        </table>
+        </div>
     </div>
   );
 };
