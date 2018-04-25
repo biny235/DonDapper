@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter as Router } from 'react-router-dom';
 import store, { fetchProducts } from './store';
-import Main from './main';
+import Main from './Main';
 
 const app = document.getElementById('app');
 
