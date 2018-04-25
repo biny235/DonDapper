@@ -58,14 +58,18 @@ const fetchUser = user => {
       .then(res => res.data)
       .then(token => {
         window.localStorage.setItem('token', token);
-        return axios.get('/api/users', {headers: {token: window.localStorage.getItem('token')}})
+        return axios.get('/api/users', {
+          headers: { token: window.localStorage.getItem('token') }
+        });
       })
       .then(res => res.data)
-      .then(user => dispatch({ type: SET_USER, user}))
+      .then(user => dispatch({ type: SET_USER, user }))
       .catch(err => console.log(err));
   };
 };
-
+const createUser = user => {
+  axios.post('api/users', { user });
+};
 // CART
 const fetchCart = userId => {
   return dispatch => {
@@ -79,33 +83,32 @@ const fetchCart = userId => {
 
 // ORDERS
 const fetchOrders = userId => {
-    axios
-      .get(`/api/users/${userId}/orders`)
-      .then(res => res.data)
-      .then(orders => {
-        console.log(orders)
-        store.dispatch({ type: GET_ORDERS, orders })})
-      .catch(err => console.log(err));
+  axios
+    .get(`/api/users/${userId}/orders`)
+    .then(res => res.data)
+    .then(orders => {
+      console.log(orders);
+      store.dispatch({ type: GET_ORDERS, orders });
+    })
+    .catch(err => console.log(err));
 };
 
 // LINE ITEMS
-const fetchLineItems = (id) => {
-  
+const fetchLineItems = id => {
   return dispatch => {
-    dispatch({ type: LOADING })
+    dispatch({ type: LOADING });
     axios
       .get(`/api/orders/${id}/lineitems`)
       .then(res => res.data)
       .then(lineItems => {
-        dispatch({ type: LOADED })
-        dispatch({ type: GET_LINE_ITEMS, lineItems })
+        dispatch({ type: LOADED });
+        dispatch({ type: GET_LINE_ITEMS, lineItems });
       })
       .catch(err => {
-        console.log(err)
-        dispatch({ type: LOADED })
+        console.log(err);
+        dispatch({ type: LOADED });
       });
   };
-
 };
 
 /*
@@ -142,7 +145,6 @@ const cartReducer = (state = [], action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart;
-    
   }
   return state;
 };
@@ -163,15 +165,15 @@ const lineItemsReducer = (state = [], action) => {
   return state;
 };
 
-const loadingReducer = (state = false, action) =>{
-  switch(action.type){
+const loadingReducer = (state = false, action) => {
+  switch (action.type) {
     case LOADING:
       return true;
     case LOADED:
-      return false
+      return false;
   }
-  return state
-}
+  return state;
+};
 
 const reducer = combineReducers({
   products: productsReducer,
@@ -182,9 +184,7 @@ const reducer = combineReducers({
   lineItems: lineItemsReducer,
   loading: loadingReducer
 });
-const store = createStore( reducer,
-  composeWithDevTools(applyMiddleware(thunk))
-);
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 export default store;
 export {
   fetchProducts,
