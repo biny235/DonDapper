@@ -20,8 +20,10 @@ const GET_CART = 'GET_CART';
 const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
 const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
-const ADD_LINE_ITEM = 'ADD_LINE_ITEM';
-const EDIT_LINE_ITEM = 'EDIT_LINE_ITEM';
+const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
+//Loader
+const LOADING = 'LOADING';
+const LOADED = 'LOADED';
 
 /*
 THUNKS
@@ -51,15 +53,16 @@ const fetchCategories = () => {
 
 // USER
 const fetchUser = user => {
-  let _user;
   return dispatch => {
     axios
-      .post(`/api/users/`, { user })
+      .post(`/api/users/login`, { user })
       .then(res => res.data)
-      .then(user => {
-        _user = user;
-        dispatch({ type: SET_USER, user });
+      .then(token => {
+        window.localStorage.setItem('token', token);
+        return axios.get('/api/users', { headers: { token: window.localStorage.getItem('token') } });
       })
+      .then(res => res.data)
+      .then(user => dispatch({ type: SET_USER, user }))
       .catch(err => console.log(err));
   };
 };
@@ -76,10 +79,10 @@ const fetchCart = userId => {
 };
 
 // ORDERS
-const fetchOrders = () => {
+const fetchOrders = userId => {
   return dispatch => {
     axios
-      .get('/api/orders')
+      .get(`/api/users/${userId}/orders`)
       .then(res => res.data)
       .then(orders => dispatch({ type: GET_ORDERS, orders }))
       .catch(err => console.log(err));
@@ -87,13 +90,31 @@ const fetchOrders = () => {
 };
 
 // LINE ITEMS
-const fetchLineItems = () => {
+const fetchLineItems = (orderId) => {
   return dispatch => {
+    dispatch({ type: LOADING });
     axios
-      .get('/api/lineItems')
+      .get(`/api/orders/${orderId}/lineitems`)
       .then(res => res.data)
-      .then(lineItems => dispatch({ type: GET_LINE_ITEMS, lineItems }))
-      .catch(err => console.log(err));
+      .then(lineItems => {
+        dispatch({ type: LOADED });
+        dispatch({ type: GET_LINE_ITEMS, lineItems });
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({ type: LOADED });
+      });
+  };
+};
+
+const editLineItem = (lineItem, orderId, productId) => {
+  return (dispatch) => {
+    return axios.put(`/api/${orderId}/lineItems/${productId}`, lineItem)
+      .then(result => result.data)
+      .then(lineItem => dispatch({
+        type: UPDATE_LINE_ITEM,
+        lineItem
+      }));
   };
 };
 
@@ -167,12 +188,20 @@ const lineItemsReducer = (state = [], action) => {
   switch (action.type) {
     case GET_LINE_ITEMS:
       return action.lineItems;
-    case ADD_LINE_ITEM:
-      return [...state, action.lineItem];
-    case EDIT_LINE_ITEM:
+    case UPDATE_LINE_ITEM:
       return state.map(lineItem => {
         return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
       });
+  }
+  return state;
+};
+
+const loadingReducer = (state = false, action) => {
+  switch (action.type) {
+    case LOADING:
+      return true;
+    case LOADED:
+      return false;
   }
   return state;
 };
@@ -183,11 +212,18 @@ const reducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
   orders: ordersReducer,
-  lineItems: lineItemsReducer
+  lineItems: lineItemsReducer,
+  loading: loadingReducer
 });
-
-export default createStore(
-  reducer,
-  composeWithDevTools(applyMiddleware(thunk))
-);
-export { fetchProducts, fetchCategories, fetchUser, fetchCart, fetchOrders, fetchLineItems, addLineItem, editLineItem };
+const store = createStore(reducer,
+  composeWithDevTools(applyMiddleware(thunk)));
+export default store;
+export {
+  fetchProducts,
+  fetchCategories,
+  fetchUser,
+  fetchCart,
+  fetchOrders,
+  fetchLineItems,
+  editLineItem
+};
