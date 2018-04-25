@@ -24,7 +24,7 @@ router.get('/:id/cart', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:id/orders', (req, res, next) => {
+router.get('/:id/orders', auth,  (req, res, next) => {
   User.findById(req.params.id)
     .then(user =>
       user.getOrders({
