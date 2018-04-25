@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const db = require('../../db');
+const auth = require('../auth')
 const { User, Order, LineItem } = db.models;
 
 
-router.get('/', (req, res, next)=>{
+router.get('/', auth, (req, res, next)=>{
   User.exchangeToken(req.headers.token)
     .then(user => res.send(user))
     .catch(next);
@@ -23,7 +24,7 @@ router.get('/:id/cart', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:id/orders', (req, res, next) => {
+router.get('/:id/orders', auth, (req, res, next) => {
   User.findById(req.params.id)
     .then(user =>
       user.getOrders({
@@ -31,10 +32,7 @@ router.get('/:id/orders', (req, res, next) => {
         include: [{ model: LineItem }]
       })
     )
-    .then(orders => {
-      console.log(orders);
-      res.send(orders);
-    })
+    .then(orders => res.send(orders))
     .catch(next);
 });
 

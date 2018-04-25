@@ -72,6 +72,7 @@ const fetchUser = user => {
       .then(user => {
         dispatch({ type: SET_USER, user})
         fetchOrders(user.id)
+        dispatch(fetchCart(user.id))
       })
       .catch(err => console.log(err));
   };
@@ -80,8 +81,7 @@ const fetchUser = user => {
 // CART
 const fetchCart = userId => {
   return dispatch => {
-    axios
-      .get(`/api/users/${userId}/cart`)
+    authCall('get', `/api/users/${userId}/cart`)
       .then(res => res.data)
       .then(cart => dispatch({ type: GET_CART, cart }))
       .catch(err => console.log(err));
