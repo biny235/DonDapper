@@ -3,6 +3,14 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
+
+const authCall = (reqType, path, body)=>{
+  const token = window.localStorage.getItem('token');
+  if(!token){
+    throw {err: "Not authorized. Please login"}
+  }
+  return axios[reqType](path,{headers: {token}, body})
+}
 /*
 CONSTANTS
 */
@@ -58,10 +66,13 @@ const fetchUser = user => {
       .then(res => res.data)
       .then(token => {
         window.localStorage.setItem('token', token);
-        return axios.get('/api/users', {headers: {token: window.localStorage.getItem('token')}})
+        return authCall('get','/api/users')
       })
       .then(res => res.data)
-      .then(user => dispatch({ type: SET_USER, user}))
+      .then(user => {
+        dispatch({ type: SET_USER, user})
+        fetchOrders(user.id)
+      })
       .catch(err => console.log(err));
   };
 };
@@ -79,8 +90,7 @@ const fetchCart = userId => {
 
 // ORDERS
 const fetchOrders = userId => {
-    axios
-      .get(`/api/users/${userId}/orders`)
+    authCall('get',`/api/users/${userId}/orders`)
       .then(res => res.data)
       .then(orders => {
         console.log(orders)
