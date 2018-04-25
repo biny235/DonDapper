@@ -52,16 +52,16 @@ const fetchCategories = () => {
 
 // USER
 const fetchUser = user => {
-  let _user;
   return dispatch => {
     axios
-      .post(`/api/users/`, { user })
+      .post(`/api/users/login`, { user })
       .then(res => res.data)
-      .then(user => {
-        _user = user;
-        fetchOrders(_user.id);
-        dispatch({ type: SET_USER, user });
+      .then(token => {
+        window.localStorage.setItem('token', token);
+        return axios.get('/api/users', {headers: {token: window.localStorage.getItem('token')}})
       })
+      .then(res => res.data)
+      .then(user => dispatch({ type: SET_USER, user}))
       .catch(err => console.log(err));
   };
 };
@@ -142,6 +142,7 @@ const cartReducer = (state = [], action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart;
+    
   }
   return state;
 };

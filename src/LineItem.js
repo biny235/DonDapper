@@ -7,11 +7,11 @@ const LineItem = ({ product, line }) =>{
     return null
   }
   return( 
-      <div>
-        <div className='orderproduct'>{ product.name }</div>
-        <div className='orderprice'>{ product.price }</div>
-        <div className='orderqty'>{ line.quantity }</div>
-        <div className='ordertotal'>{ line.quantity * product.price }</div>
+      <div className='orderrow'>
+        <div className='orderitem'>{ product.name }</div>
+        <div className='orderitem'>{ product.price }</div>
+        <div className='orderitem'>{ line.quantity }</div>
+        <div className='orderitem'>{ line.quantity * product.price }</div>
       </div>
   )
 }
