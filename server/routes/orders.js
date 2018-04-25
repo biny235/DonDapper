@@ -17,14 +17,27 @@ router.post('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  Order.findById(req.params.id, {include:[{all: true}]})
+  Order.findById(req.params.id, { include: [{ all: true }] })
     .then(order => res.send(order))
     .catch(next);
 });
 
-router.get('/:id/lineitems', (req, res, next) => {
-  LineItem.findAll({where: {orderId: req.params.id}})
+router.get('/:id/lineItems', (req, res, next) => {
+  LineItem.findAll({ where: { orderId: req.params.id } })
     .then(order => res.send(order))
+    .catch(next);
+});
+
+router.put('/:orderId/lineItems/:id', (req, res, next) => {
+  LineItem.findOrCreate({
+    where: { orderId: req.params.orderId },
+    defaults: { quantity: 1, orderId: req.params.orderId }
+  })
+    .spread(lineItem => {
+      Object.assign(lineItem, req.body);
+      return lineItem.save();
+    })
+    .then(lineItem => res.send(lineItem))
     .catch(next);
 });
 

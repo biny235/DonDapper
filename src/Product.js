@@ -9,7 +9,6 @@ const Product = ({ product }) => {
         <Link to={`/products/${product.id}`}>
           <h1>{product && product.name}</h1>
         </Link>
-
         <h2>${product && product.price}</h2>
       </span>
     </div>

@@ -5,7 +5,8 @@ import {
   fetchProducts,
   fetchCategories,
   fetchOrders,
-  fetchLineItems
+  fetchLineItems,
+  fetchCart
 } from './store';
 
 import Nav from './Nav';
@@ -23,6 +24,12 @@ class Main extends Component {
   componentDidMount() {
     this.props.fetchProducts();
     this.props.fetchCategories();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { user } = nextProps;
+    this.props.fetchOrders(user.id);
+    this.props.fetchCart(user.id);
   }
 
   render() {
@@ -64,13 +71,15 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchCategories: () => dispatch(fetchCategories()),
+    fetchOrders: (id) => dispatch(fetchOrders(id)),
+    fetchCart: (id) => dispatch(fetchCart(id))
   };
 };
 
-const mapStateToProps = ({ user })=>{
-  return{
+const mapStateToProps = ({ user }) => {
+  return {
     user
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
