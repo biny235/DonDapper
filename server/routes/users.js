@@ -32,7 +32,7 @@ router.get('/:id/orders', auth,  (req, res, next) => {
         include: [{ model: LineItem }]
       })
     )
-    .then(orders => res.send(orders);)
+    .then(orders => res.send(orders))
     .catch(next);
 });
 

@@ -71,14 +71,9 @@ const fetchUser = user => {
       })
       .then(res => res.data)
       .then(user => {
-<<<<<<< HEAD
         dispatch({ type: SET_USER, user})
         fetchOrders(user.id)
         dispatch(fetchCart(user.id))
-=======
-        dispatch({ type: SET_USER, user });
-        fetchOrders(user.id);
->>>>>>> master
       })
       .catch(err => console.log(err));
   };
