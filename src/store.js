@@ -20,6 +20,7 @@ const GET_CART = 'GET_CART';
 const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
 const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
+const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
 //Loader
 const LOADING = 'LOADING';
 const LOADED = 'LOADED';
@@ -89,11 +90,11 @@ const fetchOrders = userId => {
 };
 
 // LINE ITEMS
-const fetchLineItems = (id) => {
+const fetchLineItems = (orderId) => {
   return dispatch => {
     dispatch({ type: LOADING });
     axios
-      .get(`/api/orders/${id}/lineitems`)
+      .get(`/api/orders/${orderId}/lineitems`)
       .then(res => res.data)
       .then(lineItems => {
         dispatch({ type: LOADED });
@@ -104,7 +105,17 @@ const fetchLineItems = (id) => {
         dispatch({ type: LOADED });
       });
   };
+};
 
+const editLineItem = (lineItem, orderId, productId) => {
+  return (dispatch) => {
+    return axios.put(`/api/${orderId}/lineItems/${productId}`, lineItem)
+      .then(result => result.data)
+      .then(lineItem => dispatch({
+        type: UPDATE_LINE_ITEM,
+        lineItem
+      }));
+  };
 };
 
 /*
@@ -141,7 +152,6 @@ const cartReducer = (state = [], action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart;
-
   }
   return state;
 };
@@ -158,6 +168,10 @@ const lineItemsReducer = (state = [], action) => {
   switch (action.type) {
     case GET_LINE_ITEMS:
       return action.lineItems;
+    case UPDATE_LINE_ITEM:
+      return state.map(lineItem => {
+        return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
+      });
   }
   return state;
 };
@@ -190,5 +204,6 @@ export {
   fetchUser,
   fetchCart,
   fetchOrders,
-  fetchLineItems
+  fetchLineItems,
+  editLineItem
 };
