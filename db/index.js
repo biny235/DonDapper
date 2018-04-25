@@ -1,7 +1,8 @@
 const conn = require('./conn');
 const faker = require('faker');
 const jwt = require('jwt-simple');
-const secret = 'graceshopper';
+const secret = process.env.SECRET;
+
 
 const Category = require('./Category');
 const Product = require('./Product');
@@ -129,6 +130,7 @@ User.findOrCreateCart = function (userId) {
 
 User.authenticate = function (user) {
   const { email, password } = user;
+  console.log(secret)
   return User.find({
     where: { email, password },
     attributes: ['id', 'firstName', 'lastName', 'email']

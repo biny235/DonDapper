@@ -7,7 +7,7 @@
         "postinstall": "npm run webpack",
         "webpack": "./node_modules/webpack/bin/webpack.js",
         "test:dev": "./node_modules/mocha/bin/mocha --watch  --recursive test/server/**/*.js",
-        "start:dev": "SECRET=graceshopper npm run webpack -- -w & nodemon server.js --ignore dist/ --ignore src/"
+        "start:dev": "npm run webpack -- -w & SECRET=graceshopper nodemon server.js --ignore dist/ --ignore src/"
     },
     "keywords": [],
     "author": "",
