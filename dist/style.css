@@ -6,7 +6,9 @@
 .orderhead{
   grid-area: auto;
 }
-
-.orderproduct{
-  grid-area: auto
+.orderitem{
+  grid-column: auto;
+}
+.ordertotal{
+  grid-row: auto;
 }
