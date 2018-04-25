@@ -3,14 +3,14 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
-
 const authCall = (reqType, path, body) => {
   const token = window.localStorage.getItem('token');
   if (!token) {
-    throw { err: "Not authorized. Please login" }
+    throw { err: 'Not authorized. Please login' };
   }
-  return axios[reqType](path, { headers: { token }, body })
-}
+  return axios[reqType](path, { headers: { token }, body });
+};
+
 /*
 CONSTANTS
 */
@@ -67,12 +67,12 @@ const fetchUser = user => {
       .then(res => res.data)
       .then(token => {
         window.localStorage.setItem('token', token);
-        return authCall('get', '/api/users')
+        return authCall('get', '/api/users');
       })
       .then(res => res.data)
       .then(user => {
-        dispatch({ type: SET_USER, user })
-        fetchOrders(user.id)
+        dispatch({ type: SET_USER, user });
+        fetchOrders(user.id);
       })
       .catch(err => console.log(err));
   };
@@ -91,10 +91,12 @@ const fetchCart = userId => {
 
 // ORDERS
 const fetchOrders = userId => {
-  authCall('get', `/api/users/${userId}/orders`)
-    .then(res => res.data)
-    .then(orders => dispatch({ type: GET_ORDERS, orders }))
-    .catch(err => console.log(err));
+  return dispatch => {
+    authCall('get', `/api/users/${userId}/orders`)
+      .then(res => res.data)
+      .then(orders => dispatch({ type: GET_ORDERS, orders }))
+      .catch(err => console.log(err));
+  };
 };
 
 // LINE ITEMS
@@ -203,9 +205,12 @@ const reducer = combineReducers({
   lineItems: lineItemsReducer,
   loading: loadingReducer
 });
+
 const store = createStore(reducer,
   composeWithDevTools(applyMiddleware(thunk)));
+
 export default store;
+
 export {
   fetchProducts,
   fetchCategories,

@@ -20,7 +20,7 @@ const Cart = ({ cart, lineItems }) => {
 };
 
 const mapStateToProps = ({ cart }) => {
-  const lineItems = cart && cart.lineItems
+  const lineItems = cart && cart.lineItems;
   return {
     cart, lineItems
   };
