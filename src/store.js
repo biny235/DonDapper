@@ -3,14 +3,14 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
-
-const authCall = (reqType, path, body)=>{
+const authCall = (reqType, path, body) => {
   const token = window.localStorage.getItem('token');
-  if(!token){
-    throw {err: "Not authorized. Please login"}
+  if (!token) {
+    throw { err: 'Not authorized. Please login' };
   }
-  return axios[reqType](path,{headers: {token}, body})
-}
+  return axios[reqType](path, { headers: { token }, body });
+};
+
 /*
 CONSTANTS
 */
@@ -28,6 +28,7 @@ const GET_CART = 'GET_CART';
 const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
 const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
+const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
 //Loader
 const LOADING = 'LOADING';
 const LOADED = 'LOADED';
@@ -66,13 +67,18 @@ const fetchUser = user => {
       .then(res => res.data)
       .then(token => {
         window.localStorage.setItem('token', token);
-        return authCall('get','/api/users')
+        return authCall('get', '/api/users');
       })
       .then(res => res.data)
       .then(user => {
+<<<<<<< HEAD
         dispatch({ type: SET_USER, user})
         fetchOrders(user.id)
         dispatch(fetchCart(user.id))
+=======
+        dispatch({ type: SET_USER, user });
+        fetchOrders(user.id);
+>>>>>>> master
       })
       .catch(err => console.log(err));
   };
@@ -90,32 +96,41 @@ const fetchCart = userId => {
 
 // ORDERS
 const fetchOrders = userId => {
-    authCall('get',`/api/users/${userId}/orders`)
+  return dispatch => {
+    authCall('get', `/api/users/${userId}/orders`)
       .then(res => res.data)
-      .then(orders => {
-        console.log(orders)
-        store.dispatch({ type: GET_ORDERS, orders })})
+      .then(orders => dispatch({ type: GET_ORDERS, orders }))
       .catch(err => console.log(err));
+  };
 };
 
 // LINE ITEMS
-const fetchLineItems = (id) => {
-  
+const fetchLineItems = (orderId) => {
   return dispatch => {
-    dispatch({ type: LOADING })
+    dispatch({ type: LOADING });
     axios
-      .get(`/api/orders/${id}/lineitems`)
+      .get(`/api/orders/${orderId}/lineitems`)
       .then(res => res.data)
       .then(lineItems => {
-        dispatch({ type: LOADED })
-        dispatch({ type: GET_LINE_ITEMS, lineItems })
+        dispatch({ type: LOADED });
+        dispatch({ type: GET_LINE_ITEMS, lineItems });
       })
       .catch(err => {
-        console.log(err)
-        dispatch({ type: LOADED })
+        console.log(err);
+        dispatch({ type: LOADED });
       });
   };
+};
 
+const editLineItem = (lineItem, orderId, productId) => {
+  return (dispatch) => {
+    return axios.put(`/api/${orderId}/lineItems/${productId}`, lineItem)
+      .then(result => result.data)
+      .then(lineItem => dispatch({
+        type: UPDATE_LINE_ITEM,
+        lineItem
+      }));
+  };
 };
 
 /*
@@ -152,7 +167,6 @@ const cartReducer = (state = [], action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart;
-    
   }
   return state;
 };
@@ -169,19 +183,23 @@ const lineItemsReducer = (state = [], action) => {
   switch (action.type) {
     case GET_LINE_ITEMS:
       return action.lineItems;
+    case UPDATE_LINE_ITEM:
+      return state.map(lineItem => {
+        return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
+      });
   }
   return state;
 };
 
-const loadingReducer = (state = false, action) =>{
-  switch(action.type){
+const loadingReducer = (state = false, action) => {
+  switch (action.type) {
     case LOADING:
       return true;
     case LOADED:
-      return false
+      return false;
   }
-  return state
-}
+  return state;
+};
 
 const reducer = combineReducers({
   products: productsReducer,
@@ -192,15 +210,18 @@ const reducer = combineReducers({
   lineItems: lineItemsReducer,
   loading: loadingReducer
 });
-const store = createStore( reducer,
-  composeWithDevTools(applyMiddleware(thunk))
-);
+
+const store = createStore(reducer,
+  composeWithDevTools(applyMiddleware(thunk)));
+
 export default store;
+
 export {
   fetchProducts,
   fetchCategories,
   fetchUser,
   fetchCart,
   fetchOrders,
-  fetchLineItems
+  fetchLineItems,
+  editLineItem
 };

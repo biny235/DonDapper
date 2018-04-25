@@ -24,7 +24,7 @@ router.get('/:id/cart', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:id/orders', auth, (req, res, next) => {
+router.get('/:id/orders', (req, res, next) => {
   User.findById(req.params.id)
     .then(user =>
       user.getOrders({
@@ -32,7 +32,7 @@ router.get('/:id/orders', auth, (req, res, next) => {
         include: [{ model: LineItem }]
       })
     )
-    .then(orders => res.send(orders))
+    .then(orders => res.send(orders);)
     .catch(next);
 });
 
