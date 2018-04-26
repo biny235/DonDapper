@@ -47,6 +47,11 @@ const User = conn.define(
           msg: 'you must enter an email!'
         }
       }
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      notEmpty: true
     }
   },
   {
