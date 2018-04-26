@@ -3,14 +3,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
-const authCall = (reqType, path, body) => {
-  const token = window.localStorage.getItem('token');
-  if (!token) {
-    throw { err: 'Not authorized. Please login' };
-  }
-  return axios[reqType](path, { headers: { token }, body });
-};
-
 /*
 CONSTANTS
 */
@@ -33,6 +25,9 @@ const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
 //Loader
 const LOADING = 'LOADING';
 const LOADED = 'LOADED';
+//errors
+const CLEAR_ERROR = 'CLEAR_ERROR';
+const ERROR = 'ERROR';
 
 /*
 THUNKS
@@ -63,21 +58,43 @@ const fetchCategories = () => {
 // USER
 const fetchUser = user => {
   return dispatch => {
+    login(user, dispatch);
+  };
+};
+const createUser = user => {
+  return dispatch => {
     axios
-      .post(`/api/users/login`, { user })
+      .post('api/users', { user })
       .then(res => res.data)
-      .then(token => {
-        window.localStorage.setItem('token', token);
-        return authCall('get', '/api/users');
-      })
-      .then(res => res.data)
-      .then(user => {
-        dispatch({ type: GET_USER, user });
-      })
-      .catch(err => console.log(err));
+      .then(user => login(user, dispatch))
+      .catch(error => {
+        const err = error.response.data;
+        dispatch({
+          type: ERROR,
+          err
+        });
+      });
   };
 };
 
+const updateUser = user => {
+  const { id } = user;
+  return dispatch => {
+    return axios
+      .put(`/api/users/${id}`, { user })
+      .then(res => res.data)
+      .then(user => {
+        login(user, dispatch);
+      })
+      .catch(error => {
+        const err = error.response.data;
+        dispatch({
+          type: ERROR,
+          err
+        });
+      });
+  };
+};
 // CART
 const fetchCart = userId => {
   return dispatch => {
@@ -99,7 +116,7 @@ const fetchOrders = userId => {
 };
 
 // LINE ITEMS
-const fetchLineItems = (orderId) => {
+const fetchLineItems = orderId => {
   return dispatch => {
     dispatch({ type: LOADING });
     authCall('get', `/api/orders/${orderId}/lineItems`)
@@ -139,6 +156,47 @@ const editLineItem = (lineItem, lineItemId, history) => {
       })
       .catch(err => console.log(err));
   };
+};
+
+//ERRORS
+
+//clear errors
+
+const clearErrors = () => {
+  return dispatch => {
+    return dispatch({
+      type: CLEAR_ERROR
+    });
+  };
+};
+
+/*
+REUSEBLE CODE
+*/
+
+const authCall = (reqType, path, body) => {
+  const token = window.localStorage.getItem('token');
+  if (!token) {
+    throw { err: 'Not authorized. Please login' };
+  }
+  return axios[reqType](path, { headers: { token }, body });
+};
+
+const login = (user, dispatch) => {
+  axios
+    .post(`/api/users/login`, { user })
+    .then(res => res.data)
+    .then(token => {
+      window.localStorage.setItem('token', token);
+      return authCall('get', '/api/users');
+    })
+    .then(res => res.data)
+    .then(user => {
+      dispatch({ type: GET_USER, user });
+      fetchOrders(user.id);
+      dispatch(fetchCart(user.id));
+    })
+    .catch(err => console.log(err));
 };
 
 /*
@@ -212,6 +270,15 @@ const loadingReducer = (state = false, action) => {
   }
   return state;
 };
+const errorReducer = (state = '', action) => {
+  switch (action.type) {
+    case ERROR:
+      return action.err;
+    case CLEAR_ERROR:
+      state = '';
+  }
+  return state;
+};
 
 const reducer = combineReducers({
   products: productsReducer,
@@ -220,11 +287,11 @@ const reducer = combineReducers({
   cart: cartReducer,
   orders: ordersReducer,
   lineItems: lineItemsReducer,
-  loading: loadingReducer
+  loading: loadingReducer,
+  errors: errorReducer
 });
 
-const store = createStore(reducer,
-  composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;
 
@@ -236,5 +303,8 @@ export {
   fetchOrders,
   fetchLineItems,
   addLineItem,
-  editLineItem
+  editLineItem,
+  createUser,
+  updateUser,
+  clearErrors
 };
