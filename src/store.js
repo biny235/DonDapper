@@ -141,26 +141,6 @@ const editLineItem = (lineItem, lineItemId, history) => {
   };
 };
 
-const addLineItem = (lineItem) => {
-  return dispatch => {
-    axios
-      .post('/api/lineItems', lineItem)
-      .then(res => res.data)
-      .then(lineItem => dispatch({ type: ADD_LINE_ITEM, lineItem }))
-      .catch(err => console.log(err));
-  };
-};
-
-const editLineItem = (lineItem, id) => {
-  return dispatch => {
-    axios
-      .put(`/api/lineItems/${id}`, lineItem)
-      .then(res => res.data)
-      .then(lineItem => dispatch({ type: EDIT_LINE_ITEM, lineItem }))
-      .catch(err => console.log(err));
-  };
-};
-
 /*
 REDUCERS
 */
