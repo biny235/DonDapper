@@ -44,7 +44,7 @@ class UserForm extends Component {
   render() {
     const { createUser, updateUser } = this.props;
 
-    const { user } = this.state;
+    const { user, errors } = this.state;
 
     return (
       <div>
