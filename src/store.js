@@ -80,9 +80,11 @@ const updateUser = user => {
   const { id } = user;
   return dispatch => {
     return axios
-      .put(`/api/users/${id}`, user)
+      .put(`/api/users/${id}`, { user })
       .then(res => res.data)
-      .then(user => login(user, dispatch))
+      .then(user => {
+        login(user, dispatch);
+      })
       .catch(error => {
         const err = error.response.data;
         dispatch({
