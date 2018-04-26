@@ -4,7 +4,7 @@ const auth = require('../auth')
 const { User, Order, LineItem } = db.models;
 
 
-router.get('/', auth, (req, res, next)=>{
+router.get('/', (req, res, next)=>{
   User.exchangeToken(req.headers.token)
     .then(user => res.send(user))
     .catch(next);
@@ -18,7 +18,7 @@ router.post('/login', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:id/cart', (req, res, next) => {
+router.get('/:id/cart', auth, (req, res, next) => {
   User.findOrCreateCart(req.params.id)
     .spread(cart => res.send(cart))
     .catch(next);

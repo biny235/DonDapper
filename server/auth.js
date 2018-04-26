@@ -1,9 +1,19 @@
 const jwt = require('jwt-simple');
+const { User } = require('../db')
+
 
 const auth = (req, res, next)=>{
-  console.log(req.headers.token)
-  console.log(req.params.id)
-  next()
+  User.exchangeToken(req.headers.token)
+    .then(user => {
+      if(user.id === req.params.id){
+        return next()
+      }
+      else{
+        throw {status: 401}
+      }
+    })
+
+  
 }
 
 module.exports = auth;
