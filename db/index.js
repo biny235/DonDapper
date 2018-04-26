@@ -120,7 +120,7 @@ User.hasMany(Order);
 
 User.findOrCreateCart = function(userId) {
   return Order.findOrCreate({
-    where: { userId },
+    where: { status: 'cart', userId },
     defaults: { status: 'cart', userId },
     include: [{ model: LineItem }]
   });

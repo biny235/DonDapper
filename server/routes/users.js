@@ -42,8 +42,7 @@ router.get('/:id/orders', auth, (req, res, next) => {
       user.getOrders({
         where: { status: 'order' },
         include: [{ model: LineItem }]
-      })
-    )
+      }))
     .then(orders => res.send(orders))
     .catch(next);
 });
