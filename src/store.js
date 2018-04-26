@@ -78,7 +78,9 @@ const fetchUser = user => {
       .catch(err => console.log(err));
   };
 };
-
+const createUser = user => {
+  axios.post('api/users', { user });
+};
 // CART
 const fetchCart = userId => {
   return dispatch => {
