@@ -3,7 +3,7 @@ const db = require('../../db');
 const auth = require('../auth');
 const { User, Order, LineItem } = db.models;
 
-router.get('/', auth, (req, res, next) => {
+router.get('/', (req, res, next) => {
   User.exchangeToken(req.headers.token)
     .then(user => res.send(user))
     .catch(next);
