@@ -10,7 +10,11 @@ router.get('', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   LineItem.create(req.body)
+<<<<<<< HEAD
     .then(order => res.send(order))
+=======
+    .then(lineItem => res.send(lineItem))
+>>>>>>> cart-#16
     .catch(next);
 });
 
@@ -22,11 +26,19 @@ router.get('/:id', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
   LineItem.findById(req.params.id)
+<<<<<<< HEAD
     .then(order => {
       Object.assign(order, req.body);
       return order.save();
     })
     .then(order => res.send(order))
+=======
+    .then(lineItem => {
+      Object.assign(lineItem, req.body);
+      return lineItem.save();
+    })
+    .then(lineItem => res.send(lineItem))
+>>>>>>> cart-#16
     .catch(next);
 });
 

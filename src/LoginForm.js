@@ -19,7 +19,8 @@ class LoginForm extends React.Component {
     this.setState(change);
   }
 
-  onSubmit() {
+  onSubmit(ev) {
+    ev.preventDefault();
     this.props.fetchUser(this.state);
     this.setState({
       email: '',

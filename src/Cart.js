@@ -6,6 +6,7 @@ const Cart = ({ cart, lineItems }) => {
   return (
     <div>
       <h1>Cart</h1>
+      <h3>{!cart.id && 'Please sign in.'}</h3>
       {
         cart.id && (<div className='order'>
           <div className='orderheader'>Item</div>
@@ -20,7 +21,7 @@ const Cart = ({ cart, lineItems }) => {
 };
 
 const mapStateToProps = ({ cart }) => {
-  const lineItems = cart && cart.lineItems
+  const lineItems = cart && cart.lineItems;
   return {
     cart, lineItems
   };
