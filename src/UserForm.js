@@ -1,48 +1,39 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-//import { Alert } from 'reactstrap';
-import omit from 'object.omit';
-import { createUser, updateUser } from './store';
+import { Alert } from 'reactstrap';
+import { createUser, updateUser, clearErrors } from './store';
 import { connect } from 'react-redux';
-import Campuses from './campuses';
 
 class UserForm extends Component {
   constructor() {
     super();
     this.state = {
-      user: {}
-      // errors: ''
+      user: {},
+      errors: ''
     };
     this.onChange = this.onChange.bind(this);
-    this.changeState = this.changeState.bind(this);
-    //  this.onDismiss = this.onDismiss.bind(this);
+    this.onDismiss = this.onDismiss.bind(this);
   }
-  // onDismiss() {
-  //   this.setState({ errors: '' });
-  //   clearErrors();
-  // }
+  onDismiss() {
+    this.setState({ errors: '' });
+    clearErrors();
+  }
 
-  changeState(user /*errors*/) {
-    this.setState({
-      user: user
-      //errors: errors
-    });
-  }
   componentWillReceiveProps(nextProps) {
-    const { user /*,errors*/ } = nextProps;
+    const { user, errors } = nextProps;
     if (user.id) this.setState({ user: user });
-    // this.setState({ errors: errors });
+    this.setState({ errors: errors });
   }
 
   componentWillMount() {
-    const { user } = this.props;
-    if (user.id) this.setState({ user: user });
+    const { user, errors } = this.props;
+    if (user.id) this.setState({ user, errors });
   }
 
-  // onDismiss() {
-  //   this.setState({ errors: '' });
-  //   clearErrors();
-  // }
+  onDismiss() {
+    this.setState({ errors: '' });
+    clearErrors();
+  }
 
   onChange(ev) {
     let key = ev.target.name;
@@ -51,14 +42,20 @@ class UserForm extends Component {
   }
 
   render() {
-    //const { match, history, campuses, createStudent } = this.props;
+    const { createUser, updateUser } = this.props;
+
     const { user } = this.state;
 
     return (
       <div>
-        {!user.id ? (
+        {errors ? (
+          <Alert color="info" isOpen={!!errors} toggle={this.onDismiss}>
+            {errors}
+          </Alert>
+        ) : !user.id ? (
           <div>
-            <h1>Create Student</h1>
+            <h1>Create User</h1>
+
             <input
               name="firstName"
               placeholder="first name "
@@ -139,15 +136,13 @@ const mapStateToProps = ({ errors }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createStudent: ({ user }) => {
-      //state = omit(state, 'errors');
+    createUser: ({ user }) => {
       dispatch(createUser({ user }));
-      // dispatch(clearErrors());
+      dispatch(clearErrors());
     },
-    updateStudent: ({ user }) => {
-      // state = omit(state, 'errors');
+    updateUser: ({ user }) => {
       dispatch(updateUser({ user }));
-      //dispatch(clearErrors());
+      dispatch(clearErrors());
     }
   };
 };
