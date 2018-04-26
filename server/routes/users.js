@@ -30,10 +30,7 @@ router.get('/:id/orders', (req, res, next) => {
         where: { status: 'order' },
         include: [{ model: LineItem }]
       }))
-    .then(orders => {
-      console.log(orders);
-      res.send(orders);
-    })
+    .then(orders => res.send(orders))
     .catch(next);
 });
 

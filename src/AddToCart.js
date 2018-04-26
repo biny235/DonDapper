@@ -18,20 +18,19 @@ class AddToCart extends React.Component {
     this.setState(change);
   }
 
-  onSubmit() {
-    const { lineItem, cart, product } = this.props;
-    const quantity = this.state.quantity + Number(lineItem.quantity);
+  onSubmit(ev) {
+    ev.preventDefault();
+    const { cart, product, lineItem } = this.props;
     if (!lineItem) {
       this.props.addLineItem({
-        quantity,
-        productId: product.id,
-        orderId: cart.id
+        quantity: this.state.quantity * 1,
+        orderId: cart.id,
+        productId: product.id
       });
     }
     else {
-      this.props.editLineItem({
-        quantity
-      }, lineItem.id);
+      const quantity = (this.state.quantity * 1) + (lineItem.quantity * 1);
+      this.props.editLineItem({ quantity }, lineItem.id);
     }
     this.setState({
       quantity: 1
@@ -41,30 +40,29 @@ class AddToCart extends React.Component {
   render() {
     const { onChange, onSubmit } = this;
     const { quantity } = this.state;
+    const { cart } = this.props;
     return (
       <div>
         <form>
-          <input onChange={onChange} name='quantity' value={quantity * 1} type='number' step='1' />
-          <button type='submit' onClick={onSubmit}>Add to Cart</button>
+          <input onChange={onChange} name='quantity' value={quantity} type='number' step='1' />
+          <button type='submit' disabled={!cart.id} onClick={onSubmit}>Add to Cart</button>
         </form>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ user, lineItems, orders }, { product }) => {
-  const lineItem = lineItems && lineItems.find(lineItem => lineItem.productId === product.id);
-  const carts = orders && orders.filter(order => order.status === 'cart');
-  const cart = carts.find(cart => cart.userId === user.id);
+const mapStateToProps = ({ cart, user }, { product }) => {
+  const lineItem = cart.lineItems && cart.lineItems.find(lineItem => lineItem.productId === product.id);
   return {
-    lineItem, cart, product
+    cart, product, user, lineItem
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    addLineItem: (lineItem) => dispatch(addLineItem(lineItem)),
-    editLineItem: (lineItem, id) => dispatch(editLineItem(lineItem, id))
+    addLineItem: (lineItem) => dispatch(addLineItem(lineItem, history)),
+    editLineItem: (lineItem, id) => dispatch(editLineItem(lineItem, id, history))
   };
 };
 

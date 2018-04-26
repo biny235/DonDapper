@@ -44,7 +44,7 @@ class Main extends Component {
             <Route
               path="/products/:id"
               exact
-              render={({ match }) => <Product id={match.params.id * 1} />}
+              render={({ match, history }) => <Product id={match.params.id * 1} history={history} />}
             />
             <Route path="/categories" exact render={() => <Categories />} />
             <Route
