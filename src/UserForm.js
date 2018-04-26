@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
+import omit from 'object.omit';
 import { createUser, updateUser, clearErrors } from './store';
 import { connect } from 'react-redux';
 
@@ -36,9 +36,12 @@ class UserForm extends Component {
   }
 
   onChange(ev) {
+    let { user } = this.state;
+    user = omit(user, 'name');
     let key = ev.target.name;
     let value = ev.target.value;
-    this.setState({ [key]: value });
+    user[key] = value;
+    this.setState({ user: user });
   }
 
   render() {
@@ -136,12 +139,12 @@ const mapStateToProps = ({ errors }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createUser: ({ user }) => {
-      dispatch(createUser({ user }));
+    createUser: state => {
+      dispatch(createUser(state));
       dispatch(clearErrors());
     },
-    updateUser: ({ user }) => {
-      dispatch(updateUser({ user }));
+    updateUser: state => {
+      dispatch(updateUser(state));
       dispatch(clearErrors());
     }
   };
