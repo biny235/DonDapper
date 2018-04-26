@@ -28,19 +28,6 @@ router.get('/:id/lineItems', (req, res, next) => {
     .catch(next);
 });
 
-router.put('/:orderId/lineItems/:id', (req, res, next) => {
-  LineItem.findOrCreate({
-    where: { orderId: req.params.orderId },
-    defaults: { quantity: 1, orderId: req.params.orderId }
-  })
-    .spread(lineItem => {
-      Object.assign(lineItem, req.body);
-      return lineItem.save();
-    })
-    .then(lineItem => res.send(lineItem))
-    .catch(next);
-});
-
 router.delete('/:id', (req, res, next) => {
   Order.findById(req.params.id)
     .then(order => order.destroy())

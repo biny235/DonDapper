@@ -6,6 +6,7 @@ const Cart = ({ cart, lineItems }) => {
   return (
     <div>
       <h1>Cart</h1>
+      <h3>{!cart.id && 'Please sign in.'}</h3>
       {
         cart.id && (<div className='order'>
           <div className='orderheader'>Item</div>
