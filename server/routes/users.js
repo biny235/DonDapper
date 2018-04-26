@@ -1,19 +1,29 @@
 const router = require('express').Router();
 const db = require('../../db');
-const auth = require('../auth')
+const auth = require('../auth');
 const { User, Order, LineItem } = db.models;
 
-
-router.get('/', auth, (req, res, next)=>{
+router.get('/', auth, (req, res, next) => {
   User.exchangeToken(req.headers.token)
     .then(user => res.send(user))
     .catch(next);
-})
+});
+router.post('/', (req, res, next) => {
+  User.create(req.body)
+    .then(user => res.send(user))
+    .catch(next);
+});
+router.put('/:id', (req, res, next) => {
+  User.findById(req.params.id).then(user => {
+    Object.assign(user, req.body);
+    return user.save();
+  });
+});
 
 router.post('/login', (req, res, next) => {
   User.authenticate(req.body.user)
-    .then(token =>{
-      res.send(token)
+    .then(token => {
+      res.send(token);
     })
     .catch(next);
 });
@@ -24,7 +34,7 @@ router.get('/:id/cart', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:id/orders', auth,  (req, res, next) => {
+router.get('/:id/orders', auth, (req, res, next) => {
   User.findById(req.params.id)
     .then(user =>
       user.getOrders({
