@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
 import omit from 'object.omit';
-import { createUser, updateUser, clearErrors } from './store';
+import { createOrUpdateUser, clearErrors } from './store';
 import { connect } from 'react-redux';
 
 class UserForm extends Component {
@@ -45,7 +45,7 @@ class UserForm extends Component {
   }
 
   render() {
-    const { createUser, updateUser } = this.props;
+    const { createOrUpdateUser } = this.props;
 
     const { user, errors } = this.state;
 
@@ -106,13 +106,20 @@ class UserForm extends Component {
               defaultValue={user.email}
               onChange={this.onChange}
             />
+            <input
+              type="password"
+              name="password"
+              placeholder={user.password}
+              defaultValue={user.password}
+              onChange={this.onChange}
+            />
           </div>
         )}
 
         {user.id ? (
           <button
             onClick={() => {
-              updateUser(user);
+              createOrUpdateUser(user);
             }}
           >
             update
@@ -120,7 +127,7 @@ class UserForm extends Component {
         ) : (
           <button
             onClick={() => {
-              createUser(user);
+              createOrUpdateUser(user);
             }}
           >
             create
@@ -139,12 +146,8 @@ const mapStateToProps = ({ errors }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createUser: state => {
-      dispatch(createUser(state));
-      dispatch(clearErrors());
-    },
-    updateUser: state => {
-      dispatch(updateUser(state));
+    createOrUpdateUser: state => {
+      dispatch(createOrUpdateUser(state));
       dispatch(clearErrors());
     }
   };

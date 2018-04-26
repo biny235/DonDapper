@@ -29,6 +29,35 @@ const CLEAR_ERROR = 'CLEAR_ERROR';
 const ERROR = 'ERROR';
 
 /*
+REUSEBLE CODE
+*/
+
+const authCall = (reqType, path, body) => {
+  const token = window.localStorage.getItem('token');
+  if (!token) {
+    throw { err: 'Not authorized. Please login' };
+  }
+  return axios[reqType](path, { headers: { token }, body });
+};
+
+const login = (user, dispatch) => {
+  axios
+    .post(`/api/users/login`, { user })
+    .then(res => res.data)
+    .then(token => {
+      window.localStorage.setItem('token', token);
+      return authCall('get', '/api/users');
+    })
+    .then(res => res.data)
+    .then(user => {
+      dispatch({ type: SET_USER, user });
+      fetchOrders(user.id);
+      dispatch(fetchCart(user.id));
+    })
+    .catch(err => console.log(err));
+};
+
+/*
 THUNKS
 */
 
@@ -60,40 +89,25 @@ const fetchUser = user => {
     login(user, dispatch);
   };
 };
-const createUser = user => {
+const createOrUpdateUser = user => {
+  const { id } = user;
   return dispatch => {
-    axios
-      .post('api/users', { user })
-      .then(res => res.data)
-      .then(user => login(user, dispatch))
-      .catch(error => {
-        const err = error.response.data;
-        dispatch({
-          type: ERROR,
-          err
-        });
-      });
+    !id
+      ? axios.post('api/users', { user })
+      : axios
+          .put(`/api/users/${id}`, { user })
+          .then(res => res.data)
+          .then(user => login(user, dispatch))
+          .catch(error => {
+            const err = error.response.data;
+            dispatch({
+              type: ERROR,
+              err
+            });
+          });
   };
 };
 
-const updateUser = user => {
-  const { id } = user;
-  return dispatch => {
-    return axios
-      .put(`/api/users/${id}`, { user })
-      .then(res => res.data)
-      .then(user => {
-        login(user, dispatch);
-      })
-      .catch(error => {
-        const err = error.response.data;
-        dispatch({
-          type: ERROR,
-          err
-        });
-      });
-  };
-};
 // CART
 const fetchCart = userId => {
   return dispatch => {
@@ -156,35 +170,6 @@ const clearErrors = () => {
       type: CLEAR_ERROR
     });
   };
-};
-
-/*
-REUSEBLE CODE
-*/
-
-const authCall = (reqType, path, body) => {
-  const token = window.localStorage.getItem('token');
-  if (!token) {
-    throw { err: 'Not authorized. Please login' };
-  }
-  return axios[reqType](path, { headers: { token }, body });
-};
-
-const login = (user, dispatch) => {
-  axios
-    .post(`/api/users/login`, { user })
-    .then(res => res.data)
-    .then(token => {
-      window.localStorage.setItem('token', token);
-      return authCall('get', '/api/users');
-    })
-    .then(res => res.data)
-    .then(user => {
-      dispatch({ type: SET_USER, user });
-      fetchOrders(user.id);
-      dispatch(fetchCart(user.id));
-    })
-    .catch(err => console.log(err));
 };
 
 /*
@@ -287,7 +272,6 @@ export {
   fetchOrders,
   fetchLineItems,
   editLineItem,
-  createUser,
-  updateUser,
+  createOrUpdateUser,
   clearErrors
 };
