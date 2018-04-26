@@ -9,7 +9,7 @@ router.get('/', auth, (req, res, next) => {
     .catch(next);
 });
 router.post('/', (req, res, next) => {
-  User.create(req.body)
+  User.create(req.body.user)
     .then(user => res.send(user))
     .catch(next);
 });
