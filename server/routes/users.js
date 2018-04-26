@@ -14,10 +14,12 @@ router.post('/', (req, res, next) => {
     .catch(next);
 });
 router.put('/:id', (req, res, next) => {
-  User.findById(req.params.id).then(user => {
-    Object.assign(user, req.body);
-    return user.save();
-  });
+  User.findById(req.params.id)
+    .then(user => {
+      Object.assign(user, req.body.user);
+      return user.save();
+    })
+    .then(user => res.send(user));
 });
 
 router.post('/login', (req, res, next) => {
