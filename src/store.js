@@ -3,6 +3,14 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
+const authCall = (reqType, path, body) => {
+  const token = window.localStorage.getItem('token');
+  if (!token) {
+    throw { err: 'Not authorized. Please login' };
+  }
+  return axios[reqType](path, { headers: { token }, body });
+};
+
 /*
 CONSTANTS
 */
@@ -20,6 +28,7 @@ const GET_CART = 'GET_CART';
 const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
 const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
+const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
 //Loader
 const LOADING = 'LOADING';
 const LOADED = 'LOADED';
@@ -58,12 +67,13 @@ const fetchUser = user => {
       .then(res => res.data)
       .then(token => {
         window.localStorage.setItem('token', token);
-        return axios.get('/api/users', {
-          headers: { token: window.localStorage.getItem('token') }
-        });
+        return authCall('get', '/api/users');
       })
       .then(res => res.data)
-      .then(user => dispatch({ type: SET_USER, user }))
+      .then(user => {
+        dispatch({ type: SET_USER, user });
+        fetchOrders(user.id);
+      })
       .catch(err => console.log(err));
   };
 };
@@ -83,22 +93,20 @@ const fetchCart = userId => {
 
 // ORDERS
 const fetchOrders = userId => {
-  axios
-    .get(`/api/users/${userId}/orders`)
-    .then(res => res.data)
-    .then(orders => {
-      console.log(orders);
-      store.dispatch({ type: GET_ORDERS, orders });
-    })
-    .catch(err => console.log(err));
+  return dispatch => {
+    authCall('get', `/api/users/${userId}/orders`)
+      .then(res => res.data)
+      .then(orders => dispatch({ type: GET_ORDERS, orders }))
+      .catch(err => console.log(err));
+  };
 };
 
 // LINE ITEMS
-const fetchLineItems = id => {
+const fetchLineItems = (orderId) => {
   return dispatch => {
     dispatch({ type: LOADING });
     axios
-      .get(`/api/orders/${id}/lineitems`)
+      .get(`/api/orders/${orderId}/lineitems`)
       .then(res => res.data)
       .then(lineItems => {
         dispatch({ type: LOADED });
@@ -108,6 +116,17 @@ const fetchLineItems = id => {
         console.log(err);
         dispatch({ type: LOADED });
       });
+  };
+};
+
+const editLineItem = (lineItem, orderId, productId) => {
+  return (dispatch) => {
+    return axios.put(`/api/${orderId}/lineItems/${productId}`, lineItem)
+      .then(result => result.data)
+      .then(lineItem => dispatch({
+        type: UPDATE_LINE_ITEM,
+        lineItem
+      }));
   };
 };
 
@@ -161,6 +180,10 @@ const lineItemsReducer = (state = [], action) => {
   switch (action.type) {
     case GET_LINE_ITEMS:
       return action.lineItems;
+    case UPDATE_LINE_ITEM:
+      return state.map(lineItem => {
+        return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
+      });
   }
   return state;
 };
@@ -184,13 +207,18 @@ const reducer = combineReducers({
   lineItems: lineItemsReducer,
   loading: loadingReducer
 });
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+
+const store = createStore(reducer,
+  composeWithDevTools(applyMiddleware(thunk)));
+
 export default store;
+
 export {
   fetchProducts,
   fetchCategories,
   fetchUser,
   fetchCart,
   fetchOrders,
-  fetchLineItems
+  fetchLineItems,
+  editLineItem
 };
