@@ -1,5 +1,5 @@
 const jwt = require('jwt-simple');
-const { User } = require('../db')
+const { User } = require('../db').models
 
 
 const auth = (req, res, next)=>{
