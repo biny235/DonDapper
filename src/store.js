@@ -80,7 +80,7 @@ const updateUser = user => {
   const { id } = user;
   return dispatch => {
     return axios
-      .put(`/api/users/${id}`, student)
+      .put(`/api/users/${id}`, user)
       .then(res => res.data)
       .then(user => login(user, dispatch))
       .catch(error => {
@@ -286,6 +286,6 @@ export {
   fetchLineItems,
   editLineItem,
   createUser,
-  updateStudent,
+  updateUser,
   clearErrors
 };
