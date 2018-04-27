@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
 import omit from 'object.omit';
-import { createOrUpdateUser, clearErrors } from './store';
+import { createOrUpdateUser } from './store';
 import { connect } from 'react-redux';
 
 class UserForm extends Component {
@@ -13,10 +13,12 @@ class UserForm extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
+    this.setErrors = this.setErrors.bind(this);
+    this.clearErrors = this.clearErrors.bind(this);
   }
   onDismiss() {
     this.setState({ errors: '' });
-    clearErrors();
+    this.clearErrors();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -30,11 +32,6 @@ class UserForm extends Component {
     if (user.id) this.setState({ user, errors });
   }
 
-  onDismiss() {
-    this.setState({ errors: '' });
-    clearErrors();
-  }
-
   onChange(ev) {
     let { user } = this.state;
     user = omit(user, 'name');
@@ -44,11 +41,18 @@ class UserForm extends Component {
     this.setState({ user: user });
   }
 
+  clearErrors() {
+    this.setState({ error: '' });
+  }
+  setErrors(err) {
+    this.setState({ error: err });
+  }
+
   render() {
     const { createOrUpdateUser } = this.props;
 
     const { user, errors } = this.state;
-
+    console.log(this.state);
     return (
       <div>
         {errors ? (
@@ -138,19 +142,15 @@ class UserForm extends Component {
   }
 }
 
-const mapStateToProps = ({ errors }) => {
-  return {
-    errors
-  };
-};
-
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, setErrors) => {
   return {
     createOrUpdateUser: state => {
-      dispatch(createOrUpdateUser(state));
-      dispatch(clearErrors());
+      dispatch(createOrUpdateUser(state)).catch(err => {
+        console.log(err.response.data);
+        setErrors(err.response.data);
+      });
     }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
+export default connect(null, mapDispatchToProps)(UserForm);
