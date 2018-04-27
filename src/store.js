@@ -21,45 +21,13 @@ const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
 const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
-<<<<<<< HEAD
-//Loader
-const LOADING = 'LOADING';
-const LOADED = 'LOADED';
-=======
 //errors
 const CLEAR_ERROR = 'CLEAR_ERROR';
 const ERROR = 'ERROR';
 // LOGOUT
 const RESET_STATE = 'RESET_STATE';
->>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 
 
-<<<<<<< HEAD
-const authCall = (reqType, path, body) => {
-  const token = window.localStorage.getItem('token');
-  if (!token) {
-    throw { err: 'Not authorized. Please login' };
-  }
-  return axios[reqType](path, { headers: { token }, body });
-};
-
-const login = (user, dispatch) => {
-  axios
-    .post(`/api/users/login`, { user })
-    .then(res => res.data)
-    .then(token => {
-      window.localStorage.setItem('token', token);
-      return authCall('get', '/api/users');
-    })
-    .then(res => res.data)
-    .then(user => {
-      dispatch({ type: GET_USER, user });
-      fetchOrders(user.id);
-      dispatch(fetchCart(user.id));
-    });
-};
-=======
->>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 
 /*
 THUNKS
@@ -150,21 +118,6 @@ const fetchOrders = userId => {
 };
 
 // LINE ITEMS
-<<<<<<< HEAD
-const fetchLineItems = orderId => {
-  return dispatch => {
-    dispatch({ type: LOADING });
-    authCall('get', `/api/orders/${orderId}/lineItems`)
-      .then(res => res.data)
-      .then(lineItems => {
-        dispatch({ type: LOADED });
-        dispatch({ type: GET_LINE_ITEMS, lineItems });
-      });
-  };
-};
-
-=======
->>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 const addLineItem = (lineItem, history) => {
   return dispatch => {
     axios
@@ -193,8 +146,6 @@ const editLineItem = (lineItem, lineItemId, history) => {
 
 /*
 
-<<<<<<< HEAD
-=======
 REUSEBLE CODE
 */
 
@@ -208,7 +159,6 @@ const authCall = (reqType, path, body) => {
 
 /*
 
->>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 REDUCERS
 */
 
@@ -266,29 +216,12 @@ const ordersReducer = (state = [], action) => {
   return state;
 };
 
-<<<<<<< HEAD
-const lineItemsReducer = (state = [], action) => {
-  switch (action.type) {
-    case GET_LINE_ITEMS:
-      return action.lineItems;
-  }
-  return state;
-};
-
-const loadingReducer = (state = false, action) => {
-  switch (action.type) {
-    case LOADING:
-      return true;
-    case LOADED:
-      return false;
-=======
 const errorReducer = (state = '', action) => {
   switch (action.type) {
     case ERROR:
       return action.err;
     case CLEAR_ERROR:
       state = '';
->>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
   }
   return state;
 };
@@ -299,12 +232,7 @@ const reducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
   orders: ordersReducer,
-<<<<<<< HEAD
-  lineItems: lineItemsReducer,
-  loading: loadingReducer
-=======
   errors: errorReducer
->>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
