@@ -32,16 +32,16 @@ const User = conn.define(
     },
     email: {
       type: Sequelize.STRING,
-      isUnique: true,
+      unique: true,
       allowNull: {
         args: false,
         msg: 'you must enter an email!'
       },
-      isEmail: {
-        args: true,
-        msg: 'you must enter a valid email'
-      },
       validate: {
+        isEmail: {
+          args: true,
+          msg: 'you must enter a valid email'
+        },
         notEmpty: {
           args: true,
           msg: 'you must enter an email!'
@@ -50,8 +50,11 @@ const User = conn.define(
     },
     password: {
       type: Sequelize.STRING,
+
       allowNull: false,
-      notEmpty: true
+      validate: {
+        notEmpty: true
+      }
     }
   },
   {
