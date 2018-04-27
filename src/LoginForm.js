@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchUser } from './store';
+import { fetchUser, logout } from './store';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class LoginForm extends React.Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onSignOut = this.onSignOut.bind(this);
   }
 
   onChange(ev) {
@@ -20,21 +21,24 @@ class LoginForm extends React.Component {
   }
 
   onSubmit(ev) {
-    ev.preventDefault();
     this.props.fetchUser(this.state);
     this.setState({
       email: '',
       password: ''
     });
   }
+  
+  onSignOut(ev){
+    this.props.logout()
+  }
 
   render() {
     const { user } = this.props;
-    const { onChange, onSubmit } = this;
+    const { onChange, onSubmit, onSignOut } = this;
     if (user.name) {
       return (
         <div>
-          <button type='reset' onClick={onSubmit}>Sign Out</button>
+          <button type='reset' onClick={onSignOut}>Sign Out</button>
         </div>
       );
     }
@@ -56,7 +60,8 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUser: user => dispatch(fetchUser(user))
+    fetchUser: user => dispatch(fetchUser(user)),
+    logout: () => dispatch(logout(dispatch))
   };
 };
 
