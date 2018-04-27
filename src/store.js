@@ -21,9 +21,6 @@ const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
 const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
-//errors
-const CLEAR_ERROR = 'CLEAR_ERROR';
-const ERROR = 'ERROR';
 // LOGOUT
 const RESET_STATE = 'RESET_STATE';
 
@@ -216,15 +213,7 @@ const ordersReducer = (state = [], action) => {
   return state;
 };
 
-const errorReducer = (state = '', action) => {
-  switch (action.type) {
-    case ERROR:
-      return action.err;
-    case CLEAR_ERROR:
-      state = '';
-  }
-  return state;
-};
+
 
 const reducer = combineReducers({
   products: productsReducer,
@@ -232,7 +221,6 @@ const reducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
   orders: ordersReducer,
-  errors: errorReducer
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
