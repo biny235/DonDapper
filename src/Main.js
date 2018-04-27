@@ -6,7 +6,8 @@ import {
   fetchCategories,
   fetchOrders,
   fetchLineItems,
-  fetchCart
+  fetchCart,
+  checkUser
 } from './store';
 
 import Nav from './Nav';
