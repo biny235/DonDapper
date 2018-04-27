@@ -4,6 +4,12 @@ const { Sequelize } = conn;
 const User = conn.define(
   'user',
   {
+    id: id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
+    },
     firstName: {
       type: Sequelize.STRING,
       allowNull: {
