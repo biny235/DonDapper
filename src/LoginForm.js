@@ -27,9 +27,9 @@ class LoginForm extends React.Component {
       password: ''
     });
   }
-  
-  onSignOut(ev){
-    this.props.logout()
+
+  onSignOut(ev) {
+    this.props.logout();
   }
 
   render() {
@@ -38,15 +38,19 @@ class LoginForm extends React.Component {
     if (user.name) {
       return (
         <div>
-          <button type='reset' onClick={onSignOut}>Sign Out</button>
+          <button type="reset" onClick={onSignOut}>
+            Sign Out
+          </button>
         </div>
       );
     }
     return (
       <div>
-        <input onChange={onChange} name='email' type='email' />
-        <input onChange={onChange} name='password' type='password' />
-        <button type='submit' onClick={onSubmit}>Sign In</button>
+        <input onChange={onChange} name="email" type="email" />
+        <input onChange={onChange} name="password" type="password" />
+        <button type="submit" onClick={onSubmit}>
+          Sign In
+        </button>
       </div>
     );
   }
@@ -60,7 +64,9 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUser: user => dispatch(fetchUser(user)),
+    fetchUser: user => {
+      dispatch(fetchUser(user));
+    },
     logout: () => dispatch(logout(dispatch))
   };
 };
