@@ -19,44 +19,15 @@ const GET_CART = 'GET_CART';
 // ORDERS
 const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
-const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
 const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
-//Loader
-const LOADING = 'LOADING';
-const LOADED = 'LOADED';
 //errors
 const CLEAR_ERROR = 'CLEAR_ERROR';
 const ERROR = 'ERROR';
+// LOGOUT
+const RESET_STATE = 'RESET_STATE';
 
-/*
-REUSEBLE CODE
-*/
 
-const authCall = (reqType, path, body) => {
-  const token = window.localStorage.getItem('token');
-  if (!token) {
-    throw { err: 'Not authorized. Please login' };
-  }
-  return axios[reqType](path, { headers: { token }, body });
-};
-
-const login = (user, dispatch) => {
-  axios
-    .post(`/api/users/login`, { user })
-    .then(res => res.data)
-    .then(token => {
-      window.localStorage.setItem('token', token);
-      return authCall('get', '/api/users');
-    })
-    .then(res => res.data)
-    .then(user => {
-      dispatch({ type: SET_USER, user });
-      fetchOrders(user.id);
-      dispatch(fetchCart(user.id));
-    })
-    .catch(err => console.log(err));
-};
 
 /*
 THUNKS
@@ -90,6 +61,32 @@ const fetchUser = user => {
     login(user, dispatch);
   };
 };
+
+const login = (user, dispatch) => {
+  return axios
+    .post(`/api/users/login`, { user })
+    .then(res => res.data)
+    .then(token => {
+      window.localStorage.setItem('token', token);
+      dispatch(authenticateUser)
+    })
+};
+
+export const logout = dispatch => {
+  window.localStorage.removeItem('token');
+  dispatch({type: RESET_STATE})
+}
+
+export const authenticateUser = dispatch =>{
+  return authCall('get', '/api/users')
+    .then(res => res.data)
+    .then(user => {
+      dispatch({ type: GET_USER, user });
+      fetchOrders(user.id);
+      dispatch(fetchCart(user.id));
+    })
+};
+
 const createOrUpdateUser = user => {
   const { id } = user;
   return dispatch => {
@@ -108,6 +105,8 @@ const createOrUpdateUser = user => {
           });
   };
 };
+
+
 
 // CART
 const fetchCart = userId => {
@@ -130,22 +129,6 @@ const fetchOrders = userId => {
 };
 
 // LINE ITEMS
-const fetchLineItems = orderId => {
-  return dispatch => {
-    dispatch({ type: LOADING });
-    authCall('get', `/api/orders/${orderId}/lineItems`)
-      .then(res => res.data)
-      .then(lineItems => {
-        dispatch({ type: LOADED });
-        dispatch({ type: GET_LINE_ITEMS, lineItems });
-      })
-      .catch(err => {
-        console.log(err);
-        dispatch({ type: LOADED });
-      });
-  };
-};
-
 const addLineItem = (lineItem, history) => {
   return (dispatch) => {
     axios.post(`/api/lineItems`, lineItem, history)
@@ -197,23 +180,6 @@ const authCall = (reqType, path, body) => {
   return axios[reqType](path, { headers: { token }, body });
 };
 
-const login = (user, dispatch) => {
-  axios
-    .post(`/api/users/login`, { user })
-    .then(res => res.data)
-    .then(token => {
-      window.localStorage.setItem('token', token);
-      return authCall('get', '/api/users');
-    })
-    .then(res => res.data)
-    .then(user => {
-      dispatch({ type: GET_USER, user });
-      fetchOrders(user.id);
-      dispatch(fetchCart(user.id));
-    })
-    .catch(err => console.log(err));
-};
-
 /*
 
 REDUCERS
@@ -235,12 +201,12 @@ const categoriesReducer = (state = [], action) => {
   return state;
 };
 
-const userReducer = (state = [], action) => {
+const userReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_USER:
       return action.user;
-    case LOG_OUT:
-      return [];
+    case RESET_STATE:
+      return {};
   }
   return state;
 };
@@ -256,6 +222,8 @@ const cartReducer = (state = {}, action) => {
       state.lineItems = state.lineItems.map(lineItem => {
         return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
       });
+    case RESET_STATE:
+      return {};
       break;
   }
   return state;
@@ -265,27 +233,12 @@ const ordersReducer = (state = [], action) => {
   switch (action.type) {
     case GET_ORDERS:
       return action.orders;
+    case RESET_STATE:
+      return {};
   }
   return state;
 };
 
-const lineItemsReducer = (state = [], action) => {
-  switch (action.type) {
-    case GET_LINE_ITEMS:
-      return action.lineItems;
-  }
-  return state;
-};
-
-const loadingReducer = (state = false, action) => {
-  switch (action.type) {
-    case LOADING:
-      return true;
-    case LOADED:
-      return false;
-  }
-  return state;
-};
 const errorReducer = (state = '', action) => {
   switch (action.type) {
     case ERROR:
@@ -302,8 +255,6 @@ const reducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
   orders: ordersReducer,
-  lineItems: lineItemsReducer,
-  loading: loadingReducer,
   errors: errorReducer
 });
 
@@ -317,7 +268,6 @@ export {
   fetchUser,
   fetchCart,
   fetchOrders,
-  fetchLineItems,
   addLineItem,
   editLineItem,
   createOrUpdateUser,

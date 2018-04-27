@@ -7,7 +7,7 @@ import {
   fetchOrders,
   fetchLineItems,
   fetchCart,
-  checkUser
+  authenticateUser
 } from './store';
 
 import Nav from './Nav';
@@ -23,14 +23,17 @@ import LoginForm from './LoginForm';
 
 class Main extends Component {
   componentDidMount() {
+    window.localStorage.getItem('token') ?  this.props.authenticateUser() : null;
     this.props.fetchProducts();
     this.props.fetchCategories();
   }
 
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
-    this.props.fetchOrders(user.id);
-    this.props.fetchCart(user.id);
+    if(user.id){
+      this.props.fetchOrders(user.id);
+      this.props.fetchCart(user.id);
+    }
   }
 
   render() {
@@ -73,7 +76,8 @@ const mapDispatchToProps = dispatch => {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchCategories: () => dispatch(fetchCategories()),
     fetchOrders: (id) => dispatch(fetchOrders(id)),
-    fetchCart: (id) => dispatch(fetchCart(id))
+    fetchCart: (id) => dispatch(fetchCart(id)),
+    authenticateUser: () => dispatch(authenticateUser)
   };
 };
 
