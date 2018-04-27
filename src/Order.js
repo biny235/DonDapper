@@ -10,11 +10,15 @@ const Order = (props) => {
     <div>
       <h3>Order ID: {order && order.id}</h3>
         <div className='order'>
-            <div className='orderheader'>Item</div>
-            <div className='orderheader'>Price</div>
-            <div className='orderheader'>Qty</div>
-            <div className='orderheader'>Total</div>
+            <div>Item</div>
+            <div>Price</div>
+            <div>Qty</div>
+            <div>Total</div>
+            <div className="total">
+              <span>Order Total</span>
+            </div>
             {lineItems && lineItems.map(lineItem => <LineItem key={lineItem.id} line={lineItem}/>) }
+            
         </div>
     </div>
   );

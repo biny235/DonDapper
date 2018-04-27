@@ -9,10 +9,10 @@ const Cart = ({ cart, lineItems }) => {
       <h3>{!cart.id && 'Please sign in.'}</h3>
       {
         cart.id && (<div className='order'>
-          <div className='orderheader'>Item</div>
-          <div className='orderheader'>Price</div>
-          <div className='orderheader'>Qty</div>
-          <div className='orderheader'>Total</div>
+          <div>Item</div>
+          <div>Price</div>
+          <div>Qty</div>
+          <div>Total</div>
           {lineItems && lineItems.map(lineItem => <LineItem key={lineItem.id} line={lineItem} />)}
         </div>)
       }

@@ -193,7 +193,7 @@ const cartReducer = (state = {}, action) => {
       state.lineItems = [...state.lineItems, action.lineItem];
       break;
     case UPDATE_LINE_ITEM:
-      state.lineItems = state.lineItems.map(lineItem => {
+      return state.lineItems = state.lineItems.map(lineItem => {
         return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
       });
     case RESET_STATE:

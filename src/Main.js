@@ -16,7 +16,7 @@ import Product from './Product';
 import Categories from './Categories';
 import Category from './Category';
 import User from './User';
-import Orders from './Orders';
+import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
 import LoginForm from './LoginForm';

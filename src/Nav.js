@@ -31,9 +31,9 @@ class Nav extends Component {
   }
 
   render() {
-    const counter = 4;
     const { value } = this.state;
-    const { products } = this.props;
+    const { products, cart } = this.props;
+    const counter = cart.lineItems ? cart.lineItems.length : 0;
 
     return (
       <MuiThemeProvider>
@@ -83,9 +83,10 @@ class Nav extends Component {
     );
   }
 }
-const mapStateToProps = ({ products }) => {
+const mapStateToProps = ({ products, cart }) => {
   return {
-    products
+    products,
+    cart
   };
 };
 
