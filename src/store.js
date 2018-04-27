@@ -19,17 +19,22 @@ const GET_CART = 'GET_CART';
 // ORDERS
 const GET_ORDERS = 'GET_ORDERS';
 // LINE ITEMS
-const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
 const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
+<<<<<<< HEAD
 //Loader
 const LOADING = 'LOADING';
 const LOADED = 'LOADED';
+=======
+//errors
+const CLEAR_ERROR = 'CLEAR_ERROR';
+const ERROR = 'ERROR';
+// LOGOUT
+const RESET_STATE = 'RESET_STATE';
+>>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 
-/*
-REUSEBLE CODE
-*/
 
+<<<<<<< HEAD
 const authCall = (reqType, path, body) => {
   const token = window.localStorage.getItem('token');
   if (!token) {
@@ -53,6 +58,8 @@ const login = (user, dispatch) => {
       dispatch(fetchCart(user.id));
     });
 };
+=======
+>>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 
 /*
 THUNKS
@@ -84,6 +91,32 @@ const fetchUser = user => {
     login(user, dispatch);
   };
 };
+
+const login = (user, dispatch) => {
+  return axios
+    .post(`/api/users/login`, { user })
+    .then(res => res.data)
+    .then(token => {
+      window.localStorage.setItem('token', token);
+      dispatch(authenticateUser)
+    })
+};
+
+export const logout = dispatch => {
+  window.localStorage.removeItem('token');
+  dispatch({type: RESET_STATE})
+}
+
+export const authenticateUser = dispatch =>{
+  return authCall('get', '/api/users')
+    .then(res => res.data)
+    .then(user => {
+      dispatch({ type: GET_USER, user });
+      fetchOrders(user.id);
+      dispatch(fetchCart(user.id));
+    })
+};
+
 const createOrUpdateUser = user => {
   const { id } = user;
   return dispatch => {
@@ -95,6 +128,8 @@ const createOrUpdateUser = user => {
           .then(user => login(user, dispatch));
   };
 };
+
+
 
 // CART
 const fetchCart = userId => {
@@ -115,6 +150,7 @@ const fetchOrders = userId => {
 };
 
 // LINE ITEMS
+<<<<<<< HEAD
 const fetchLineItems = orderId => {
   return dispatch => {
     dispatch({ type: LOADING });
@@ -127,6 +163,8 @@ const fetchLineItems = orderId => {
   };
 };
 
+=======
+>>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 const addLineItem = (lineItem, history) => {
   return dispatch => {
     axios
@@ -155,6 +193,22 @@ const editLineItem = (lineItem, lineItemId, history) => {
 
 /*
 
+<<<<<<< HEAD
+=======
+REUSEBLE CODE
+*/
+
+const authCall = (reqType, path, body) => {
+  const token = window.localStorage.getItem('token');
+  if (!token) {
+    throw { err: 'Not authorized. Please login' };
+  }
+  return axios[reqType](path, { headers: { token }, body });
+};
+
+/*
+
+>>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 REDUCERS
 */
 
@@ -174,12 +228,12 @@ const categoriesReducer = (state = [], action) => {
   return state;
 };
 
-const userReducer = (state = [], action) => {
+const userReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_USER:
       return action.user;
-    case LOG_OUT:
-      return [];
+    case RESET_STATE:
+      return {};
   }
   return state;
 };
@@ -195,6 +249,8 @@ const cartReducer = (state = {}, action) => {
       state.lineItems = state.lineItems.map(lineItem => {
         return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
       });
+    case RESET_STATE:
+      return {};
       break;
   }
   return state;
@@ -204,10 +260,13 @@ const ordersReducer = (state = [], action) => {
   switch (action.type) {
     case GET_ORDERS:
       return action.orders;
+    case RESET_STATE:
+      return {};
   }
   return state;
 };
 
+<<<<<<< HEAD
 const lineItemsReducer = (state = [], action) => {
   switch (action.type) {
     case GET_LINE_ITEMS:
@@ -222,6 +281,14 @@ const loadingReducer = (state = false, action) => {
       return true;
     case LOADED:
       return false;
+=======
+const errorReducer = (state = '', action) => {
+  switch (action.type) {
+    case ERROR:
+      return action.err;
+    case CLEAR_ERROR:
+      state = '';
+>>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
   }
   return state;
 };
@@ -232,8 +299,12 @@ const reducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
   orders: ordersReducer,
+<<<<<<< HEAD
   lineItems: lineItemsReducer,
   loading: loadingReducer
+=======
+  errors: errorReducer
+>>>>>>> b375504d33f83caff32bd9f6c1fcbb9c3cf48fc3
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
@@ -246,7 +317,6 @@ export {
   fetchUser,
   fetchCart,
   fetchOrders,
-  fetchLineItems,
   addLineItem,
   editLineItem,
   createOrUpdateUser
