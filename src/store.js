@@ -24,8 +24,6 @@ const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
 // LOGOUT
 const RESET_STATE = 'RESET_STATE';
 
-
-
 /*
 THUNKS
 */
@@ -63,23 +61,23 @@ const login = (user, dispatch) => {
     .then(res => res.data)
     .then(token => {
       window.localStorage.setItem('token', token);
-      dispatch(authenticateUser)
-    })
+      dispatch(authenticateUser);
+    });
 };
 
 export const logout = dispatch => {
   window.localStorage.removeItem('token');
-  dispatch({type: RESET_STATE})
-}
+  return dispatch({ type: RESET_STATE });
+};
 
-export const authenticateUser = dispatch =>{
+export const authenticateUser = dispatch => {
   return authCall('get', '/api/users')
     .then(res => res.data)
     .then(user => {
       dispatch({ type: GET_USER, user });
       fetchOrders(user.id);
       dispatch(fetchCart(user.id));
-    })
+    });
 };
 
 const createOrUpdateUser = user => {
@@ -93,8 +91,6 @@ const createOrUpdateUser = user => {
           .then(user => login(user, dispatch));
   };
 };
-
-
 
 // CART
 const fetchCart = userId => {
@@ -193,12 +189,11 @@ const cartReducer = (state = {}, action) => {
       state.lineItems = [...state.lineItems, action.lineItem];
       break;
     case UPDATE_LINE_ITEM:
-      return state.lineItems = state.lineItems.map(lineItem => {
+      return (state.lineItems = state.lineItems.map(lineItem => {
         return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
-      });
+      }));
     case RESET_STATE:
       return {};
-      break;
   }
   return state;
 };
@@ -213,14 +208,12 @@ const ordersReducer = (state = [], action) => {
   return state;
 };
 
-
-
 const reducer = combineReducers({
   products: productsReducer,
   categories: categoriesReducer,
   user: userReducer,
   cart: cartReducer,
-  orders: ordersReducer,
+  orders: ordersReducer
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
