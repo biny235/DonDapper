@@ -50,9 +50,7 @@ class UserForm extends Component {
 
   render() {
     const { createOrUpdateUser } = this.props;
-
     const { user, errors } = this.state;
-    console.log(this.state);
     return (
       <div>
         {errors ? (
@@ -89,36 +87,36 @@ class UserForm extends Component {
             />
           </div>
         ) : (
-          <div>
-            <h1>{user.name}</h1>
-            <input
-              name="firstName"
-              placeholder={user.firstName}
-              defaultValue={user.firstName}
-              onChange={this.onChange}
-            />
-            <input
-              name="lastName"
-              placeholder={user.lastName}
-              defaultValue={user.lastName}
-              onChange={this.onChange}
-            />
+              <div>
+                <h1>{user.name}</h1>
+                <input
+                  name="firstName"
+                  placeholder={user.firstName}
+                  defaultValue={user.firstName}
+                  onChange={this.onChange}
+                />
+                <input
+                  name="lastName"
+                  placeholder={user.lastName}
+                  defaultValue={user.lastName}
+                  onChange={this.onChange}
+                />
 
-            <input
-              name="email"
-              placeholder={user.email}
-              defaultValue={user.email}
-              onChange={this.onChange}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder={user.password}
-              defaultValue={user.password}
-              onChange={this.onChange}
-            />
-          </div>
-        )}
+                <input
+                  name="email"
+                  placeholder={user.email}
+                  defaultValue={user.email}
+                  onChange={this.onChange}
+                />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder={user.password}
+                  defaultValue={user.password}
+                  onChange={this.onChange}
+                />
+              </div>
+            )}
 
         {user.id ? (
           <button
@@ -129,14 +127,14 @@ class UserForm extends Component {
             update
           </button>
         ) : (
-          <button
-            onClick={() => {
-              createOrUpdateUser(user);
-            }}
-          >
-            create
+            <button
+              onClick={() => {
+                createOrUpdateUser(user);
+              }}
+            >
+              create
           </button>
-        )}
+          )}
       </div>
     );
   }
