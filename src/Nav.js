@@ -11,10 +11,16 @@ class Nav extends Component {
     super(props);
     this.state = {
       product: {},
-      value: -1
+      value: -1,
+      counter: props.lineItems.length
     };
     this.handleChange = this.handleChange.bind(this);
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ counter: nextProps.lineItems.length });
+  }
+
   handleChange(ev, index, value) {
     const { products } = this.props;
     let selectedProduct = products.find(product => product.id === value);
@@ -27,10 +33,8 @@ class Nav extends Component {
   }
 
   render() {
-    const { value } = this.state;
-    const { products, cart } = this.props;
-    const counter = cart.lineItems ? cart.lineItems.length : 0;
-
+    const { value, counter } = this.state;
+    const { products } = this.props;
     return (
       <MuiThemeProvider>
         <div>
@@ -79,10 +83,10 @@ class Nav extends Component {
     );
   }
 }
-const mapStateToProps = ({ products, cart }) => {
+const mapStateToProps = ({ products, lineItems }) => {
   return {
     products,
-    cart
+    lineItems
   };
 };
 
