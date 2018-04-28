@@ -64,13 +64,13 @@ const seed = () => {
         Product.create(generateProduct())
       ]);
     })
-    .then(() => {
+     .then(() => {
       return Promise.all([
         User.create({
           fullName: 'Test User',
           email: 'test@test.com',
           password: '123456'
-        }),
+        }).then(user => Order.create({ userId: user.id })),
         User.create(generateUser()).then(user =>
           Order.create({ userId: user.id })
         ),
