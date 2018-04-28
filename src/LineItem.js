@@ -8,7 +8,7 @@ const LineItem = ({ product, line, cart }) => {
   return (
     <div className='order order-line'>
       <div >{product.name}</div>
-      <div >{product.price}</div>
+      <div >$ {product.price}</div>
       {!cart && <div >{line.quantity}</div>}
       {!cart && <div >{line.quantity * product.price}</div>}
     </div>
