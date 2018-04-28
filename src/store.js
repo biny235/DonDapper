@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
+import logger from 'redux-logger';
 import axios from 'axios';
 
 /*
@@ -82,8 +83,8 @@ export const authenticateUser = dispatch => {
     .then(res => res.data)
     .then(user => {
       dispatch({ type: GET_USER, user });
-      fetchOrders(user.id);
       dispatch(fetchCart(user.id));
+      dispatch(fetchOrders(user.id));
     });
 };
 
@@ -259,7 +260,7 @@ const reducer = combineReducers({
   orders: ordersReducer
 });
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk, logger)));
 
 export default store;
 

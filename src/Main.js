@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import {
   fetchProducts,
   fetchCategories,
-  fetchOrders,
-  fetchCart,
   authenticateUser
 } from './store';
 
@@ -22,17 +20,9 @@ import LoginForm from './LoginForm';
 
 class Main extends Component {
   componentDidMount() {
-    window.localStorage.getItem('token') ? this.props.authenticateUser() : null;
+    window.localStorage.getItem('token') && this.props.authenticateUser();
     this.props.fetchProducts();
     this.props.fetchCategories();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { user } = nextProps;
-    if (user.id) {
-      this.props.fetchOrders(user.id);
-      this.props.fetchCart(user.id);
-    }
   }
 
   render() {
@@ -56,11 +46,10 @@ class Main extends Component {
               render={({ match }) => <Category id={match.params.id * 1} />}
             />
             <Route path="/cart" exact render={() => <Cart />} />
-            <Route path="/orders" exact render={() => <Orders />} />
             <Route
               path="/orders/:id"
               exact
-              render={({ match }) => <Orders id={match.params.id * 1} />}
+              render={({ match }) => <Order id={match.params.id * 1} />}
             />
             <Route path="/user" exact render={() => <User />} />
           </Switch>
@@ -74,16 +63,8 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchCategories: () => dispatch(fetchCategories()),
-    fetchOrders: (id) => dispatch(fetchOrders(id)),
-    fetchCart: (id) => dispatch(fetchCart(id)),
     authenticateUser: () => dispatch(authenticateUser)
   };
 };
 
-const mapStateToProps = ({ user }) => {
-  return {
-    user
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(null, mapDispatchToProps)(Main);

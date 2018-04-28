@@ -12,10 +12,6 @@ class AddToCart extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
-    console.log(this.props.lineItem);
-  }
-
   onChange(ev) {
     const change = {};
     change[ev.target.name] = ev.target.value;

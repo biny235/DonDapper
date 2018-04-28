@@ -24,7 +24,6 @@ class Cart extends React.Component {
   render() {
     const { cart, lineItems } = this.props;
     const { onChange, onDelete } = this;
-    console.log(lineItems);
     return (
       <div>
         <h1>Cart</h1>
