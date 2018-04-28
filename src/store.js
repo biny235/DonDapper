@@ -75,7 +75,7 @@ export const authenticateUser = dispatch => {
     .then(res => res.data)
     .then(user => {
       dispatch({ type: GET_USER, user });
-      fetchOrders(user.id);
+      dispatch(fetchOrders(user.id));
       dispatch(fetchCart(user.id));
     });
 };

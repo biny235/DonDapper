@@ -23,14 +23,14 @@ import LoginForm from './LoginForm';
 
 class Main extends Component {
   componentDidMount() {
-    window.localStorage.getItem('token') ?  this.props.authenticateUser() : null;
+    window.localStorage.getItem('token') ? this.props.authenticateUser() : null;
     this.props.fetchProducts();
     this.props.fetchCategories();
   }
 
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
-    if(user.id){
+    if (user.id) {
       this.props.fetchOrders(user.id);
       this.props.fetchCart(user.id);
     }
@@ -40,7 +40,7 @@ class Main extends Component {
     return (
       <Router>
         <div>
-          <Nav history={history} />
+          <Nav />
           <LoginForm />
           <Route path="/" exact render={() => <Home />} />
           <Switch>
@@ -48,7 +48,9 @@ class Main extends Component {
             <Route
               path="/products/:id"
               exact
-              render={({ match, history }) => <Product id={match.params.id * 1} history={history} />}
+              render={({ match, history }) => (
+                <Product id={match.params.id * 1} history={history} />
+              )}
             />
             <Route path="/categories" exact render={() => <Categories />} />
             <Route
@@ -75,8 +77,8 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchCategories: () => dispatch(fetchCategories()),
-    fetchOrders: (id) => dispatch(fetchOrders(id)),
-    fetchCart: (id) => dispatch(fetchCart(id)),
+    fetchOrders: id => dispatch(fetchOrders(id)),
+    fetchCart: id => dispatch(fetchCart(id)),
     authenticateUser: () => dispatch(authenticateUser)
   };
 };
