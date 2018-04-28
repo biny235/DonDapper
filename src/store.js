@@ -9,26 +9,27 @@ CONSTANTS
 
 // PRODUCTS
 const GET_PRODUCTS = 'GET_PRODUCTS';
+
 // CATEGORIES
 const GET_CATEGORIES = 'GET_CATEGORIES';
+
 // USER
 const GET_USER = 'GET_USER';
-const LOG_OUT = 'LOG_OUT';
+
 // CART
 const GET_CART = 'GET_CART';
+
 // ORDERS
 const GET_ORDERS = 'GET_ORDERS';
+
 // LINE ITEMS
 const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
 const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
 const DELETE_LINE_ITEM = 'DELETE_LINE_ITEM';
-// LOADER
-const LOADING = 'LOADING';
-const LOADED = 'LOADED';
-// ERRORS
-const CLEAR_ERROR = 'CLEAR_ERROR';
-const ERROR = 'ERROR';
+
+// LOGOUT
+const RESET_STATE = 'RESET_STATE';
 
 /*
 THUNKS
@@ -40,8 +41,7 @@ const fetchProducts = () => {
     axios
       .get('/api/products')
       .then(res => res.data)
-      .then(products => dispatch({ type: GET_PRODUCTS, products }))
-      .catch(err => console.log(err));
+      .then(products => dispatch({ type: GET_PRODUCTS, products }));
   };
 };
 
@@ -51,8 +51,7 @@ const fetchCategories = () => {
     axios
       .get('/api/categories')
       .then(res => res.data)
-      .then(categories => dispatch({ type: GET_CATEGORIES, categories }))
-      .catch(err => console.log(err));
+      .then(categories => dispatch({ type: GET_CATEGORIES, categories }));
   };
 };
 
@@ -63,38 +62,40 @@ const fetchUser = user => {
   };
 };
 
-const createUser = user => {
-  return dispatch => {
-    axios
-      .post('api/users', { user })
-      .then(res => res.data)
-      .then(user => login(user, dispatch))
-      .catch(error => {
-        const err = error.response.data;
-        dispatch({
-          type: ERROR,
-          err
-        });
-      });
-  };
+const login = (user, dispatch) => {
+  return axios
+    .post(`/api/users/login`, { user })
+    .then(res => res.data)
+    .then(token => {
+      window.localStorage.setItem('token', token);
+      dispatch(authenticateUser);
+    });
 };
 
-const updateUser = user => {
+export const logout = dispatch => {
+  window.localStorage.removeItem('token');
+  return dispatch({ type: RESET_STATE });
+};
+
+export const authenticateUser = dispatch => {
+  return authCall('get', '/api/users')
+    .then(res => res.data)
+    .then(user => {
+      dispatch({ type: GET_USER, user });
+      fetchOrders(user.id);
+      dispatch(fetchCart(user.id));
+    });
+};
+
+const createOrUpdateUser = user => {
   const { id } = user;
   return dispatch => {
-    return axios
-      .put(`/api/users/${id}`, { user })
-      .then(res => res.data)
-      .then(user => {
-        login(user, dispatch);
-      })
-      .catch(error => {
-        const err = error.response.data;
-        dispatch({
-          type: ERROR,
-          err
-        });
-      });
+    return !id
+      ? axios.post('api/users', { user })
+      : axios
+        .put(`/api/users/${id}`, { user })
+        .then(res => res.data)
+        .then(user => login(user, dispatch));
   };
 };
 
@@ -116,15 +117,15 @@ const fetchOrders = userId => {
   return dispatch => {
     authCall('get', `/api/users/${userId}/orders`)
       .then(res => res.data)
-      .then(orders => dispatch({ type: GET_ORDERS, orders }))
-      .catch(err => console.log(err));
+      .then(orders => dispatch({ type: GET_ORDERS, orders }));
   };
 };
 
 // LINE ITEMS
 const addLineItem = (lineItem, history) => {
-  return (dispatch) => {
-    axios.post(`/api/lineItems`, lineItem, history)
+  return dispatch => {
+    axios
+      .post(`/api/lineItems`, lineItem, history)
       // authCall('post', `/api/lineItems`, lineItem)
       .then(res => res.data)
       .then(lineItem => dispatch({ type: CREATE_LINE_ITEM, lineItem }))
@@ -138,8 +139,9 @@ const addLineItem = (lineItem, history) => {
 };
 
 const editLineItem = (lineItem, lineItemId, history) => {
-  return (dispatch) => {
-    axios.put(`/api/lineItems/${lineItemId}`, lineItem)
+  return dispatch => {
+    axios
+      .put(`/api/lineItems/${lineItemId}`, lineItem)
       // authCall('put', `/api/lineItems/${lineItemId}`, lineItem)
       .then(res => res.data)
       .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
@@ -171,6 +173,7 @@ const clearErrors = () => {
 };
 
 /*
+
 REUSEBLE CODE
 */
 
@@ -182,24 +185,8 @@ const authCall = (reqType, path, body) => {
   return axios[reqType](path, { headers: { token }, body });
 };
 
-const login = (user, dispatch) => {
-  axios
-    .post(`/api/users/login`, { user })
-    .then(res => res.data)
-    .then(token => {
-      window.localStorage.setItem('token', token);
-      return authCall('get', '/api/users');
-    })
-    .then(res => res.data)
-    .then(user => {
-      dispatch({ type: GET_USER, user });
-      fetchOrders(user.id);
-      dispatch(fetchCart(user.id));
-    })
-    .catch(err => console.log(err));
-};
-
 /*
+
 REDUCERS
 */
 
@@ -223,7 +210,7 @@ const userReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_USER:
       return action.user;
-    case LOG_OUT:
+    case RESET_STATE:
       return {};
   }
   return state;
@@ -233,6 +220,8 @@ const cartReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart;
+    case RESET_STATE:
+      return {};
   }
   return state;
 };
@@ -261,34 +250,13 @@ const lineItemsReducer = (state = [], action) => {
   return state;
 };
 
-const loadingReducer = (state = false, action) => {
-  switch (action.type) {
-    case LOADING:
-      return true;
-    case LOADED:
-      return false;
-  }
-  return state;
-};
-const errorReducer = (state = '', action) => {
-  switch (action.type) {
-    case ERROR:
-      return action.err;
-    case CLEAR_ERROR:
-      state = '';
-  }
-  return state;
-};
-
 const reducer = combineReducers({
   products: productsReducer,
   categories: categoriesReducer,
   user: userReducer,
   cart: cartReducer,
-  orders: ordersReducer,
   lineItems: lineItemsReducer,
-  loading: loadingReducer,
-  errors: errorReducer
+  orders: ordersReducer
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
@@ -303,8 +271,6 @@ export {
   fetchOrders,
   addLineItem,
   editLineItem,
-  createUser,
-  updateUser,
-  clearErrors,
-  deleteLineItem
+  deleteLineItem,
+  createOrUpdateUser
 };

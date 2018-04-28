@@ -4,6 +4,12 @@ const { Sequelize } = conn;
 const User = conn.define(
   'user',
   {
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4
+    },
     firstName: {
       type: Sequelize.STRING,
       allowNull: {
@@ -32,20 +38,28 @@ const User = conn.define(
     },
     email: {
       type: Sequelize.STRING,
-      isUnique: true,
+      unique: true,
       allowNull: {
         args: false,
         msg: 'you must enter an email!'
       },
-      isEmail: {
-        args: true,
-        msg: 'you must enter a valid email'
-      },
       validate: {
+        isEmail: {
+          args: true,
+          msg: 'you must enter a valid email'
+        },
         notEmpty: {
           args: true,
           msg: 'you must enter an email!'
         }
+      }
+    },
+    password: {
+      type: Sequelize.STRING,
+
+      allowNull: false,
+      validate: {
+        notEmpty: true
       }
     }
   },

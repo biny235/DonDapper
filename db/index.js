@@ -3,13 +3,11 @@ const faker = require('faker');
 const jwt = require('jwt-simple');
 const secret = process.env.SECRET;
 
-
 const Category = require('./Category');
 const Product = require('./Product');
 const Order = require('./Order');
 const LineItem = require('./LineItem');
 const User = require('./User');
-
 
 const generateProduct = () => {
   return {
@@ -107,7 +105,7 @@ const seed = () => {
 };
 
 const syncAndSeed = () => {
-  return conn.sync(); //.then(() => seed());
+  return conn.sync({}); //.then(() => seed());
 };
 
 Product.belongsTo(Category);
@@ -120,7 +118,7 @@ LineItem.belongsTo(Product);
 
 User.hasMany(Order);
 
-User.findOrCreateCart = function (userId) {
+User.findOrCreateCart = function(userId) {
   return Order.findOrCreate({
     where: { status: 'cart', userId },
     defaults: { status: 'cart', userId },
@@ -128,34 +126,30 @@ User.findOrCreateCart = function (userId) {
   });
 };
 
-User.authenticate = function (user) {
+User.authenticate = function(user) {
   const { email, password } = user;
-  console.log(secret)
+  console.log(secret);
   return User.find({
     where: { email, password },
     attributes: ['id', 'firstName', 'lastName', 'email']
-  })
-    .then(user => {
-      if (!user) {
-        throw { status: 401 };
-      }
-      return jwt.encode({ id: user.id }, secret);
-    });
+  }).then(user => {
+    if (!user) {
+      throw { status: 401 };
+    }
+    return jwt.encode({ id: user.id }, secret);
+  });
 };
 
-User.exchangeToken = function (token) {
+User.exchangeToken = function(token) {
   try {
     const id = jwt.decode(token, secret).id;
-    return User.findById(id)
-      .then(user => {
-        if (user) {
-          return user;
-        }
-        throw { status: 401 };
-      });
-
-  }
-  catch (err) {
+    return User.findById(id).then(user => {
+      if (user) {
+        return user;
+      }
+      throw { status: 401 };
+    });
+  } catch (err) {
     return Promise.reject({ status: 401 });
   }
 };

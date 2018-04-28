@@ -6,11 +6,11 @@ const LineItem = ({ product, line, cart }) => {
     return null;
   }
   return (
-    <div className='orderrow'>
-      <div className='orderitem'>{product.name}</div>
-      <div className='orderitem'>{product.price}</div>
-      {!cart && <div className='orderitem'>{line.quantity}</div>}
-      {!cart && <div className='orderitem'>{line.quantity * product.price}</div>}
+    <div className='order order-line'>
+      <div >{product.name}</div>
+      <div >{product.price}</div>
+      {!cart && <div >{line.quantity}</div>}
+      {!cart && <div >{line.quantity * product.price}</div>}
     </div>
   );
 };
