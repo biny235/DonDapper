@@ -50,7 +50,6 @@ class UserForm extends Component {
 
   render() {
     const { user, createOrUpdateUser } = this.props;
-
     const { errors } = this.state;
 
     return (

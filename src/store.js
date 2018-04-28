@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
+import logger from 'redux-logger';
 import axios from 'axios';
 
 /*
@@ -9,18 +10,25 @@ CONSTANTS
 
 // PRODUCTS
 const GET_PRODUCTS = 'GET_PRODUCTS';
+
 // CATEGORIES
 const GET_CATEGORIES = 'GET_CATEGORIES';
+
 // USER
 const GET_USER = 'GET_USER';
-const LOG_OUT = 'LOG_OUT';
+
 // CART
 const GET_CART = 'GET_CART';
+
 // ORDERS
 const GET_ORDERS = 'GET_ORDERS';
+
 // LINE ITEMS
+const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
 const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
+const DELETE_LINE_ITEM = 'DELETE_LINE_ITEM';
+
 // LOGOUT
 const RESET_STATE = 'RESET_STATE';
 
@@ -75,8 +83,8 @@ export const authenticateUser = dispatch => {
     .then(res => res.data)
     .then(user => {
       dispatch({ type: GET_USER, user });
-      dispatch(fetchOrders(user.id));
       dispatch(fetchCart(user.id));
+      dispatch(fetchOrders(user.id));
     });
 };
 
@@ -97,7 +105,11 @@ const fetchCart = userId => {
   return dispatch => {
     authCall('get', `/api/users/${userId}/cart`)
       .then(res => res.data)
-      .then(cart => dispatch({ type: GET_CART, cart }));
+      .then(cart => {
+        dispatch({ type: GET_CART, cart });
+        dispatch({ type: GET_LINE_ITEMS, lineItems: cart.lineItems });
+      })
+      .catch(err => console.log(err));
   };
 };
 
@@ -119,8 +131,11 @@ const addLineItem = (lineItem, history) => {
       .then(res => res.data)
       .then(lineItem => dispatch({ type: CREATE_LINE_ITEM, lineItem }))
       .then(() => {
-        history.push(`/cart`);
-      });
+        if (history) {
+          history.push(`/cart`);
+        }
+      })
+      .catch(err => console.log(err));
   };
 };
 
@@ -132,8 +147,30 @@ const editLineItem = (lineItem, lineItemId, history) => {
       .then(res => res.data)
       .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
       .then(() => {
-        history.push(`/cart`);
-      });
+        if (history) {
+          history.push(`/cart`);
+        }
+      })
+      .catch(err => console.log(err));
+  };
+};
+
+const deleteLineItem = lineItem => {
+  return dispatch => {
+    axios
+      .delete(`/api/lineItems/${lineItem.id}`)
+      .then(res => res.data)
+      .then(() => dispatch({ type: DELETE_LINE_ITEM, lineItem }))
+      .catch(err => console.log(err));
+  };
+};
+
+//ERRORS
+const clearErrors = () => {
+  return dispatch => {
+    return dispatch({
+      type: CLEAR_ERROR
+    });
   };
 };
 
@@ -185,13 +222,6 @@ const cartReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart;
-    case CREATE_LINE_ITEM:
-      state.lineItems = [...state.lineItems, action.lineItem];
-      break;
-    case UPDATE_LINE_ITEM:
-      return (state.lineItems = state.lineItems.map(lineItem => {
-        return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
-      }));
     case RESET_STATE:
       return {};
   }
@@ -203,7 +233,25 @@ const ordersReducer = (state = [], action) => {
     case GET_ORDERS:
       return action.orders;
     case RESET_STATE:
-      return {};
+      return [];
+  }
+  return state;
+};
+
+const lineItemsReducer = (state = [], action) => {
+  switch (action.type) {
+    case GET_LINE_ITEMS:
+      return action.lineItems;
+    case CREATE_LINE_ITEM:
+      return [...state, action.lineItem];
+    case UPDATE_LINE_ITEM:
+      return state.map(lineItem => {
+        return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
+      });
+    case DELETE_LINE_ITEM:
+      return state.filter(lineItem => lineItem.id !== action.lineItem.id);
+    case RESET_STATE:
+      return [];
   }
   return state;
 };
@@ -213,10 +261,14 @@ const reducer = combineReducers({
   categories: categoriesReducer,
   user: userReducer,
   cart: cartReducer,
+  lineItems: lineItemsReducer,
   orders: ordersReducer
 });
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(
+  reducer,
+  composeWithDevTools(applyMiddleware(thunk, logger))
+);
 
 export default store;
 
@@ -228,5 +280,6 @@ export {
   fetchOrders,
   addLineItem,
   editLineItem,
+  deleteLineItem,
   createOrUpdateUser
 };

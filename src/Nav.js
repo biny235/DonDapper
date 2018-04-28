@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
-
 import { NavLink, Link } from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
-import { render } from 'react-dom';
 
 class Nav extends Component {
   constructor(props) {
     super(props);
     this.state = {
       product: {},
-      value: -1
+      value: -1,
+      counter: props.lineItems.length
     };
     this.handleChange = this.handleChange.bind(this);
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ counter: nextProps.lineItems.length });
+  }
+
   handleChange(ev, index, value) {
     const { products } = this.props;
-
     let selectedProduct = products.find(product => product.id === value);
     if (location.hash === '#/products' && value !== -1) {
       const theProduct = document.getElementById(value).scrollIntoView();
@@ -27,14 +30,11 @@ class Nav extends Component {
     } else {
       this.setState({ value, product: selectedProduct });
     }
-    console.log(this.state);
   }
 
   render() {
-    const { value } = this.state;
-    const { products, cart } = this.props;
-    const counter = cart.lineItems ? cart.lineItems.length : 0;
-
+    const { value, counter } = this.state;
+    const { products } = this.props;
     return (
       <MuiThemeProvider>
         <div>
@@ -51,23 +51,23 @@ class Nav extends Component {
                 />
                 {products.length
                   ? products.map(product => {
-                      return location.hash !== '#/products' ? (
-                        <MenuItem
-                          key={product.id}
-                          value={product.id}
-                          primaryText={product.name}
-                          containerElement={
-                            <Link to={`/products/${product.id}`} />
-                          }
-                        />
-                      ) : (
+                    return location.hash !== '#/products' ? (
+                      <MenuItem
+                        key={product.id}
+                        value={product.id}
+                        primaryText={product.name}
+                        containerElement={
+                          <Link to={`/products/${product.id}`} />
+                        }
+                      />
+                    ) : (
                         <MenuItem
                           key={product.id}
                           value={product.id}
                           primaryText={product.name}
                         />
                       );
-                    })
+                  })
                   : null}
               </DropDownMenu>
             </li>
@@ -83,10 +83,10 @@ class Nav extends Component {
     );
   }
 }
-const mapStateToProps = ({ products, cart }) => {
+const mapStateToProps = ({ products, lineItems }) => {
   return {
     products,
-    cart
+    lineItems
   };
 };
 
