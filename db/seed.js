@@ -88,6 +88,7 @@ const seed = () => {
         )
       ]);
     })
+
     .then(() => {
       generateOrder();
       generateOrder();
