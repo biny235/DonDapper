@@ -16,13 +16,8 @@ class UserForm extends Component {
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
-    this.onDismiss = this.onDismiss.bind(this);
     setErrors = setErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
-  }
-  onDismiss() {
-    this.setState({ errors: '' });
-    this.clearErrors();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,7 +50,7 @@ class UserForm extends Component {
     return (
       <div>
         {errors ? (
-          <Alert color="info" isOpen={!!errors} toggle={this.onDismiss}>
+          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
         ) : !user.id ? (

@@ -70,7 +70,7 @@ const seed = () => {
           fullName: 'Test User',
           email: 'test@test.com',
           password: '123456'
-        }),
+        }).then(user => Order.create({ userId: user.id })),
         User.create(generateUser()).then(user =>
           Order.create({ userId: user.id })
         ),
@@ -88,6 +88,7 @@ const seed = () => {
         )
       ]);
     })
+
     .then(() => {
       generateOrder();
       generateOrder();
