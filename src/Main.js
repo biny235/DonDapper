@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  fetchProducts,
-  fetchCategories,
-  authenticateUser
-} from './store';
+import { fetchProducts, fetchCategories, authenticateUser } from './store';
 
 import Nav from './Nav';
 import Products from './Products';
@@ -29,7 +25,7 @@ class Main extends Component {
     return (
       <Router>
         <div>
-          <Nav history={history} />
+          <Nav />
           <LoginForm />
           <Route path="/" exact render={() => <Home />} />
           <Switch>
@@ -37,7 +33,9 @@ class Main extends Component {
             <Route
               path="/products/:id"
               exact
-              render={({ match, history }) => <Product id={match.params.id * 1} history={history} />}
+              render={({ match, history }) => (
+                <Product id={match.params.id * 1} history={history} />
+              )}
             />
             <Route path="/categories" exact render={() => <Categories />} />
             <Route

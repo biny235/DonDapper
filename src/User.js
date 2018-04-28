@@ -14,7 +14,7 @@ const User = ({ user, orders }) => {
           <Link to={`/orders/${order.id}`}>Order ID: {order.id}</Link>
         </div>
       ))}
-      <UserForm user={user} />
+      <UserForm />
     </div>
   );
 };
