@@ -13,7 +13,7 @@ class Home extends Component {
   click() {
     this.setState({ showForm: true });
   }
-  componentWillMount(nextProps) {
+  componentWillReceiveProps(nextProps) {
     !nextProps.user.id && this.setState({ showForm: false });
   }
 
@@ -26,7 +26,7 @@ class Home extends Component {
         <button onClick={() => this.click()}>
           {window.localStorage.getItem('token') ? 'update user' : 'create user'}
         </button>
-        {showForm ? <UserForm /> : null}
+        {showForm && <UserForm />}
       </div>
     );
   }

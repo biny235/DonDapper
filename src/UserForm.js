@@ -49,8 +49,8 @@ class UserForm extends Component {
   }
 
   render() {
-    const { user, createOrUpdateUser } = this.props;
-    const { errors } = this.state;
+    const { createOrUpdateUser } = this.props;
+    const { errors, user } = this.state;
 
     return (
       <div>
@@ -141,7 +141,6 @@ class UserForm extends Component {
   }
 }
 const mapStateToProps = ({ user }) => {
-  console.log(user);
   return { user };
 };
 const mapDispatchToProps = dispatch => {
