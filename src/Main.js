@@ -5,7 +5,6 @@ import {
   fetchProducts,
   fetchCategories,
   fetchOrders,
-  fetchLineItems,
   fetchCart,
   authenticateUser
 } from './store';
@@ -23,14 +22,14 @@ import LoginForm from './LoginForm';
 
 class Main extends Component {
   componentDidMount() {
-    window.localStorage.getItem('token') ?  this.props.authenticateUser() : null;
+    window.localStorage.getItem('token') ? this.props.authenticateUser() : null;
     this.props.fetchProducts();
     this.props.fetchCategories();
   }
 
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
-    if(user.id){
+    if (user.id) {
       this.props.fetchOrders(user.id);
       this.props.fetchCart(user.id);
     }
