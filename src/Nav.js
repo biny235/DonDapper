@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-
 import { NavLink, Link } from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
-import { render } from 'react-dom';
 
 class Nav extends Component {
   constructor(props) {
@@ -19,7 +17,6 @@ class Nav extends Component {
   }
   handleChange(ev, index, value) {
     const { products } = this.props;
-
     let selectedProduct = products.find(product => product.id === value);
     if (location.hash === '#/products' && value !== -1) {
       const theProduct = document.getElementById(value).scrollIntoView();
@@ -27,7 +24,6 @@ class Nav extends Component {
     } else {
       this.setState({ value, product: selectedProduct });
     }
-    console.log(this.state);
   }
 
   render() {
@@ -51,23 +47,23 @@ class Nav extends Component {
                 />
                 {products.length
                   ? products.map(product => {
-                      return location.hash !== '#/products' ? (
-                        <MenuItem
-                          key={product.id}
-                          value={product.id}
-                          primaryText={product.name}
-                          containerElement={
-                            <Link to={`/products/${product.id}`} />
-                          }
-                        />
-                      ) : (
+                    return location.hash !== '#/products' ? (
+                      <MenuItem
+                        key={product.id}
+                        value={product.id}
+                        primaryText={product.name}
+                        containerElement={
+                          <Link to={`/products/${product.id}`} />
+                        }
+                      />
+                    ) : (
                         <MenuItem
                           key={product.id}
                           value={product.id}
                           primaryText={product.name}
                         />
                       );
-                    })
+                  })
                   : null}
               </DropDownMenu>
             </li>

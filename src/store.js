@@ -22,10 +22,11 @@ const GET_ORDERS = 'GET_ORDERS';
 const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
 const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
-//Loader
+const DELETE_LINE_ITEM = 'DELETE_LINE_ITEM';
+// LOADER
 const LOADING = 'LOADING';
 const LOADED = 'LOADED';
-//errors
+// ERRORS
 const CLEAR_ERROR = 'CLEAR_ERROR';
 const ERROR = 'ERROR';
 
@@ -61,6 +62,7 @@ const fetchUser = user => {
     login(user, dispatch);
   };
 };
+
 const createUser = user => {
   return dispatch => {
     axios
@@ -95,12 +97,16 @@ const updateUser = user => {
       });
   };
 };
+
 // CART
 const fetchCart = userId => {
   return dispatch => {
     authCall('get', `/api/users/${userId}/cart`)
       .then(res => res.data)
-      .then(cart => dispatch({ type: GET_CART, cart }))
+      .then(cart => {
+        dispatch({ type: GET_CART, cart });
+        dispatch({ type: GET_LINE_ITEMS, lineItems: cart.lineItems });
+      })
       .catch(err => console.log(err));
   };
 };
@@ -116,22 +122,6 @@ const fetchOrders = userId => {
 };
 
 // LINE ITEMS
-const fetchLineItems = orderId => {
-  return dispatch => {
-    dispatch({ type: LOADING });
-    authCall('get', `/api/orders/${orderId}/lineItems`)
-      .then(res => res.data)
-      .then(lineItems => {
-        dispatch({ type: LOADED });
-        dispatch({ type: GET_LINE_ITEMS, lineItems });
-      })
-      .catch(err => {
-        console.log(err);
-        dispatch({ type: LOADED });
-      });
-  };
-};
-
 const addLineItem = (lineItem, history) => {
   return (dispatch) => {
     axios.post(`/api/lineItems`, lineItem, history)
@@ -139,7 +129,9 @@ const addLineItem = (lineItem, history) => {
       .then(res => res.data)
       .then(lineItem => dispatch({ type: CREATE_LINE_ITEM, lineItem }))
       .then(() => {
-        history.push(`/cart`);
+        if (history) {
+          history.push(`/cart`);
+        }
       })
       .catch(err => console.log(err));
   };
@@ -152,16 +144,24 @@ const editLineItem = (lineItem, lineItemId, history) => {
       .then(res => res.data)
       .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
       .then(() => {
-        history.push(`/cart`);
+        if (history) {
+          history.push(`/cart`);
+        }
       })
       .catch(err => console.log(err));
   };
 };
 
+const deleteLineItem = (lineItem) => {
+  return (dispatch) => {
+    axios.delete(`/api/lineItems/${lineItem.id}`)
+      .then(res => res.data)
+      .then(() => dispatch({ type: DELETE_LINE_ITEM, lineItem }))
+      .catch(err => console.log(err));
+  };
+};
+
 //ERRORS
-
-//clear errors
-
 const clearErrors = () => {
   return dispatch => {
     return dispatch({
@@ -219,12 +219,12 @@ const categoriesReducer = (state = [], action) => {
   return state;
 };
 
-const userReducer = (state = [], action) => {
+const userReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_USER:
       return action.user;
     case LOG_OUT:
-      return [];
+      return {};
   }
   return state;
 };
@@ -233,14 +233,6 @@ const cartReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart;
-    case CREATE_LINE_ITEM:
-      state.lineItems = [...state.lineItems, action.lineItem];
-      break;
-    case UPDATE_LINE_ITEM:
-      state.lineItems = state.lineItems.map(lineItem => {
-        return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
-      });
-      break;
   }
   return state;
 };
@@ -257,6 +249,14 @@ const lineItemsReducer = (state = [], action) => {
   switch (action.type) {
     case GET_LINE_ITEMS:
       return action.lineItems;
+    case CREATE_LINE_ITEM:
+      return [...state, action.lineItem];
+    case UPDATE_LINE_ITEM:
+      return state.map(lineItem => {
+        return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
+      });
+    case DELETE_LINE_ITEM:
+      return state.filter(lineItem => lineItem.id !== action.lineItem.id);
   }
   return state;
 };
@@ -301,10 +301,10 @@ export {
   fetchUser,
   fetchCart,
   fetchOrders,
-  fetchLineItems,
   addLineItem,
   editLineItem,
   createUser,
   updateUser,
-  clearErrors
+  clearErrors,
+  deleteLineItem
 };

@@ -30,4 +30,11 @@ router.put('/:id', (req, res, next) => {
     .catch(next);
 });
 
+router.delete('/:id', (req, res, next) => {
+  LineItem.findById(req.params.id)
+    .then(lineItem => lineItem.destroy())
+    .then(() => res.send())
+    .catch(next);
+});
+
 module.exports = router;

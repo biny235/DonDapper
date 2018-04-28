@@ -5,7 +5,6 @@ import {
   fetchProducts,
   fetchCategories,
   fetchOrders,
-  fetchLineItems,
   fetchCart
 } from './store';
 
