@@ -231,6 +231,8 @@ const ordersReducer = (state = [], action) => {
   switch (action.type) {
     case GET_ORDERS:
       return action.orders;
+    case RESET_STATE:
+      return [];
   }
   return state;
 };
@@ -247,6 +249,8 @@ const lineItemsReducer = (state = [], action) => {
       });
     case DELETE_LINE_ITEM:
       return state.filter(lineItem => lineItem.id !== action.lineItem.id);
+    case RESET_STATE:
+      return [];
   }
   return state;
 };
