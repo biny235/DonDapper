@@ -6,6 +6,7 @@
     "scripts": {
         "postinstall": "npm run webpack",
         "webpack": "./node_modules/webpack/bin/webpack.js",
+        "seed": "node ./db/seed.js",
         "test:dev": "./node_modules/mocha/bin/mocha --watch  --recursive test/server/**/*.js",
         "start:dev": "npm run webpack -- -w & SECRET=graceshopper nodemon server.js --ignore dist/ --ignore src/"
     },
