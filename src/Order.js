@@ -13,7 +13,6 @@ const Order = ({ order, lineItems }) => {
         <div>Total</div>
         <div>Order Total</div>
         {lineItems && lineItems.map(lineItem => <LineItem key={lineItem.id} line={lineItem} />)}
-        {total }
       </div>
     </div>
   );

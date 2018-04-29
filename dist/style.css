@@ -18,3 +18,20 @@
   font-style: italic;
   font-size: .8rem;
 }
+
+.product{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+.category{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr)
+}
+.category-products{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column: 1 / 4
+}
+.category-head{
+  grid-column: 2 / 4
+}
