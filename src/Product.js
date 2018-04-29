@@ -7,6 +7,7 @@ import { Container, Row, Col } from 'reactstrap';
 const Product = ({ product, history }) => {
   return product ? (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Container id={product.id}>
       {history ? (
         <NavLink
@@ -25,6 +26,9 @@ const Product = ({ product, history }) => {
       <h2>${product && product.price}</h2>
       <AddToCart product={product} history={history} />
 =======
+=======
+
+>>>>>>> refs/remotes/origin/aj
     <Container className="product" id={product.id}>
       <span><img src="http://via.placeholder.com/350x500" /></span>
       <span>
@@ -33,7 +37,10 @@ const Product = ({ product, history }) => {
         <h2>${product && product.price}</h2> 
         <AddToCart product={product} history={history} />
       </span>
+<<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> refs/remotes/origin/aj
     </Container>
   ) : null;
 };
