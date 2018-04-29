@@ -22,7 +22,6 @@ class LineItem extends React.Component{
     ev.preventDefault();
     this.props.deleteLineItem(id);
   }
-<<<<<<< HEAD
   render(){
     const {line, product, cart} = this.props;
     const {onChange, onDelete} = this;
@@ -53,17 +52,6 @@ const mapDispatchToProps = (dispatch, { history }) => {
     deleteLineItem: (id) => dispatch(deleteLineItem(id)),
     editLineItem: (lineItem, id) => dispatch(editLineItem(lineItem, id)),
   };
-=======
-  return (
-
-    <div className='order order-line'>
-      <div>{product.name}</div>
-      <div>$ {product.price}</div>
-      {!cart && <div >{line.quantity}</div>}
-      {!cart && <div >{line.quantity * product.price}</div>}
-    </div>
-  );
->>>>>>> master
 };
 
 
