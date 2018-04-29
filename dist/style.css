@@ -1,9 +1,14 @@
-.order{
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  /* grid-template-rows: repeat(4, 1fr); */
+.order {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-rows: repeat(4, 1fr); */
 }
-.order-line{
-  grid-column-start: 1;
-  grid-column-end: 5;
+
+.order-line {
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+
+.disabled-link {
+    pointer-events: none;
 }
