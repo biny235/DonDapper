@@ -1,10 +1,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import AddToCart from './AddToCart';
 import { Container, Row, Col } from 'reactstrap';
 
 const Product = ({ product, history }) => {
   return product ? (
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <Container id={product.id}>
+      {history ? (
+        <NavLink
+          activeClassName="active"
+          className="disabled-link"
+          to={`/products/${product.id}`}
+        >
+          <h1>{product && product.name}</h1>
+        </NavLink>
+      ) : (
+        <NavLink activeClassName="active" to={`/products/${product.id}`}>
+          <h1>{product && product.name}</h1>
+        </NavLink>
+      )}
+      <h5>{product.description}</h5>
+      <h2>${product && product.price}</h2>
+      <AddToCart product={product} history={history} />
+=======
+=======
+
+>>>>>>> refs/remotes/origin/aj
     <Container className="product" id={product.id}>
       <span><img src="http://via.placeholder.com/350x500" /></span>
       <span>
@@ -13,6 +37,10 @@ const Product = ({ product, history }) => {
         <h2>${product && product.price}</h2> 
         <AddToCart product={product} history={history} />
       </span>
+<<<<<<< HEAD
+>>>>>>> master
+=======
+>>>>>>> refs/remotes/origin/aj
     </Container>
   ) : null;
 };
