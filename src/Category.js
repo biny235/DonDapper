@@ -4,21 +4,21 @@ import { Link } from 'react-router-dom';
 
 const Category = ({ category, categoryProducts }) => {
   return (
-    <div>
-      <h1>{category && category.name}</h1>
-      <ul>
+    <div className='category' >
+      <h1 className='category-head'>{category && category.name}</h1>
+      <div className='category-products'>
         {
           categoryProducts.map(product => {
             return (
-              <li key={product.id}>
+              <div  key={product.id}>
                 <Link to={`/products/${product.id}`}>
                   {product.name}
                 </Link>
                 <span> - ${product.price}</span>
-              </li>);
+              </div>);
           })
         }
-      </ul>
+      </div>
     </div>
   );
 };

@@ -1,9 +1,37 @@
 .order{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  /* grid-template-rows: repeat(4, 1fr); */
+  grid-template-columns: repeat(5, 1fr) ;
+  max-width: 75%;
+  grid-row-gap: 20px;
 }
 .order-line{
+  border: greenyellow;
+  max-width: 100%;
   grid-column-start: 1;
-  grid-column-end: 5;
+  grid-column-end: 6;
+}
+.order-qty{
+  width: 35px ;
+}
+.product-description-text{
+  color: gray;
+  font-style: italic;
+  font-size: .8rem;
+}
+
+.product{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+.category{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr)
+}
+.category-products{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column: 1 / 4
+}
+.category-head{
+  grid-column: 2 / 4
 }
