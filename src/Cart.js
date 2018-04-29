@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import LineItem from './LineItem';
-import { deleteLineItem, editLineItem } from './store';
+import { deleteLineItem, editLineItem, editOrder, fetchCart } from './store';
 
 class Cart extends React.Component {
   constructor() {
     super();
     this.onChange = this.onChange.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onChange(ev, id) {
@@ -21,9 +22,14 @@ class Cart extends React.Component {
     this.props.deleteLineItem(id);
   }
 
+  onSubmit() {
+    const { cart, user } = this.props;
+    this.props.editOrder({ status: 'order' }, cart.id);
+  }
+
   render() {
     const { cart, lineItems } = this.props;
-    const { onChange, onDelete } = this;
+    const { onChange, onDelete, onSubmit } = this;
     return (
       <div>
         <h1>Cart</h1>
@@ -46,21 +52,23 @@ class Cart extends React.Component {
             </div>
           )
         }
+        {cart.id && <button type='submit' disabled={!lineItems.length} onClick={onSubmit}>Check Out</button>}
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ cart, lineItems }) => {
+const mapStateToProps = ({ cart, lineItems, user }) => {
   return {
-    cart, lineItems
+    cart, lineItems, user
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, { history }) => {
   return {
     deleteLineItem: (id) => dispatch(deleteLineItem(id)),
-    editLineItem: (lineItem, id) => dispatch(editLineItem(lineItem, id))
+    editLineItem: (lineItem, id) => dispatch(editLineItem(lineItem, id)),
+    editOrder: (order, id) => dispatch(editOrder(order, id, history))
   };
 };
 
