@@ -90,19 +90,27 @@ const seed = () => {
     })
 
     .then(() => {
-      generateOrder();
-      generateOrder();
-      generateOrder();
-      generateOrder();
-      generateOrder();
-      generateOrder();
-      generateOrder();
+      return Promise.all([
+        generateOrder(),
+        generateOrder(),
+        generateOrder(),
+        generateOrder(),
+        generateOrder(),
+        generateOrder(),
+        generateOrder(),
+        generateOrder(),
+      ])
     });
 };
-
-conn
+const main = ()=>{
+  conn
   .sync({ force: true })
   .then(() => console.log('synced'))
   .then(() => seed())
-  .then(() => console.log('seeded'))
+  .then(() => {
+    console.log('seeded')
+    conn.close()
+  })
   .catch(console.error);
+}
+main();
