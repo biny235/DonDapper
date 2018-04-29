@@ -39,7 +39,6 @@ class Nav extends Component {
     return (
       <MuiThemeProvider>
         <div>
-<<<<<<< HEAD
           <Navbar color="light" light>
           <NavbarBrand href="/#/">Grace Shopper</NavbarBrand>
           <_Nav>
@@ -80,48 +79,6 @@ class Nav extends Component {
               </NavItem>
             </_Nav>
           </Navbar>
-=======
-          <ul>
-            <li>
-              <NavLink to="/">Home</NavLink>
-            </li>
-            <li>
-              <DropDownMenu value={value} onChange={this.handleChange}>
-                <MenuItem
-                  value={-1}
-                  primaryText="products"
-                  containerElement={<Link to={'/products'} />}
-                />
-                {products.length
-                  ? products.map(product => {
-                    return location.hash !== '#/products' ? (
-                      <MenuItem
-                        key={product.id}
-                        value={product.id}
-                        primaryText={product.name}
-                        containerElement={
-                          <Link to={`/products/${product.id}`} />
-                        }
-                      />
-                    ) : (
-                        <MenuItem
-                          key={product.id}
-                          value={product.id}
-                          primaryText={product.name}
-                        />
-                      );
-                  })
-                  : null}
-              </DropDownMenu>
-            </li>
-            <li>
-              <NavLink to="/cart">Cart ({counter})</NavLink>
-            </li>
-            <li>
-              <NavLink to="/user">Account</NavLink>
-            </li>
-          </ul>
->>>>>>> master
         </div>
       </MuiThemeProvider>
     );
