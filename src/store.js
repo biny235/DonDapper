@@ -95,9 +95,9 @@ const createOrUpdateUser = user => {
     return !id
       ? axios.post('api/users', { user })
       : axios
-        .put(`/api/users/${id}`, { user })
-        .then(res => res.data)
-        .then(user => login(user, dispatch));
+          .put(`/api/users/${id}`, { user })
+          .then(res => res.data)
+          .then(user => login(user, dispatch));
   };
 };
 
@@ -174,9 +174,10 @@ const editLineItem = (lineItem, lineItemId, history) => {
   };
 };
 
-const deleteLineItem = (lineItem) => {
-  return (dispatch) => {
-    axios.delete(`/api/lineItems/${lineItem.id}`)
+const deleteLineItem = lineItem => {
+  return dispatch => {
+    axios
+      .delete(`/api/lineItems/${lineItem.id}`)
       .then(res => res.data)
       .then(() => dispatch({ type: DELETE_LINE_ITEM, lineItem }))
       .catch(err => console.log(err));
@@ -274,7 +275,10 @@ const reducer = combineReducers({
   orders: ordersReducer
 });
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk, logger)));
+const store = createStore(
+  reducer,
+  composeWithDevTools(applyMiddleware(thunk, logger))
+);
 
 export default store;
 

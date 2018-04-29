@@ -4,6 +4,10 @@ import omit from 'object.omit';
 import { createOrUpdateUser } from './store';
 import { connect } from 'react-redux';
 
+let setErrors = function(err, user) {
+  if (!user.id) this.setState({ user: {} });
+  this.setState({ errors: err });
+};
 class UserForm extends Component {
   constructor() {
     super();
@@ -12,24 +16,18 @@ class UserForm extends Component {
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
-    this.onDismiss = this.onDismiss.bind(this);
-    this.setErrors = this.setErrors.bind(this);
+    setErrors = setErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
-  }
-  onDismiss() {
-    this.setState({ errors: '' });
-    this.clearErrors();
   }
 
   componentWillReceiveProps(nextProps) {
-    const { user, errors } = nextProps;
+    const { user } = nextProps;
     if (user.id) this.setState({ user: user });
-    this.setState({ errors: errors });
   }
 
   componentWillMount() {
-    const { user, errors } = this.props;
-    if (user.id) this.setState({ user, errors });
+    const { user } = this.props;
+    if (user.id) this.setState({ user });
   }
 
   onChange(ev) {
@@ -42,19 +40,17 @@ class UserForm extends Component {
   }
 
   clearErrors() {
-    this.setState({ error: '' });
-  }
-  setErrors(err) {
-    this.setState({ error: err });
+    this.setState({ errors: '' });
   }
 
   render() {
     const { createOrUpdateUser } = this.props;
-    const { user, errors } = this.state;
+    const { errors, user } = this.state;
+
     return (
       <div>
         {errors ? (
-          <Alert color="info" isOpen={!!errors} toggle={this.onDismiss}>
+          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
         ) : !user.id ? (
@@ -87,36 +83,36 @@ class UserForm extends Component {
             />
           </div>
         ) : (
-              <div>
-                <h1>{user.name}</h1>
-                <input
-                  name="firstName"
-                  placeholder={user.firstName}
-                  defaultValue={user.firstName}
-                  onChange={this.onChange}
-                />
-                <input
-                  name="lastName"
-                  placeholder={user.lastName}
-                  defaultValue={user.lastName}
-                  onChange={this.onChange}
-                />
+          <div>
+            <h1>{user.name}</h1>
+            <input
+              name="firstName"
+              placeholder={user.firstName}
+              defaultValue={user.firstName}
+              onChange={this.onChange}
+            />
+            <input
+              name="lastName"
+              placeholder={user.lastName}
+              defaultValue={user.lastName}
+              onChange={this.onChange}
+            />
 
-                <input
-                  name="email"
-                  placeholder={user.email}
-                  defaultValue={user.email}
-                  onChange={this.onChange}
-                />
-                <input
-                  type="password"
-                  name="password"
-                  placeholder={user.password}
-                  defaultValue={user.password}
-                  onChange={this.onChange}
-                />
-              </div>
-            )}
+            <input
+              name="email"
+              placeholder={user.email}
+              defaultValue={user.email}
+              onChange={this.onChange}
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder={user.password}
+              defaultValue={user.password}
+              onChange={this.onChange}
+            />
+          </div>
+        )}
 
         {user.id ? (
           <button
@@ -127,28 +123,30 @@ class UserForm extends Component {
             update
           </button>
         ) : (
-            <button
-              onClick={() => {
-                createOrUpdateUser(user);
-              }}
-            >
-              create
+          <button
+            onClick={() => {
+              createOrUpdateUser(user);
+            }}
+          >
+            create
           </button>
-          )}
+        )}
       </div>
     );
   }
 }
-
-const mapDispatchToProps = (dispatch, setErrors) => {
+const mapStateToProps = ({ user }) => {
+  return { user };
+};
+const mapDispatchToProps = dispatch => {
   return {
     createOrUpdateUser: state => {
+      state = omit(state, 'name');
       dispatch(createOrUpdateUser(state)).catch(err => {
-        console.log(err.response.data);
-        setErrors(err.response.data);
+        setErrors(err.response.data, state);
       });
     }
   };
 };
 
-export default connect(null, mapDispatchToProps)(UserForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
