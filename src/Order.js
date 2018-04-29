@@ -11,9 +11,7 @@ const Order = ({ order, lineItems }) => {
         <div>Price</div>
         <div>Qty</div>
         <div>Total</div>
-        <div className="total">
-          <span>Order Total</span>
-        </div>
+        <div>Order Total</div>
         {lineItems && lineItems.map(lineItem => <LineItem key={lineItem.id} line={lineItem} />)}
       </div>
     </div>
