@@ -1,9 +1,20 @@
 .order{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  /* grid-template-rows: repeat(4, 1fr); */
+  grid-template-columns: repeat(5, 1fr) ;
+  max-width: 75%;
+  grid-row-gap: 20px;
 }
 .order-line{
+  border: greenyellow;
+  max-width: 100%;
   grid-column-start: 1;
-  grid-column-end: 5;
+  grid-column-end: 6;
+}
+.order-qty{
+  width: 35px ;
+}
+.product-description-text{
+  color: gray;
+  font-style: italic;
+  font-size: .8rem;
 }
