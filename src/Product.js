@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import AddToCart from './AddToCart';
 import { Container, Row, Col } from 'reactstrap';
 
@@ -13,6 +14,7 @@ const Product = ({ product, history }) => {
         <h2>${product && product.price}</h2> 
         <AddToCart product={product} history={history} />
       </span>
+
     </Container>
   ) : null;
 };
