@@ -75,7 +75,7 @@ class Nav extends Component {
                 <_NavLink href="/#/cart">Cart ({counter})</_NavLink>
               </NavItem>
               <NavItem>
-                <_NavLink to="/#/user">Account</_NavLink>
+                <_NavLink href="/#/user">Account</_NavLink>
               </NavItem>
             </_Nav>
           </Navbar>
