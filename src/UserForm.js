@@ -59,8 +59,8 @@ class UserForm extends Component {
 
             <input
               name="firstName"
-              placeholder="first name "
-              defaultValue=""
+              placeholder="first name"
+              defaultValue={user.name || ''}
               onChange={this.onChange}
             />
             <input
@@ -113,24 +113,9 @@ class UserForm extends Component {
             />
           </div>
         )}
-
-        {user.id ? (
-          <button
-            onClick={() => {
-              createOrUpdateUser(user);
-            }}
-          >
-            update
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              createOrUpdateUser(user);
-            }}
-          >
-            create
-          </button>
-        )}
+        <button onClick={() => {createOrUpdateUser(user); }}>
+          {user.id ? 'update' :  'create'}
+        </button>
       </div>
     );
   }

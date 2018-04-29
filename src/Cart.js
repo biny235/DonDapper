@@ -15,7 +15,7 @@ class Cart extends React.Component {
   }
 
   render() {
-    const { cart, lineItems } = this.props;
+    const { cart, lineItems, total } = this.props;
     const { onChange, onDelete, onSubmit } = this;
     return (
       <div>
@@ -28,21 +28,29 @@ class Cart extends React.Component {
               <div>Price</div>
               <div>Quantity</div>
               <div>Total</div>
+              <div>Remove</div>
               {lineItems.map(lineItem => (
                   <LineItem key={lineItem.id} line={lineItem} cart={true} />
               ))}
+              {cart.id && <button type='submit' disabled={!lineItems.length} onClick={onSubmit}>Check Out</button>}
+              <div className='order-total'>Total:</div>
+              <div>$ {total}</div>
             </div>
           )
         }
-        {cart.id && <button type='submit' disabled={!lineItems.length} onClick={onSubmit}>Check Out</button>}
+        
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ cart, lineItems, user }) => {
+const mapStateToProps = ({ cart, lineItems, user, products }) => {
+  const total = lineItems && lineItems.reduce((total, line)=>{
+    const product = products.find(_product=> _product.id === line.productId)
+    return total += product.price * line.quantity
+  }, 0)
   return {
-    cart, lineItems, user
+    cart, lineItems, user, total
   };
 };
 

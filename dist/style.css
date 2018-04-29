@@ -2,16 +2,20 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr) ;
   max-width: 75%;
-  grid-row-gap: 20px;
 }
 .order-line{
-  border: greenyellow;
+  min-height: 50px;
+  border-top: 1px solid grey;
   max-width: 100%;
   grid-column-start: 1;
   grid-column-end: 6;
 }
 .order-qty{
   width: 35px ;
+}
+.order-total{
+  grid-column-start: 3;
+  grid-column-end: 4;
 }
 .product-description-text{
   color: gray;
