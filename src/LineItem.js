@@ -6,19 +6,21 @@ const LineItem = ({ product, line, cart }) => {
     return null;
   }
   return (
-    <div className='order order-line'>
-      <div >{product.name}</div>
-      <div >{product.price}</div>
-      {!cart && <div >{line.quantity}</div>}
-      {!cart && <div >{line.quantity * product.price}</div>}
+    <div className="order order-line">
+      <div>{product.name}</div>
+      <div>{product.price}</div>
+      {!cart && <div>{line.quantity}</div>}
+      {!cart && <div>{line.quantity * product.price}</div>}
     </div>
   );
 };
 
 const mapStateToProps = ({ products }, { line, cart }) => {
-  const product = products && products.find(product => line.productId === product.id);
+  const product =
+    products && products.find(product => line.productId === product.id);
   return {
-    product, cart
+    product,
+    cart
   };
 };
 
