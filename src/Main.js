@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  fetchProducts,
-  fetchCategories,
-  fetchOrders,
-  fetchLineItems,
-  fetchCart,
-  authenticateUser
-} from './store';
+import { fetchProducts, fetchCategories, authenticateUser } from './store';
 
 import Nav from './Nav';
 import Products from './Products';
@@ -24,17 +17,9 @@ import { Container } from 'reactstrap';
 
 class Main extends Component {
   componentDidMount() {
-    window.localStorage.getItem('token') ?  this.props.authenticateUser() : null;
+    window.localStorage.getItem('token') && this.props.authenticateUser();
     this.props.fetchProducts();
     this.props.fetchCategories();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { user } = nextProps;
-    if(user.id){
-      this.props.fetchOrders(user.id);
-      this.props.fetchCart(user.id);
-    }
   }
 
   render() {
@@ -78,16 +63,8 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchCategories: () => dispatch(fetchCategories()),
-    fetchOrders: (id) => dispatch(fetchOrders(id)),
-    fetchCart: (id) => dispatch(fetchCart(id)),
     authenticateUser: () => dispatch(authenticateUser)
   };
 };
 
-const mapStateToProps = ({ user }) => {
-  return {
-    user
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(null, mapDispatchToProps)(Main);
