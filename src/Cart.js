@@ -1,25 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import LineItem from './LineItem';
-import { deleteLineItem, editLineItem, editOrder, fetchCart } from './store';
+import { editOrder, fetchCart } from './store';
 
 class Cart extends React.Component {
   constructor() {
     super();
-    this.onChange = this.onChange.bind(this);
-    this.onDelete = this.onDelete.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onChange(ev, id) {
-    const change = {};
-    change[ev.target.name] = ev.target.value;
-    this.props.editLineItem(change, id);
-  }
-
-  onDelete(ev, id) {
-    ev.preventDefault();
-    this.props.deleteLineItem(id);
   }
 
   onSubmit() {
@@ -28,7 +15,7 @@ class Cart extends React.Component {
   }
 
   render() {
-    const { cart, lineItems } = this.props;
+    const { cart, lineItems, total } = this.props;
     const { onChange, onDelete, onSubmit } = this;
     return (
       <div>
@@ -37,37 +24,38 @@ class Cart extends React.Component {
         {
           cart.id && (
             <div className='order'>
-              <div className='orderheader'>Item</div>
-              <div className='orderheader'>Price</div>
+              <div>Item</div>
+              <div>Price</div>
+              <div>Quantity</div>
+              <div>Total</div>
+              <div>Remove</div>
               {lineItems.map(lineItem => (
-                <div key={lineItem.id}>
-                  <LineItem line={lineItem} cart={true} />
-                  <form>
-                    <label>Quantity</label>
-                    <input onChange={(ev) => onChange(ev, lineItem.id)} name='quantity' value={lineItem.quantity} type='number' step='1' />
-                  </form>
-                  <button type='submit' onClick={(ev) => onDelete(ev, lineItem)}>Remove from Cart</button>
-                </div>
+                  <LineItem key={lineItem.id} line={lineItem} cart={true} />
               ))}
+              {cart.id && <button type='submit' disabled={!lineItems.length} onClick={onSubmit}>Check Out</button>}
+              <div className='order-total'>Total:</div>
+              <div>$ {total}</div>
             </div>
           )
         }
-        {cart.id && <button type='submit' disabled={!lineItems.length} onClick={onSubmit}>Check Out</button>}
+        
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ cart, lineItems, user }) => {
+const mapStateToProps = ({ cart, lineItems, user, products }) => {
+  const total = lineItems && lineItems.reduce((total, line)=>{
+    const product = products.find(_product=> _product.id === line.productId)
+    return total += product.price * line.quantity
+  }, 0)
   return {
-    cart, lineItems, user
+    cart, lineItems, user, total
   };
 };
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    deleteLineItem: (id) => dispatch(deleteLineItem(id)),
-    editLineItem: (lineItem, id) => dispatch(editLineItem(lineItem, id)),
     editOrder: (order, id) => dispatch(editOrder(order, id, history))
   };
 };
