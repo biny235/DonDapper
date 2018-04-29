@@ -19,6 +19,7 @@ const GET_USER = 'GET_USER';
 
 // CART
 const GET_CART = 'GET_CART';
+const CHECK_OUT = 'CHECK_OUT';
 
 // ORDERS
 const GET_ORDERS = 'GET_ORDERS';
@@ -73,12 +74,12 @@ const login = (user, dispatch) => {
     });
 };
 
-export const logout = dispatch => {
+const logout = dispatch => {
   window.localStorage.removeItem('token');
   return dispatch({ type: RESET_STATE });
 };
 
-export const authenticateUser = dispatch => {
+const authenticateUser = dispatch => {
   return authCall('get', '/api/users')
     .then(res => res.data)
     .then(user => {
@@ -107,7 +108,7 @@ const fetchCart = userId => {
       .then(res => res.data)
       .then(cart => {
         dispatch({ type: GET_CART, cart });
-        dispatch({ type: GET_LINE_ITEMS, lineItems: cart.lineItems });
+        dispatch({ type: GET_LINE_ITEMS, lineItems: cart.lineItems || [] });
       })
       .catch(err => console.log(err));
   };
@@ -119,6 +120,24 @@ const fetchOrders = userId => {
     authCall('get', `/api/users/${userId}/orders`)
       .then(res => res.data)
       .then(orders => dispatch({ type: GET_ORDERS, orders }));
+  };
+};
+
+const editOrder = (order, orderId, history) => {
+  return dispatch => {
+    axios
+      .put(`/api/orders/${orderId}`, order)
+      .then(res => res.data)
+      .then(order => {
+        dispatch({ type: CHECK_OUT, order });
+        dispatch(fetchCart(order.userId));
+      })
+      .then(() => {
+        if (history) {
+          history.push(`/user`);
+        }
+      })
+      .catch(err => console.log(err));
   };
 };
 
@@ -164,18 +183,8 @@ const deleteLineItem = (lineItem) => {
   };
 };
 
-//ERRORS
-const clearErrors = () => {
-  return dispatch => {
-    return dispatch({
-      type: CLEAR_ERROR
-    });
-  };
-};
-
 /*
-
-REUSEBLE CODE
+AUTHORIZATION
 */
 
 const authCall = (reqType, path, body) => {
@@ -187,7 +196,6 @@ const authCall = (reqType, path, body) => {
 };
 
 /*
-
 REDUCERS
 */
 
@@ -231,6 +239,8 @@ const ordersReducer = (state = [], action) => {
   switch (action.type) {
     case GET_ORDERS:
       return action.orders;
+    case CHECK_OUT:
+      return [...state, action.order];
     case RESET_STATE:
       return [];
   }
@@ -274,8 +284,11 @@ export {
   fetchUser,
   fetchCart,
   fetchOrders,
+  editOrder,
   addLineItem,
   editLineItem,
   deleteLineItem,
-  createOrUpdateUser
+  createOrUpdateUser,
+  logout,
+  authenticateUser
 };

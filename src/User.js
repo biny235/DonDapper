@@ -20,7 +20,6 @@ const User = ({ user, orders }) => {
 };
 
 const mapStateToProps = ({ user, orders }) => {
-  const userOrders = orders && orders.filter(order => order.userId === user.id);
   return { user, orders };
 };
 
