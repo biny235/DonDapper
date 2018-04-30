@@ -10,7 +10,7 @@ const Products = ({ products, categories }) => {
       <h1>Products</h1>
       <div className="products-grid">
         {categories.map((category)=>(
-          <div key={category.id}>
+          <div key={category.id }>
             <Category id={category.id} />
           </div>
         ))}
