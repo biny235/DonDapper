@@ -48,9 +48,10 @@ class Nav extends Component {
             <_Nav>
               <NavItem>
                 <DropDownMenu value={value} onChange={this.handleChange}>
+                  <MenuItem value={-1} primaryText="products" />
                   <MenuItem
-                    value={-1}
-                    primaryText="products"
+                    value={0}
+                    primaryText="shop all"
                     containerElement={<Link to={'/products'} />}
                   />
                   {categories.length
