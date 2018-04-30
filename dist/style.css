@@ -45,8 +45,5 @@
 
 .category-head {
     grid-column: 2 / 4
-}
 
-.disabled-link {
-    pointer-events: none;
 }
