@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import LineItem from './LineItem';
 
-const Order = ({ order, lineItems }) => {
+const Order = ({ order, lineItems, total }) => {
   return (
     <div>
       <h3>Order ID: {order && order.id}</h3>
@@ -13,7 +13,7 @@ const Order = ({ order, lineItems }) => {
         <div>Total</div>
         {lineItems && lineItems.map(lineItem => <LineItem key={lineItem.id} line={lineItem} />)}
         <div className='order-total'>Order Total</div>
-        <div>$$$$$</div>
+        <div>$ {total}</div>
       </div>
     </div>
   );
@@ -22,7 +22,11 @@ const Order = ({ order, lineItems }) => {
 const mapStateToProps = ({ user, orders, products }, { id }) => {
   const order = orders && id && orders.find(order => order.id === id);
   const lineItems = order && order.lineItems;
-  return { user, order, products, lineItems };
+  const total = lineItems && lineItems.reduce((total, line)=>{
+    const product = products.find(_product => _product.id === line.productId)
+    return total += product.price * line.quantity
+  }, 0)
+  return { user, order, products, lineItems, total };
 };
 
 export default connect(mapStateToProps)(Order);

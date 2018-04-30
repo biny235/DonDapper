@@ -20,7 +20,6 @@ class Products extends Component {
 
   render() {
     const { categories } = this.props;
-
     return (
       <div>
         <h1>Products</h1>
