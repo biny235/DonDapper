@@ -32,7 +32,9 @@ class Nav extends Component {
     const { products, categories } = this.props;
     let selectedCategory = categories.map(category => category.id === value);
     if (location.hash === '#/products')
-      value ? document.getElementById(value).scrollIntoView() : null;
+      value !== -1 && value
+        ? document.getElementById(value).scrollIntoView()
+        : null;
   }
 
   render() {
