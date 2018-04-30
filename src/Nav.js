@@ -17,7 +17,7 @@ class Nav extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      product: {},
+      category: {},
       value: -1,
       counter: props.lineItems.length
     };
@@ -29,19 +29,17 @@ class Nav extends Component {
   }
 
   handleChange(ev, index, value) {
-    const { products } = this.props;
-    let selectedProduct = products.find(product => product.id === value);
-    if (location.hash === '#/products' && value !== -1) {
-      const theProduct = document.getElementById(value).scrollIntoView();
-      this.setState({ value: -1, product: {} });
-    } else {
-      this.setState({ value, product: selectedProduct });
-    }
+    const { products, categories } = this.props;
+    let selectedCategory = categories.map(category => category.id === value);
+    if (location.hash === '#/products')
+      value !== -1 && value
+        ? document.getElementById(value).scrollIntoView()
+        : null;
   }
 
   render() {
     const { value, counter } = this.state;
-    const { products, categories } = this.props;
+    const { categories } = this.props;
     return (
       <MuiThemeProvider>
         <div>
@@ -50,31 +48,29 @@ class Nav extends Component {
             <_Nav>
               <NavItem>
                 <DropDownMenu value={value} onChange={this.handleChange}>
+                  <MenuItem value={-1} primaryText="products" />
                   <MenuItem
-                    value={-1}
-                    primaryText="products"
-                    //containerElement={<Link to={'/products'} />}
+                    value={0}
+                    primaryText="shop all"
+                    containerElement={<Link to={'/products'} />}
                   />
                   {categories.length
                     ? categories.map(category => {
                         return (
-                          //location.hash !== '#/products' ? (
                           <MenuItem
                             key={category.id}
                             value={category.id}
                             primaryText={category.name}
-                            // containerElement={
-                            // <Link to={`/products/${product.id}`} />
-                            // }
+                            containerElement={
+                              <Link
+                                to={{
+                                  pathname: '/products',
+                                  state: { id: category.id }
+                                }}
+                              />
+                            }
                           />
                         );
-                        //  ) : (
-                        //     <MenuItem
-                        //       key={product.id}
-                        //       value={product.id}
-                        //       primaryText={product.name}
-                        //     />
-                        //   );
                       })
                     : null}
                 </DropDownMenu>

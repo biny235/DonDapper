@@ -146,7 +146,6 @@ const addLineItem = (lineItem, history) => {
   return dispatch => {
     axios
       .post(`/api/lineItems`, lineItem, history)
-      // authCall('post', `/api/lineItems`, lineItem)
       .then(res => res.data)
       .then(lineItem => dispatch({ type: CREATE_LINE_ITEM, lineItem }))
       .then(() => {
@@ -162,7 +161,6 @@ const editLineItem = (lineItem, lineItemId, history) => {
   return dispatch => {
     axios
       .put(`/api/lineItems/${lineItemId}`, lineItem)
-      // authCall('put', `/api/lineItems/${lineItemId}`, lineItem)
       .then(res => res.data)
       .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
       .then(() => {

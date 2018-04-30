@@ -31,11 +31,17 @@ class Main extends Component {
             <LoginForm />
             <Route path="/" exact render={() => <Home />} />
             <Switch>
-              <Route path="/products" exact render={() => <Products />} />
+              <Route
+                path="/products"
+                exact
+                render={({ history }) => <Products history={history} />}
+              />
               <Route
                 path="/products/:id"
                 exact
-                render={({ match, history }) => <Product id={match.params.id * 1} history={history} />}
+                render={({ match, history }) => (
+                  <Product id={match.params.id * 1} history={history} />
+                )}
               />
               <Route path="/categories" exact render={() => <Categories />} />
               <Route
@@ -43,7 +49,11 @@ class Main extends Component {
                 exact
                 render={({ match }) => <Category id={match.params.id * 1} />}
               />
-              <Route path="/cart" exact render={({ history }) => <Cart history={history} />} />
+              <Route
+                path="/cart"
+                exact
+                render={({ history }) => <Cart history={history} />}
+              />
               <Route
                 path="/orders/:id"
                 exact

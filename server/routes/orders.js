@@ -36,7 +36,7 @@ router.delete('/:id', (req, res, next) => {
 });
 
 router.put('/:id', (req, res, next) => {
-  Order.findById(req.params.id)
+  Order.findById(req.params.id,  {include: [{ all: true}]})
     .then(order => {
       Object.assign(order, req.body);
       return order.save();
