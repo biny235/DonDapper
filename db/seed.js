@@ -1,7 +1,7 @@
 const db = require('./index.js');
 const conn = require('./conn');
 const faker = require('faker');
-const { Category, Product, Order, LineItem, User } = db.models;
+const { Category, Product, Order, LineItem, User, Address } = db.models;
 
 const generateProduct = () => {
   return {
@@ -11,6 +11,17 @@ const generateProduct = () => {
     price: faker.commerce.price(),
     quantity: 5,
     categoryId: Math.floor(Math.random() * 3) + 1
+  };
+};
+const generateAddress = () => {
+  return {
+    streetName: faker.address.streetName(),
+    secondaryAddress: faker.address.secondaryAddress(),
+    city: faker.address.city(),
+    state: faker.address.state(),
+    zipCode: faker.address.zipCode(),
+    latitude: faker.address.latitude(),
+    longitude: faker.address.longitude()
   };
 };
 
@@ -64,28 +75,36 @@ const seed = () => {
         Product.create(generateProduct())
       ]);
     })
-     .then(() => {
+    .then(() => {
       return Promise.all([
         User.create({
           fullName: 'Test User',
           email: 'test@test.com',
           password: '123456'
-        }).then(user => Order.create({ userId: user.id })),
-        User.create(generateUser()).then(user =>
-          Order.create({ userId: user.id })
-        ),
-        User.create(generateUser()).then(user =>
-          Order.create({ userId: user.id })
-        ),
-        User.create(generateUser()).then(user =>
-          Order.create({ userId: user.id })
-        ),
-        User.create(generateUser()).then(user =>
-          Order.create({ userId: user.id })
-        ),
-        User.create(generateUser()).then(user =>
-          Order.create({ userId: user.id })
-        )
+        }).then(user => {
+          Order.create({ userId: user.id });
+          Address.create(generateAddress(), { userId: user.id });
+        }),
+        User.create(generateUser()).then(user => {
+          Order.create({ userId: user.id });
+          Address.create(generateAddress(), { userId: user.id });
+        }),
+        User.create(generateUser()).then(user => {
+          Order.create({ userId: user.id });
+          Address.create(generateAddress(), { userId: user.id });
+        }),
+        User.create(generateUser()).then(user => {
+          Order.create({ userId: user.id });
+          Address.create(generateAddress(), { userId: user.id });
+        }),
+        User.create(generateUser()).then(user => {
+          Order.create({ userId: user.id });
+          Address.create(generateAddress(), { userId: user.id });
+        }),
+        User.create(generateUser()).then(user => {
+          Order.create({ userId: user.id });
+          Address.create(generateAddress(), { userId: user.id });
+        })
       ]);
     })
 
@@ -98,19 +117,29 @@ const seed = () => {
         generateOrder(),
         generateOrder(),
         generateOrder(),
-        generateOrder(),
-      ])
+        generateOrder()
+      ]);
     });
+  // .then(() => {
+  //   return Promise.all([
+  //     Address.create(generateAddress()),
+  //     Address.create(generateAddress()),
+  //     Address.create(generateAddress()),
+  //     Address.create(generateAddress()),
+  //     Address.create(generateAddress()),
+  //     Address.create(generateAddress())
+  //   ]);
+  // });
 };
-const main = ()=>{
+const main = () => {
   conn
-  .sync({ force: true })
-  .then(() => console.log('synced'))
-  .then(() => seed())
-  .then(() => {
-    console.log('seeded')
-    conn.close()
-  })
-  .catch(console.error);
-}
+    .sync({ force: true })
+    .then(() => console.log('synced'))
+    .then(() => seed())
+    .then(() => {
+      console.log('seeded');
+      conn.close();
+    })
+    .catch(console.error);
+};
 main();

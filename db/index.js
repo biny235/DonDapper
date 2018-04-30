@@ -7,16 +7,21 @@ const Product = require('./Product');
 const Order = require('./Order');
 const LineItem = require('./LineItem');
 const User = require('./User');
+const Address = require('./Address');
 
 Product.belongsTo(Category);
 Product.hasMany(LineItem);
 
 Order.hasMany(LineItem);
+Order.belongsTo(Address);
 
 LineItem.belongsTo(Order);
 LineItem.belongsTo(Product);
 
 User.hasMany(Order);
+User.hasMany(Address);
+
+//Address.hasMany(User);
 
 User.findOrCreateCart = function(userId) {
   return Order.findOrCreate({
@@ -60,6 +65,7 @@ module.exports = {
     Product,
     Order,
     LineItem,
-    User
+    User,
+    Address
   }
 };
