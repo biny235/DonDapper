@@ -9,7 +9,6 @@ class Products extends Component {
     super();
   }
   componentDidMount() {
-    console.log(this.props.history, 'yey');
     if (
       this.props.history.location.state &&
       document.getElementById(this.props.history.location.state)
