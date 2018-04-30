@@ -31,13 +31,8 @@ class Nav extends Component {
   handleChange(ev, index, value) {
     const { products, categories } = this.props;
     let selectedCategory = categories.map(category => category.id === value);
-    if (location.hash !== '#/products') {
-      // window.location.href = '/#/products';
-      //setTimeout(() => document.getElementById(value).scrollIntoView(), 100);
-      // console.log('ok');
-    } else {
+    if (location.hash === '#/products')
       value ? document.getElementById(value).scrollIntoView() : null;
-    }
   }
 
   render() {
