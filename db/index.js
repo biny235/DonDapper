@@ -21,6 +21,8 @@ LineItem.belongsTo(Product);
 User.hasMany(Order);
 User.hasMany(Address);
 
+Address.belongsTo(User);
+
 //Address.hasMany(User);
 
 User.findOrCreateCart = function(userId) {
