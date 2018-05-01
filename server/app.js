@@ -4,10 +4,8 @@ const path = require('path');
 
 app.use(require('body-parser').json());
 
-
 app.use('/', express.static(path.join(__dirname + '/../dist')));
-app.use('/dist', express.static(path.join(__dirname + '/../node_modules')))
-
+app.use('/dist', express.static(path.join(__dirname + '/../node_modules')));
 
 app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname + '/../dist/index.html'));

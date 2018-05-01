@@ -50,7 +50,9 @@ User.authenticate = function(user) {
 User.exchangeToken = function(token) {
   try {
     const id = jwt.decode(token, secret).id;
-    return User.findById(id).then(user => {
+    return User.findById(id, {
+      include: [{ model: Address, where: { userId: id } }]
+    }).then(user => {
       if (user) {
         return user;
       }

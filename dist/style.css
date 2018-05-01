@@ -24,7 +24,7 @@
 .product-description-text {
     color: gray;
     font-style: italic;
-    font-size: .8rem;
+    font-size: 0.8rem;
 }
 
 .product {
@@ -41,10 +41,22 @@
 .category-products {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-column: 1 / 4
+    grid-column: 1 / 4;
 }
 
 .category-head {
-    grid-column: 2 / 4
+    grid-column: 2 / 4;
+}
 
+.parallax {
+    /* The image used */
+    background-image: url('images/img1-ad17af8da9.jpg');
+    /* Set a specific height */
+    min-height: 500px;
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
 }
