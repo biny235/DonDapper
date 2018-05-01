@@ -23,7 +23,7 @@ User.hasMany(Address);
 
 Address.belongsTo(User);
 
-//Address.hasMany(User);
+Address.hasMany(Order);
 
 User.findOrCreateCart = function(userId) {
   return Order.findOrCreate({
