@@ -38,17 +38,17 @@ class LoginForm extends React.Component {
     if (user.name) {
       return (
         <div>
-          <button type="reset" onClick={onSignOut}>
+          <button className="btn btn-danger" type="reset" onClick={onSignOut}>
             Sign Out
           </button>
         </div>
       );
     }
     return (
-      <div>
-        <input onChange={onChange} name="email" type="email" />
-        <input onChange={onChange} name="password" type="password" />
-        <button type="submit" onClick={onSubmit}>
+      <div className="form-inline">
+        <input className="form-control" onChange={onChange} name="email" type="email" />
+        <input className="form-control" onChange={onChange} name="password" type="password" />
+        <button className="btn btn-success" type="submit" onClick={onSubmit}>
           Sign In
         </button>
       </div>

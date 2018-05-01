@@ -55,8 +55,8 @@ class UserForm extends Component {
           </Alert>
         ) : null }
       
-        <div>
-          <h1>{user.id ? user.name : "Create a User"}</h1>
+        <div className="">
+          <h1>{user.id ? user.name : ""}</h1>
           <input
             name="firstName"
             placeholder='First Name'

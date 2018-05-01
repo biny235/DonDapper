@@ -24,16 +24,7 @@ class LoginModal extends React.Component{
     console.log(slideIndex)
     return (
 
-      <div>
-        <div>
-          {!user.id && 
-
-            (<span>
-              <button onClick={()=>onChange(0)} >Login</button>
-              <button onClick={()=>onChange(1)} >Sign Up</button>
-              </span>
-            )}
-        </div>
+      <div className="card">
         {
         slideIndex === 0 ? 
           <LoginForm />
@@ -43,6 +34,13 @@ class LoginModal extends React.Component{
             :
             <UserForm />
         }
+        {!user.id && 
+          (<div className='btn-group'>
+            <button className="btn btn-secondary" onClick={()=>onChange(0)}>Login</button>
+            <button className="btn btn-secondary" onClick={()=>onChange(1)}>Sign Up</button>
+            </div>
+        )}
+        
       </div>
     )
   }
