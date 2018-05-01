@@ -9,10 +9,10 @@ let setErrors = function(err, user) {
   this.setState({ errors: err });
 };
 class UserForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      user: {},
+      user: props.user || {},
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -22,17 +22,16 @@ class UserForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
-    if (user.id) this.setState({ user: user });
+    if(user.id !== this.state.user.id) this.setState({ user: user });
   }
 
   componentWillMount() {
     const { user } = this.props;
-    if (user.id) this.setState({ user });
   }
 
   onChange(ev) {
     let { user } = this.state;
-    user = omit(user, 'name');
+    // user = omit(user, 'name');
     let key = ev.target.name;
     let value = ev.target.value;
     user[key] = value;
@@ -46,79 +45,51 @@ class UserForm extends Component {
   render() {
     const { createOrUpdateUser } = this.props;
     const { errors, user } = this.state;
-
+    const { onChange } = this;
+    console.log(user)
     return (
       <div>
         {errors ? (
           <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
-        ) : !user.id ? (
-          <div>
-            <h1>Create User</h1>
+        ) : null }
+      
+        <div className="">
+          <h1>{user.id ? user.name : ""}</h1>
+          <input
+            name="firstName"
+            placeholder='First Name'
+            defaultValue={user.firstName || ''}
+            onChange={onChange}
+          />
+          <input
+            name="lastName"
+            placeholder='Last Name'
+            defaultValue={user.lastName || ''}
+            onChange={onChange}
+          />
 
-            <input
-              name="firstName"
-              placeholder="first name"
-              defaultValue={user.name || ''}
-              onChange={this.onChange}
-            />
-            <input
-              name="lastName"
-              placeholder="last name "
-              defaultValue=""
-              onChange={this.onChange}
-            />
-            <input
-              name="email"
-              placeholder="email"
-              defaultValue=""
-              onChange={this.onChange}
-            />
-            <input
-              name="password"
-              placeholder="password"
-              defaultValue=""
-              onChange={this.onChange}
-            />
-          </div>
-        ) : (
-          <div>
-            <h1>{user.name}</h1>
-            <input
-              name="firstName"
-              placeholder={user.firstName}
-              defaultValue={user.firstName}
-              onChange={this.onChange}
-            />
-            <input
-              name="lastName"
-              placeholder={user.lastName}
-              defaultValue={user.lastName}
-              onChange={this.onChange}
-            />
-
-            <input
-              name="email"
-              placeholder={user.email}
-              defaultValue={user.email}
-              onChange={this.onChange}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder={user.password}
-              defaultValue={user.password}
-              onChange={this.onChange}
-            />
-          </div>
-        )}
-        <button onClick={() => {createOrUpdateUser(user); }}>
-          {user.id ? 'update' :  'create'}
-        </button>
+          <input
+            name="email"
+            placeholder='Email'
+            defaultValue={user.email || ''}
+            onChange={onChange}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder='password'
+            defaultValue={user.password || ''}
+            onChange={onChange}
+          />
+          <button onClick={() => {createOrUpdateUser(user); }}>
+            {user.id ? 'update' :  'create'}
+          </button>
       </div>
-    );
-  }
+      </div>
+        
+    )}
 }
 const mapStateToProps = ({ user }) => {
   return { user };
