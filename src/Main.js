@@ -12,7 +12,7 @@ import User from './User';
 import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
-import LoginForm from './LoginForm';
+import LoginModal from './LoginModal';
 import { Container } from 'reactstrap';
 
 class Main extends Component {
@@ -28,7 +28,6 @@ class Main extends Component {
         <div>
           <Nav history={history} />
           <Container>
-            <LoginForm />
             <Route path="/" exact render={() => <Home />} />
             <Switch>
               <Route
@@ -60,6 +59,7 @@ class Main extends Component {
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
               <Route path="/user" exact render={() => <User />} />
+              <Route path="/test/login" exact render={() => <LoginModal />} />
             </Switch>
           </Container>
         </div>
