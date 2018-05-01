@@ -83,27 +83,39 @@ const seed = () => {
           password: '123456'
         }).then(user => {
           Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address =>
+            address.update({ userId: user.id })
+          );
         }),
         User.create(generateUser()).then(user => {
           Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address =>
+            address.update({ userId: user.id })
+          );
         }),
         User.create(generateUser()).then(user => {
           Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address =>
+            address.update({ userId: user.id })
+          );
         }),
         User.create(generateUser()).then(user => {
           Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address =>
+            address.update({ userId: user.id })
+          );
         }),
         User.create(generateUser()).then(user => {
           Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address =>
+            address.update({ userId: user.id })
+          );
         }),
         User.create(generateUser()).then(user => {
           Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address =>
+            address.update({ userId: user.id })
+          );
         })
       ]);
     })
@@ -120,16 +132,6 @@ const seed = () => {
         generateOrder()
       ]);
     });
-  // .then(() => {
-  //   return Promise.all([
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress())
-  //   ]);
-  // });
 };
 const main = () => {
   conn

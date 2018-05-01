@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const db = require('../../db');
 const auth = require('../auth');
-const { User, Order, LineItem } = db.models;
+const { User, Order, LineItem, Address } = db.models;
 
 router.get('/', (req, res, next) => {
   User.exchangeToken(req.headers.token)
@@ -46,6 +46,18 @@ router.get('/:id/orders', auth, (req, res, next) => {
       })
     )
     .then(orders => res.send(orders))
+    .catch(next);
+});
+router.get('/:id/addresses', auth, (req, res, next) => {
+  User.findById(req.params.id)
+    .then(user =>
+      user.getAddresses({
+        where: { userId: user.id }
+      })
+    )
+    .then(addresses => {
+      res.send(addresses);
+    })
     .catch(next);
 });
 
