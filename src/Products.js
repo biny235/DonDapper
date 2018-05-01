@@ -23,6 +23,7 @@ class Products extends Component {
     return (
       <div>
         <h1>Products</h1>
+        <div className="parallax" />
         <div className="products-grid">
           {categories.map(category => (
             <div key={category.id} id={category.id}>

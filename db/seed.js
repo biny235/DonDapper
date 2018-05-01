@@ -34,7 +34,7 @@ const generateUser = () => {
 };
 
 const generateOrder = () => {
-  orderId = Math.floor(Math.random() * 6) + 1;
+  let orderId = Math.floor(Math.random() * 6) + 1;
   return Promise.all([
     LineItem.create({
       quantity: Math.floor(Math.random() * 5) + 1,
@@ -82,28 +82,40 @@ const seed = () => {
           email: 'test@test.com',
           password: '123456'
         }).then(user => {
-          Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address => {
+            address.update({ userId: user.id });
+            Order.create({ userId: user.id, addressId: address.id });
+          });
         }),
         User.create(generateUser()).then(user => {
-          Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address => {
+            address.update({ userId: user.id });
+            Order.create({ userId: user.id, addressId: address.id });
+          });
         }),
         User.create(generateUser()).then(user => {
-          Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address => {
+            address.update({ userId: user.id });
+            Order.create({ userId: user.id, addressId: address.id });
+          });
         }),
         User.create(generateUser()).then(user => {
-          Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address => {
+            address.update({ userId: user.id });
+            Order.create({ userId: user.id, addressId: address.id });
+          });
         }),
         User.create(generateUser()).then(user => {
-          Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address => {
+            address.update({ userId: user.id });
+            Order.create({ userId: user.id, addressId: address.id });
+          });
         }),
         User.create(generateUser()).then(user => {
-          Order.create({ userId: user.id });
-          Address.create(generateAddress(), { userId: user.id });
+          return Address.create(generateAddress()).then(address => {
+            address.update({ userId: user.id });
+            Order.create({ userId: user.id, addressId: address.id });
+          });
         })
       ]);
     })
@@ -120,16 +132,6 @@ const seed = () => {
         generateOrder()
       ]);
     });
-  // .then(() => {
-  //   return Promise.all([
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress()),
-  //     Address.create(generateAddress())
-  //   ]);
-  // });
 };
 const main = () => {
   conn

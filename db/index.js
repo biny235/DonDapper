@@ -21,7 +21,9 @@ LineItem.belongsTo(Product);
 User.hasMany(Order);
 User.hasMany(Address);
 
-//Address.hasMany(User);
+Address.belongsTo(User);
+
+Address.hasMany(Order);
 
 User.findOrCreateCart = function(userId) {
   return Order.findOrCreate({
@@ -48,7 +50,9 @@ User.authenticate = function(user) {
 User.exchangeToken = function(token) {
   try {
     const id = jwt.decode(token, secret).id;
-    return User.findById(id).then(user => {
+    return User.findById(id, {
+      include: [{ model: Address, where: { userId: id } }]
+    }).then(user => {
       if (user) {
         return user;
       }
