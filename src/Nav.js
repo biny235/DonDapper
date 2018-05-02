@@ -12,6 +12,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
+import LoginModal from './LoginModal';
 
 class Nav extends Component {
   constructor(props) {
@@ -19,9 +20,11 @@ class Nav extends Component {
     this.state = {
       category: {},
       value: -1,
-      counter: props.lineItems.length
+      counter: props.lineItems.length,
+      account: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.accountClick = this.accountClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,53 +40,62 @@ class Nav extends Component {
         : null;
   }
 
+  accountClick(ev){
+    const account = !this.state.account
+    this.setState({account})
+  }
+
   render() {
-    const { value, counter } = this.state;
+    const { value, counter, account } = this.state;
     const { categories } = this.props;
+    const { handleChange, accountClick } = this;
     return (
       <MuiThemeProvider>
         <div>
-          <Navbar color="light" light>
-            <NavbarBrand href="/#/">Grace Shopper</NavbarBrand>
-            <_Nav>
-              <NavItem>
-                <DropDownMenu value={value} onChange={this.handleChange}>
-                  <MenuItem value={-1} primaryText="products" />
-                  <MenuItem
-                    value={0}
-                    primaryText="shop all"
-                    containerElement={<Link to={'/products'} />}
-                  />
-                  {categories.length
-                    ? categories.map(category => {
-                        return (
-                          <MenuItem
-                            key={category.id}
-                            value={category.id}
-                            primaryText={category.name}
-                            containerElement={
-                              <Link
-                                to={{
-                                  pathname: '/products',
-                                  state: { id: category.id }
-                                }}
-                              />
-                            }
-                          />
-                        );
-                      })
-                    : null}
-                </DropDownMenu>
-              </NavItem>
-              <NavItem>
-                <_NavLink href="/#/cart">Cart ({counter})</_NavLink>
-              </NavItem>
-              <NavItem>
-                <_NavLink href="/#/user">Account</_NavLink>
-              </NavItem>
-            </_Nav>
-          </Navbar>
-        </div>
+          <div>
+            <Navbar color="light" light>
+              <NavbarBrand href="/#/">Grace Shopper</NavbarBrand>
+              <_Nav>
+                <NavItem>
+                  <DropDownMenu value={value} onChange={handleChange}>
+                    <MenuItem value={-1} primaryText="products" />
+                    <MenuItem
+                      value={0}
+                      primaryText="shop all"
+                      containerElement={<Link to={'/products'} />}
+                    />
+                    {categories.length
+                      ? categories.map(category => {
+                          return (
+                            <MenuItem
+                              key={category.id}
+                              value={category.id}
+                              primaryText={category.name}
+                              containerElement={
+                                <Link
+                                  to={{
+                                    pathname: '/products',
+                                    state: { id: category.id }
+                                  }}
+                                />
+                              }
+                            />
+                          );
+                        })
+                      : null}
+                  </DropDownMenu>
+                </NavItem>
+                <NavItem>
+                  <_NavLink href="/#/cart">Cart ({counter})</_NavLink>
+                </NavItem>
+                <NavItem>
+                  <_NavLink onClick={accountClick}>Account</_NavLink>
+                </NavItem>
+              </_Nav>
+            </Navbar>
+          </div>
+        {account && <LoginModal />}
+      </div>
       </MuiThemeProvider>
     );
   }

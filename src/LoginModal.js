@@ -21,26 +21,27 @@ class LoginModal extends React.Component{
     const { slideIndex } = this.state;
     const { user } = this.props;
     const { onChange } = this;
-    console.log(slideIndex)
     return (
 
-      <div className="card">
-        {
-        slideIndex === 0 ? 
-          <LoginForm />
-          :
-          user.id ? 
-            null
+      <div className="card login-modal" >
+          {!user.id && 
+            (<div className='card-header btn-group'>
+                <button className="btn btn-secondary" onClick={()=>onChange(0)}>Login</button>
+                <button className="btn btn-secondary" onClick={()=>onChange(1)}>Sign Up</button>
+              </div>
+          )}
+        <div className="card-body">
+          {
+          slideIndex === 0 ? 
+            <LoginForm />
             :
-            <UserForm />
-        }
-        {!user.id && 
-          (<div className='btn-group'>
-            <button className="btn btn-secondary" onClick={()=>onChange(0)}>Login</button>
-            <button className="btn btn-secondary" onClick={()=>onChange(1)}>Sign Up</button>
-            </div>
-        )}
-        
+            user.id ? 
+              null
+              :
+              <UserForm />
+          }
+        </div>
+          
       </div>
     )
   }

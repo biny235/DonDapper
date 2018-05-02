@@ -23,7 +23,7 @@ class UserAddresses extends Component {
     return (
       <MuiThemeProvider>
         <DropDownMenu value={value} onChange={onChange}>
-          <MenuItem value={-1} primaryText="choose an address" />
+          <MenuItem value={-1} primaryText="Choose an Address" />
           {addresses
             ? addresses.map(address => (
                 <MenuItem
