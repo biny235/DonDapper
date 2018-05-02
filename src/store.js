@@ -86,7 +86,8 @@ const authenticateUser = dispatch => {
       dispatch({ type: GET_USER, user });
       dispatch(fetchCart(user.id));
       dispatch(fetchOrders(user.id));
-    });
+    })
+    .catch(err => window.localStorage.removeItem('token'))
 };
 
 const createOrUpdateUser = user => {
