@@ -22,19 +22,12 @@ class Products extends Component {
     const { categories } = this.props;
     return (
       <div>
-        <h1>Products</h1>
         <div className="parallax" />
         <div className="products">
           <div className="products-grid">
             {categories.map(category => (
               <div key={category.id} id={category.id}>
                 <Category id={category.id} />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
               </div>
             ))}
           </div>
