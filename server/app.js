@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const googleSecret = require('../secret').google
-
+const googleSecret = process.env.G_SECRET || require('../secret').google;
 
 const googleMapsClient = require('@google/maps').createClient({
   key: googleSecret,
@@ -21,19 +20,12 @@ app.get('/', (req, res, next) => {
 app.post('/google/getpredictions', (req, res, next)=>{
   googleMapsClient.placesAutoComplete({input: req.body.input}).asPromise()
     .then(resp => resp.json.predictions)
-    .then(predictions => {
-      res.send(predictions)
-    })
+    .then(predictions => res.send(predictions))
 })
 app.post('/google/getplace', (req, res, next) =>{
-  console.log(req.body.query)
   googleMapsClient.reverseGeocode({place_id: req.body.query,}).asPromise()
-  .then(resp => {
-    console.log(resp.json.results)
-    res.send(resp.json.results)
-  })
-  .catch(err => console.log(err))
-
+  .then(resp => res.send(resp.json.results))
+  .catch(next)
 })
 
 app.use('/api', require('./routes'));

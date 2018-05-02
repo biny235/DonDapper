@@ -6,7 +6,7 @@
 
 .order-line {
     min-height: 50px;
-    border-top: .5px solid lightgray;
+    border-top: 0.5px solid lightgray;
     max-width: 100%;
     grid-column-start: 1;
     grid-column-end: 6;
@@ -48,7 +48,7 @@
     grid-column: 2 / 4;
 }
 
-.login-modal{
+.login-modal {
     position: absolute;
     right: 0px;
     width: 18rem;
@@ -58,11 +58,32 @@
     /* The image used */
     background-image: url('images/img1-ad17af8da9.jpg');
     /* Set a specific height */
-    min-height: 500px;
+    min-height: 750px;
     /* Create the parallax scrolling effect */
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    width: 120%;
+}
+
+.home {
+    background-image: url('images/Gentlemans-Box.jpg');
+    background-size: cover;
     width: 100%;
+    height: 100%;
+    color: lightblue;
+}
+
+.home h1 {
+    color: lightskyblue;
+}
+
+.products {
+    background-image: url('images/Mens_grooming_1.jpg');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 200%;
 }

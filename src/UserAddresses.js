@@ -29,7 +29,7 @@ class UserAddresses extends Component {
                 <MenuItem
                   key={address.id}
                   value={address.id}
-                  primaryText={address.name}
+                  primaryText={address.fullAddress}
                 />
               ))
             : null}
