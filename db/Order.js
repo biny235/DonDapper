@@ -1,10 +1,14 @@
-const conn = require("./conn");
+const conn = require('./conn');
 const { Sequelize } = conn;
 
-const Order = conn.define("order", {
+const Order = conn.define('order', {
   status: {
     type: Sequelize.STRING,
-    defaultValue: "cart"
+    defaultValue: 'cart'
+  },
+  shipped: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 });
 

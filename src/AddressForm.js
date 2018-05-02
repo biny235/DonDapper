@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
 import omit from 'object.omit';
-import { createOrUpdateUser } from './store';
+import { createOrUpdateAddress } from './store';
 import { connect } from 'react-redux';
+import EditableLabel from 'react-inline-editing';
 
 let setErrors = function(err, user) {
   if (!user.id) this.setState({ user: {} });
   this.setState({ errors: err });
 };
-class UserForm extends Component {
+class AddressForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: props.user || {},
+      addresses: props.user.addresses || {},
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -31,7 +33,6 @@ class UserForm extends Component {
 
   onChange(ev) {
     let { user } = this.state;
-    // user = omit(user, 'name');
     let key = ev.target.name;
     let value = ev.target.value;
     user[key] = value;
@@ -43,8 +44,8 @@ class UserForm extends Component {
   }
 
   render() {
-    const { createOrUpdateUser } = this.props;
-    const { errors, user } = this.state;
+    const { createOrUpdateAddress } = this.props;
+    const { errors, user, addresses } = this.state;
     const { onChange } = this;
     return (
       <div>
@@ -56,11 +57,11 @@ class UserForm extends Component {
 
         <div className="">
           <h1>{user.id ? user.name : ''}</h1>
-          <input
-            name="firstName"
-            placeholder="First Name"
-            defaultValue={user.firstName || ''}
-            onChange={onChange}
+          <EditableLabel
+            name="streetName"
+            text={address.name}
+            value={address.name}
+            change={console.log('yey')}
           />
           <input
             name="lastName"
@@ -100,12 +101,12 @@ const mapStateToProps = ({ user }) => {
 const mapDispatchToProps = dispatch => {
   return {
     createOrUpdateUser: state => {
-      state = omit(state, 'name');
-      dispatch(createOrUpdateUser(state)).catch(err => {
+      state = omit(state, 'fullAddress');
+      dispatch(createOrUpdateAddress(state)).catch(err => {
         setErrors(err.response.data, state);
       });
     }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
+export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);

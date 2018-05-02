@@ -59,7 +59,7 @@ const Address = conn.define(
   },
   {
     getterMethods: {
-      name() {
+      fullAddress() {
         return `${this.streetName} ${this.secondaryAddress} ${this.city} ${
           this.state
         } ${this.zipCode}`;

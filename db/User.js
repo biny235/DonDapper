@@ -55,6 +55,10 @@ const User = conn.define(
           msg: 'must enter a password'
         }
       }
+    },
+    admin: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     }
   },
   {
