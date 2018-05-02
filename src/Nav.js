@@ -40,14 +40,14 @@ class Nav extends Component {
         : null;
   }
 
-  accountClick(ev){
-    const account = !this.state.account
-    this.setState({account})
+  accountClick(ev) {
+    const account = !this.state.account;
+    this.setState({ account });
   }
 
   render() {
     const { value, counter, account } = this.state;
-    const { categories } = this.props;
+    const { categories, user } = this.props;
     const { handleChange, accountClick } = this;
     return (
       <MuiThemeProvider>
@@ -91,20 +91,26 @@ class Nav extends Component {
                 <NavItem>
                   <_NavLink onClick={accountClick}>Account</_NavLink>
                 </NavItem>
+                {user.admin ?(
+                <NavItem>
+                  <_NavLink href="/#/dashboard">DashBoard</_NavLink>
+                </NavItem>):null
+                }
               </_Nav>
             </Navbar>
           </div>
-        {account && <LoginModal />}
-      </div>
+          {account && <LoginModal />}
+        </div>
       </MuiThemeProvider>
     );
   }
 }
-const mapStateToProps = ({ categories, products, lineItems }) => {
+const mapStateToProps = ({ categories, products, lineItems, user }) => {
   return {
     products,
     lineItems,
-    categories
+    categories,
+    user
   };
 };
 

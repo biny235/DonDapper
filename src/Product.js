@@ -12,7 +12,9 @@ const Product = ({ product, history }) => {
       </span>
       <span>
         <h1>{product && product.name}</h1>
-        <span className="product-description-text">{product.description}</span>
+        <span className="product-description-text">
+          <em>{product.description}</em>
+        </span>
         <h2>${product && product.price}</h2>
         <AddToCart product={product} history={history} />
       </span>
