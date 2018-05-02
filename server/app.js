@@ -22,7 +22,6 @@ app.post('/google', (req, res, next)=>{
   googleMapsClient.placesAutoComplete({input: req.body.input}).asPromise()
     .then(resp => resp.json.predictions)
     .then(predictions => {
-      console.log(predictions)
       res.send(predictions)
     })
 })
