@@ -62,7 +62,7 @@ const Address = conn.define(
       name() {
         return `${this.streetName} ${this.secondaryAddress} ${this.city} ${
           this.state
-        } ${this.postcode}`;
+        } ${this.zipCode}`;
       }
     }
   }

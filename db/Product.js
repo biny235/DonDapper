@@ -11,7 +11,7 @@ const Product = conn.define('product', {
   },
   imageUrl: {
     type: Sequelize.STRING,
-    defaultValue: '/images/default-photo.jpg'
+    defaultValue: 'http://via.placeholder.com/500x500'
   },
   description: {
     type: Sequelize.TEXT,
@@ -21,7 +21,8 @@ const Product = conn.define('product', {
     type: Sequelize.FLOAT
   },
   quantity: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 100
   }
 });
 
