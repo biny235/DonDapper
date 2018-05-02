@@ -12,26 +12,34 @@ export default class Autocomplete extends React.Component{
   }
 
   onChange(ev){
-    axios.post('/google', {input: ev.target.value})
-    .then(res => {
-      console.log(res)
-      return res.data
-    })
-    .then(predictions => {
-      console.log(predictions)
-      this.setState({predictions})
-    })
+    ev.target.value.length === 0 ? 
+      this.setState({predictions: []})
+      :
+      ev.target.value.length > 5 ?
+        axios.post('/google/getpredictions', {input: ev.target.value})
+        .then(res => res.data)
+        .then(predictions => {
+          console.log(predictions)
+          this.setState({predictions})
+        })
+        :
+        null
+  }
+  onClick(placeId){
+    axios.post('/google/getplace', {query: placeId})
+      .then(res =>console.log(res.data))
+      .catch(err => console.log(err))
   }
 
   render(){
     const { predictions } = this.state;
-    console.log(predictions)
+    const { onChange, onClick } = this;
     return(
       <div>
-        <input onChange={this.onChange}/>
+        <input onChange={onChange}/>
         <ul>
           {predictions.length ? predictions.map(pred =>(
-            <li key={pred.place_id}>{pred.description}</li>
+            <li key={pred.place_id} onClick={()=>onClick(pred.place_id)}>{pred.description}</li>
           )) : null}
         </ul>
       </div>

@@ -18,13 +18,24 @@ app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname + '/../dist/index.html'));
 });
 
-app.post('/google', (req, res, next)=>{
+app.post('/google/getpredictions', (req, res, next)=>{
   googleMapsClient.placesAutoComplete({input: req.body.input}).asPromise()
     .then(resp => resp.json.predictions)
     .then(predictions => {
       res.send(predictions)
     })
 })
+app.post('/google/getplace', (req, res, next) =>{
+  console.log(req.body.query)
+  googleMapsClient.reverseGeocode({place_id: req.body.query,}).asPromise()
+  .then(resp => {
+    console.log(resp.json.results)
+    res.send(resp.json.results)
+  })
+  .catch(err => console.log(err))
+
+})
+
 app.use('/api', require('./routes'));
 
 app.use((err, req, res, next) => {
