@@ -58,13 +58,13 @@
     /* The image used */
     background-image: url('images/img1-ad17af8da9.jpg');
     /* Set a specific height */
-    min-height: 500px;
+    min-height: 750px;
     /* Create the parallax scrolling effect */
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    width: 100%;
+    width: 120%;
 }
 
 .home {
@@ -77,4 +77,13 @@
 
 .home h1 {
     color: lightskyblue;
+}
+
+.products {
+    background-image: url('images/Mens_grooming_1.jpg');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 200%;
 }
