@@ -4,29 +4,32 @@ import { Link } from 'react-router-dom';
 
 const Category = ({ category, categoryProducts }) => {
   return (
-    <div className='category' >
-      <h1 className='category-head'>{category && category.name}</h1>
-      <div className='category-products'>
-        {
-          categoryProducts.map(product => {
-            return (
-              <div  key={product.id}>
+    <div className="category">
+      <h1 className="category-head">{category && category.name}</h1>
+      <div className="category-products">
+        {categoryProducts.map(product => {
+          return (
+            <div key={product.id}>
+              {product.name}
+              <span> - ${product.price}</span>
+              <div>
                 <Link to={`/products/${product.id}`}>
-                  {product.name}
+                  <img src={product.imageUrl} height="200" width="200" />
                 </Link>
-                <span> - ${product.price}</span>
-              </div>);
-          })
-        }
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 };
 
-
 const mapStateToProps = ({ categories, products }, { id }) => {
-  const category = categories && categories.find(category => category.id === id);
-  const categoryProducts = products && products.filter(product => product.categoryId === category.id);
+  const category =
+    categories && categories.find(category => category.id === id);
+  const categoryProducts =
+    products && products.filter(product => product.categoryId === category.id);
   return { category, categoryProducts };
 };
 
