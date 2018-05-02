@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import LoginForm from './LoginForm';
 import UserForm from './UserForm';
-
+import { Link } from 'react-router-dom'
 
 class LoginModal extends React.Component{
   constructor(props) {
@@ -33,12 +33,16 @@ class LoginModal extends React.Component{
         <div className="card-body">
           {
           slideIndex === 0 ? 
+            <div>
             <LoginForm />
+              <Link to={'/user'}>Account</Link>
+            </div>
             :
             user.id ? 
               null
               :
               <UserForm />
+                
           }
         </div>
           
