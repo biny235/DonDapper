@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const googleSecret = require('../secret').google;
+const googleSecret = process.env.G_SECRET || require('../secret').google;
 
 const googleMapsClient = require('@google/maps').createClient({
   key: googleSecret,
