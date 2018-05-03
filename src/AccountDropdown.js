@@ -2,7 +2,7 @@ import React from 'react';
 import LoginModal from './LoginModal';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-export default class AccountButton extends React.Component {
+export default class AccountDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
@@ -20,7 +20,7 @@ export default class AccountButton extends React.Component {
   render() {
     return (
       <Dropdown className="nav-link" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle className="account-dropdown" caret>
+        <DropdownToggle className="remove-all" caret>
           Account
         </DropdownToggle>
         <DropdownMenu>
