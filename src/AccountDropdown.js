@@ -20,7 +20,7 @@ export default class AccountDropdown extends React.Component {
   render() {
     return (
       <Dropdown className="nav-link" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle className="account-dropdown" caret>
+        <DropdownToggle className="remove-all" caret>
           Account
         </DropdownToggle>
         <DropdownMenu>

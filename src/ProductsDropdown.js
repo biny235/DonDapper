@@ -20,8 +20,10 @@ class ProductsDropdown extends Component {
   }
 
   onClick(id) {
-    if (location.hash === '#/products')
-      document.getElementById(id).scrollIntoView()
+    if (location.hash === '#/products'){
+      const element = document.getElementById(id);
+      element ? element.scrollIntoView() : null
+    }
   }
 
   render() {
@@ -29,27 +31,30 @@ class ProductsDropdown extends Component {
     const { handleChange } = this;
 
     return (
-    <Dropdown className="nav-link" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-      <DropdownToggle className="account-dropdown" caret>
-        Products
-      </DropdownToggle>
-      <DropdownMenu>
-        {categories.map(category => {
-              return (
-                <DropdownItem key={category.id} onClick={()=>{this.onClick(category.id)}}>
-                  <Link to={{ pathname: '/products', state: { id: category.id } }} >
-                    {category.name}
-                  </Link>
-                </DropdownItem>
-              );
-            })}
-          <DropdownItem>
-            <Link to={'/products'}>
-              Shop All
-            </Link>
-          </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+      <Dropdown className="nav-link" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+        <DropdownToggle className="remove-all" caret>
+          Products
+        </DropdownToggle>
+        <DropdownMenu>
+          {categories.map(category => {
+                return (
+                  <DropdownItem key={category.id} onClick={()=>{this.onClick(category.id)}}>
+                    {location.hash === '#/products' ?
+                    (<div> {category.name} </div>)
+                    :
+                    (<Link className="remove-all" to={{ pathname: '/products', state: { id: category.id } }} >
+                      {category.name}
+                    </Link>)}
+                  </DropdownItem>
+                );
+              })}
+            <DropdownItem>
+              <Link className="remove-all" to={'/products'}>
+                Shop All
+              </Link>
+            </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
     )
   }
 }

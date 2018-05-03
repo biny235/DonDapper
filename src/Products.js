@@ -40,7 +40,6 @@ class Products extends Component {
 }
 
 const mapStateToProps = ({ categories }, ownProps) => {
-  console.log(ownProps)
   return {
     categories
   };
