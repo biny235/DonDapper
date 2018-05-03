@@ -13,6 +13,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 import LoginModal from './LoginModal';
+import AccountButton from './AccountButton';
 
 class Nav extends Component {
   constructor(props) {
@@ -89,7 +90,7 @@ class Nav extends Component {
                   <_NavLink href="/#/cart">Cart ({counter})</_NavLink>
                 </NavItem>
                 <NavItem>
-                  <_NavLink onClick={accountClick}>Account</_NavLink>
+                  <AccountButton />
                 </NavItem>
                 {user.admin ?(
                 <NavItem>

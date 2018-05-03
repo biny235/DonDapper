@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import LoginForm from './LoginForm';
 import UserForm from './UserForm';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 class LoginModal extends React.Component{
   constructor(props) {
@@ -34,7 +35,7 @@ class LoginModal extends React.Component{
           {
           slideIndex === 0 ? 
             <div>
-            <LoginForm />
+              <LoginForm />
               <Link to={'/user'}>Account</Link>
             </div>
             :
