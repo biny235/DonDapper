@@ -149,11 +149,7 @@ const addLineItem = (lineItem, history) => {
       .post(`/api/lineItems`, lineItem, history)
       .then(res => res.data)
       .then(lineItem => dispatch({ type: CREATE_LINE_ITEM, lineItem }))
-      .then(() => {
-        if (history) {
-          history.push(`/cart`);
-        }
-      })
+      .then(() => history ? history.push(`/cart`) : null)
       .catch(err => console.log(err));
   };
 };

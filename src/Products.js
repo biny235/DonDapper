@@ -5,17 +5,19 @@ import Product from './Product';
 import Category from './Category';
 
 class Products extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
   componentDidMount() {
-    if (
-      this.props.history.location.state &&
-      document.getElementById(this.props.history.location.state)
-    ) {
-      const id = this.props.history.location.state;
-      console.log(document.getElementById(id).scrollIntoView());
-    }
+    let id;
+      this.props.history.location.state ?
+        this.props.history.location.state.id ?
+          { id } = this.props.history.location.state
+          :
+          id = this.props.history.location.state
+        :
+        null
+    id ? document.getElementById(id).scrollIntoView() : null
   }
 
   render() {
@@ -37,7 +39,8 @@ class Products extends Component {
   }
 }
 
-const mapStateToProps = ({ categories }) => {
+const mapStateToProps = ({ categories }, ownProps) => {
+  console.log(ownProps)
   return {
     categories
   };
