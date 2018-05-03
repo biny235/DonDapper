@@ -23,7 +23,7 @@ class Cart extends React.Component {
         <h1>Cart</h1>
         <h3>{!cart.id && 'Please sign in.'}</h3>
         {cart.id && (
-          <div className="order">
+          <div className="order order-container">
             <div>Item</div>
             <div>Price</div>
             <div>Quantity</div>
@@ -43,11 +43,12 @@ class Cart extends React.Component {
             )}
             <div className="order-total">Total:</div>
             <div>$ {total}</div>
-            <div>
-              <UserAddresses onSubmit={onSubmit} />
-            </div>
+            
           </div>
         )}
+        <div>
+            <UserAddresses onSubmit={onSubmit} />
+        </div>
       </div>
     );
   }
