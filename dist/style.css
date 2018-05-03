@@ -1,18 +1,27 @@
 *{
     font-family: 'Roboto', sans-serif;
 }
-
+.order-container{
+    max-width: 75%;
+}
 .order {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    max-width: 75%;
+    grid-gap: 1rem;  
 }
 
+.line-item{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1rem;  
+    min-width: 100%;
+    grid-column: 1/6;
+}
+.line-item.order-line{
+    border-bottom: 0.5px solid lightgray;
+}
 .order-line {
     min-height: 50px;
-    border-top: 0.5px solid lightgray;
-    max-width: 100%;
-    grid-column: 1/6;
 }
 
 .order-qty {

@@ -12,7 +12,7 @@ import User from './User';
 import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
-import Autocomplete from './Autocomplete';
+import AddressForm from './AddressForm';
 import { Container } from 'reactstrap';
 
 
@@ -60,7 +60,7 @@ class Main extends Component {
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
               <Route path="/user" exact render={() => <User />} />
-              <Route path="/test/google" exact render={()=> <Autocomplete />} />
+              <Route path="/test/addressform" exact render={()=> <AddressForm />} />
             </Switch>
           </Container>
         </div>

@@ -28,7 +28,7 @@ class LineItem extends React.Component {
       return null;
     }
     return (
-      <div className="order order-line">
+      <div className="line-item order-line">
         <div>
           {product.name}
           <div className="product-description-text">{product.description}</div>
@@ -51,7 +51,7 @@ class LineItem extends React.Component {
         <div>$ {line.quantity * product.price}</div>
         {cart && (
           <button
-            className="btn"
+            className="btn btn-link"
             type="submit"
             onClick={ev => onDelete(ev, line)}
           >
