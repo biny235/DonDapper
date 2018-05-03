@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "postinstall": "npm run webpack & npm run seed",
+        "postinstall": "npm run seed & npm run webpack",
         "webpack": "./node_modules/webpack/bin/webpack.js",
         "seed": "node ./db/seed.js",
         "test:dev": "./node_modules/mocha/bin/mocha --watch  --recursive test/server/**/*.js",
