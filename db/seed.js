@@ -140,6 +140,17 @@ const seed = () => {
             Order.create({ userId: user.id, addressId: address.id });
           });
         }),
+        User.create({
+          fullName: 'Test Admin',
+          email: 'test@admin.com',
+          password: '123456',
+          admin: true
+        }).then(user => {
+          return Address.create(generateAddress()).then(address => {
+            address.update({ userId: user.id });
+            Order.create({ userId: user.id, addressId: address.id });
+          });
+        }),
         User.create(generateUser()).then(user => {
           return Address.create(generateAddress()).then(address => {
             address.update({ userId: user.id });

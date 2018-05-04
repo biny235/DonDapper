@@ -11,8 +11,9 @@ class Cart extends React.Component {
   }
 
   onSubmit() {
-    const { cart } = this.props;
-    this.props.editOrder({ status: 'order' }, cart.id);
+    const { cart, history } = this.props;
+    cart.status = 'order';
+    this.props.editOrder(cart, history);
   }
 
   render() {
@@ -70,7 +71,7 @@ const mapStateToProps = ({ cart, lineItems, user, products }) => {
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    editOrder: (order, id) => dispatch(editOrder(order, id, history))
+    editOrder: order => dispatch(editOrder(order, history))
   };
 };
 

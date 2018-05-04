@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+//import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
@@ -19,7 +19,7 @@ const GET_USER = 'GET_USER';
 
 // CART
 const GET_CART = 'GET_CART';
-const CHECK_OUT = 'CHECK_OUT';
+const EDIT_ORDER = 'EDIT_ORDER';
 
 // ORDERS
 const GET_ORDERS = 'GET_ORDERS';
@@ -85,9 +85,9 @@ const authenticateUser = dispatch => {
     .then(user => {
       dispatch({ type: GET_USER, user });
       dispatch(fetchCart(user.id));
-      dispatch(fetchOrders(user.id));
+      dispatch(fetchOrders(user));
     })
-    .catch(err => window.localStorage.removeItem('token'))
+    .catch(err => window.localStorage.removeItem('token'));
 };
 
 const createOrUpdateUser = user => {
@@ -116,28 +116,38 @@ const fetchCart = userId => {
 };
 
 // ORDERS
-const fetchOrders = userId => {
+const fetchOrders = user => {
+  const { id, admin } = user;
+  const userId = id;
   return dispatch => {
-    authCall('get', `/api/users/${userId}/orders`)
+    let pathName = '';
+    admin
+      ? (pathName = `/api/orders`)
+      : (pathName = `/api/users/${userId}/orders`);
+
+    authCall('get', pathName)
       .then(res => res.data)
-      .then(orders => dispatch({ type: GET_ORDERS, orders }));
+      .then(orders => {
+        dispatch({ type: GET_ORDERS, orders });
+      });
   };
 };
 
-const editOrder = (order, orderId, history) => {
+const editOrder = (order, history) => {
+  const { id } = order;
   return dispatch => {
     axios
-      .put(`/api/orders/${orderId}`, order)
+      .put(`/api/orders/${id}`, order)
       .then(res => res.data)
       .then(order => {
-        dispatch({ type: CHECK_OUT, order });
-        dispatch(fetchCart(order.userId));
-      })
-      .then(() => {
+        dispatch({ type: EDIT_ORDER, order });
         if (history) {
+          dispatch(fetchCart(order.userId));
           history.push(`/user`);
         }
       })
+      // .then(order => {
+      // })
       .catch(err => console.log(err));
   };
 };
@@ -239,8 +249,13 @@ const ordersReducer = (state = [], action) => {
   switch (action.type) {
     case GET_ORDERS:
       return action.orders;
-    case CHECK_OUT:
-      return [...state, action.order];
+    case EDIT_ORDER:
+      let index = state.findIndex(order => order.id === action.order.id);
+      return (state = [
+        ...state.slice(0, index),
+        action.order,
+        ...state.slice(index + 1)
+      ]);
     case RESET_STATE:
       return [];
   }
@@ -274,10 +289,7 @@ const reducer = combineReducers({
   orders: ordersReducer
 });
 
-const store = createStore(
-  reducer,
-  composeWithDevTools(applyMiddleware(thunk, logger))
-);
+const store = createStore(reducer, applyMiddleware(thunk));
 
 export default store;
 

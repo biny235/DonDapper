@@ -12,9 +12,9 @@ import User from './User';
 import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
+import DashBoard from './DashBoard';
 import Autocomplete from './Autocomplete';
 import { Container } from 'reactstrap';
-
 
 class Main extends Component {
   componentDidMount() {
@@ -31,6 +31,11 @@ class Main extends Component {
           <Container>
             <Route path="/" exact render={() => <Home />} />
             <Switch>
+              <Route
+                path="/dashboard"
+                exact
+                render={({ history }) => <DashBoard history={history} />}
+              />
               <Route
                 path="/products"
                 exact
@@ -60,7 +65,11 @@ class Main extends Component {
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
               <Route path="/user" exact render={() => <User />} />
-              <Route path="/test/google" exact render={()=> <Autocomplete />} />
+              <Route
+                path="/test/google"
+                exact
+                render={() => <Autocomplete />}
+              />
             </Switch>
           </Container>
         </div>
@@ -68,8 +77,6 @@ class Main extends Component {
     );
   }
 }
-
-
 
 const mapDispatchToProps = dispatch => {
   return {
