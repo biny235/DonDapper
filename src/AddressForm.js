@@ -11,11 +11,14 @@ class AddressForm extends Component {
   constructor(props) {
     super(props); 
     this.state = {
-      lineOne: props.lineOne || '', 
-      lineTwo: props.lineTwo || '',
-      city: props.city || '',
-      state: props.state || '',
-      zipCode: props.zipCode || '',
+      address:{
+        id: props.id || null,
+        lineOne: props.lineOne || '', 
+        lineTwo: props.lineTwo || '',
+        city: props.city || '',
+        state: props.state || '',
+        zipCode: props.zipCode || '',
+      },
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -24,15 +27,19 @@ class AddressForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
+    console.log(nextProps.address !== this.state.address)
+    const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
     nextProps.address !== this.state.address ?
-      this.setState(Object.assign({}, this.state, nextProps.address))
+
+      this.setState({address: {id, lineOne, lineTwo, city, state, zipCode }})
       : 
       null
   }
   onChange(ev) {
     const { name, value } = ev.target
-    this.setState({[name]: value})
+    let { address } = this.state; 
+    address = Object.assign({}, address, {[name]: value})
+    this.setState({address})
   }
 
   clearErrors() {
@@ -40,7 +47,8 @@ class AddressForm extends Component {
   }
 
   render() {
-    const { errors, lineOne } = this.state;
+    const { errors, address } = this.state;
+    const { lineOne, lineTwo, city, state, zipCode } = address;
     const { onChange } = this;
     return (
       <div>
@@ -50,7 +58,26 @@ class AddressForm extends Component {
           </Alert>
         ) : null}
         <div>
-          <input value={lineOne} name="lineOne" onChange={onChange}/>
+          <input 
+          value={lineOne || ''} 
+          name="lineOne" 
+          onChange={onChange}/>
+          <input 
+          value={lineTwo || ''} 
+          name="lineTwo" 
+          onChange={onChange}/>
+          <input 
+          value={city || ''} 
+          name="city" 
+          onChange={onChange}/>
+          <input 
+          value={state || ''} 
+          name="state" 
+          onChange={onChange}/>
+          <input 
+          value={zipCode || ''} 
+          name="zipCode" 
+          onChange={onChange}/>
         </div>
       </div>
     );
