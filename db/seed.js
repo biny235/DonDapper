@@ -16,8 +16,8 @@ const generateProduct = () => {
 
 const generateAddress = () => {
   return {
-    streetName: faker.address.streetName(),
-    secondaryAddress: faker.address.secondaryAddress(),
+    lineOne: faker.address.streetName(),
+    lineTwo: faker.address.secondaryAddress(),
     city: faker.address.city(),
     state: faker.address.state(),
     zipCode: faker.address.zipCode(),

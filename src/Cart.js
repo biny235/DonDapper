@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
 import { editOrder, fetchCart } from './store';
-import OrderAdressDropdown from './OrderAdressDropdown';
 
 const Cart = (props)=>{
   const { cart, lineItems, total } = props;
@@ -39,7 +38,6 @@ const Cart = (props)=>{
         }
           <div className="order-total">Total:</div>
           <div>$ {total}</div>
-          
         </div>
       )}
     </div>

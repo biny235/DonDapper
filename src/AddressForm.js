@@ -9,8 +9,13 @@ let setErrors = function(err) {
 };
 class AddressForm extends Component {
   constructor(props) {
-    super(props);
+    super(props); 
     this.state = {
+      lineOne: props.lineOne || '', 
+      lineTwo: props.lineTwo || '',
+      city: props.city || '',
+      state: props.state || '',
+      zipCode: props.zipCode || '',
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -19,13 +24,15 @@ class AddressForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-  }
 
-  componentWillMount() {
+    nextProps.address !== this.state.address ?
+      this.setState(Object.assign({}, this.state, nextProps.address))
+      : 
+      null
   }
-
   onChange(ev) {
-
+    const { name, value } = ev.target
+    this.setState({[name]: value})
   }
 
   clearErrors() {
@@ -33,9 +40,7 @@ class AddressForm extends Component {
   }
 
   render() {
-    const { address } = this.props
-    console.log(address)
-    const { errors, user, addresses } = this.state;
+    const { errors, lineOne } = this.state;
     const { onChange } = this;
     return (
       <div>
@@ -44,23 +49,25 @@ class AddressForm extends Component {
             {errors}
           </Alert>
         ) : null}
+        <div>
+          <input value={lineOne} name="lineOne" onChange={onChange}/>
+        </div>
       </div>
     );
   }
 }
-const mapStateToProps = ({addresses}, {addressId}) => {
-  const address = address && addressess.find(address => address.id = addressId)
+const mapStateToProps = ({user}, {addressId}) => {
+  const { addresses } = user;
+  const address = addresses && addresses.find(address => address.id === addressId)
   return { address };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    createOrUpdateUser: state => {
-      state = omit(state, 'fullAddress');
-      dispatch(createOrUpdateAddress(state)).catch(err => {
-        setErrors(err.response.data, state);
-      });
-    }
+    createOrUpdateAddress: address => createOrUpdateAddress(address)
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);
+
+
+

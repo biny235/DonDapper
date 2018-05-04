@@ -22,11 +22,13 @@ class AddressDropdown extends Component {
   } 
   onClick(addressId){
     const {editOrder, orderId} = this.props
-    this.props.editOrder({id: orderId, addressId})
+    const order = {id: orderId, addressId}
+    console.log(order)
+    //this.props.editOrder(order)
   }
 
   render() {
-    const { addresses } = this.props.user;
+    const { addresses } = this.props;
     const { value } = this.state;
     const { toggle, onClick } = this;
     return (
@@ -36,13 +38,13 @@ class AddressDropdown extends Component {
             Choose an Address
           </DropdownToggle>
           <DropdownMenu>
-            {addresses && addresses.map(address => (
-                <span key={address.id} value={address.id} onClick={()=>onClick(address.id)}>
+            {addresses.map(address => (
+                <DropdownItem key={address.id} onClick={()=>onClick(address.id)}>
                   {address.fullAddress}
-                </span>
+                </DropdownItem>
               ))
             }
-            <span onClick={()=>onClick(null)}>Add an Address</span>
+            <DropdownItem key={null} onClick={()=>onClick(null)}>Add an Address</DropdownItem>
           </DropdownMenu>
         </Dropdown>
     );
@@ -50,11 +52,11 @@ class AddressDropdown extends Component {
 }
 
 const mapStateToProps = ({ user }) => {
-
+  let { addresses } = user
+  addresses = addresses || []
   return {
-    user
+    addresses
   };
-
 };
 
 const mapDispatchToProps = dispatch =>{
@@ -64,4 +66,4 @@ const mapDispatchToProps = dispatch =>{
   }
 }
 
-export default connect(mapStateToProps)(AddressDropdown);
+export default connect(mapStateToProps, mapDispatchToProps)(AddressDropdown);
