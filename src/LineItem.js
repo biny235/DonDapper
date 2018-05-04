@@ -45,6 +45,7 @@ class LineItem extends React.Component {
               value={line.quantity}
               type="number"
               step="1"
+              min="1"
             />
           </form>
         )}
