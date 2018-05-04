@@ -142,6 +142,22 @@ const editOrder = (order, orderId, history) => {
   };
 };
 
+
+//ADDRESS
+const createOrUpdateAddress = (address, orderId) => {
+  const { id } = address;
+  const putOrPost = id ? 'put' : 'post';
+  return dispatch => {
+    axios[putOrPost](`/api/addresses/${id ? id : ''}`, {address})
+      .then(res => res.data)
+      .then(address => {
+        orderId ? dispatch(editOrder({id: orderId, address: address.id})) : null;
+        dispatch(authenticateUser())
+      })
+  };
+};
+
+
 // LINE ITEMS
 const addLineItem = (lineItem, history) => {
   return dispatch => {
@@ -272,7 +288,7 @@ const reducer = combineReducers({
 
 const store = createStore(
   reducer,
-  composeWithDevTools(applyMiddleware(thunk, logger))
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 export default store;
@@ -289,5 +305,6 @@ export {
   deleteLineItem,
   createOrUpdateUser,
   logout,
-  authenticateUser
+  authenticateUser,
+  createOrUpdateAddress
 };
