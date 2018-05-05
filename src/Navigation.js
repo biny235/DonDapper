@@ -1,38 +1,37 @@
-import React, { Component } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import React from 'react';
 import {
   Navbar,
   NavbarBrand,
-  Nav as _Nav,
   NavItem,
-  NavLink as _NavLink
+  NavLink,
+  Nav
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
 import LoginModal from './LoginModal';
 import AccountDropdown from './AccountDropdown';
-import ProductsDropdown from './ProductsDropdown'
+import ProductsDropdown from './ProductsDropdown';
 
-const Nav = ({user, counter}) => {
+const Navigation = ({ user, counter }) => {
   return (
     <Navbar color="light" light>
       <NavbarBrand href="/#/">Grace Shopper</NavbarBrand>
-      <_Nav>
+      <Nav>
         <NavItem>
           <ProductsDropdown />
         </NavItem>
         <NavItem>
-          <_NavLink href="/#/cart">Cart ({counter})</_NavLink>
+          <NavLink href="/#/cart">Cart ({counter})</NavLink>
         </NavItem>
         <NavItem>
           <AccountDropdown />
         </NavItem>
-        {user.admin ?(
-        <NavItem>
-          <_NavLink href="/#/dashboard">DashBoard</_NavLink>
-        </NavItem>):null
+        {user.admin && (
+          <NavItem>
+            <NavLink href="/#/dashboard">Admin Dashboard</NavLink>
+          </NavItem>)
         }
-      </_Nav>
+      </Nav>
     </Navbar>
   );
 }
@@ -44,4 +43,4 @@ const mapStateToProps = ({ user, lineItems }) => {
   };
 };
 
-export default connect(mapStateToProps)(Nav);
+export default connect(mapStateToProps)(Navigation);

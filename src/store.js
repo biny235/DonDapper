@@ -119,11 +119,10 @@ const fetchOrders = user => {
   const { id, admin } = user;
   const userId = id;
   return dispatch => {
-    let pathName = '';
+    let pathName;
     admin
       ? (pathName = `/api/orders`)
       : (pathName = `/api/users/${userId}/orders`);
-
     authCall('get', pathName)
       .then(res => res.data)
       .then(orders => {
@@ -145,7 +144,10 @@ const editOrder = (order, history) => {
           history.push(`/user`);
         }
       })
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
       .catch(err => console.log(err));
   };
 };
@@ -154,9 +156,21 @@ const editOrder = (order, history) => {
 const createOrUpdateAddress = address => {
   console.log(address);
   const { id } = address;
+<<<<<<< HEAD
   return !id
     ? axios.post('api/addresses', { address })
     : axios.put(`/api/addresses/${id}`, { address });
+=======
+  const putOrPost = id ? 'put' : 'post';
+  return dispatch => {
+    axios[putOrPost](`/api/addresses/${id ? id : ''}`, { address })
+      .then(res => res.data)
+      .then(address => {
+        orderId && dispatch(editOrder({ id: orderId, address: address.id }))
+        dispatch(authenticateUser());
+      });
+  };
+>>>>>>> master
 };
 
 // LINE ITEMS
@@ -302,7 +316,7 @@ const reducer = combineReducers({
   orders: ordersReducer
 });
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const store = createStore(reducer, applyMiddleware(thunk, logger));
 
 export default store;
 
