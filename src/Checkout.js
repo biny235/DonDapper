@@ -21,7 +21,7 @@ class Checkout extends React.Component {
     };
     axios.post(`/api/email/send`, email)
       .then(res => res.data);
-    this.props.editOrder({ status: 'order' }, cart.id);
+    this.props.editOrder({ id: cart.id, status: 'order' });
   }
 
   render() {
