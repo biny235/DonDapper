@@ -119,11 +119,10 @@ const fetchOrders = user => {
   const { id, admin } = user;
   const userId = id;
   return dispatch => {
-    let pathName = '';
+    let pathName;
     admin
       ? (pathName = `/api/orders`)
       : (pathName = `/api/users/${userId}/orders`);
-
     authCall('get', pathName)
       .then(res => res.data)
       .then(orders => {
@@ -145,8 +144,6 @@ const editOrder = (order, history) => {
           history.push(`/user`);
         }
       })
-      // .then(order => {
-      // })
       .catch(err => console.log(err));
   };
 };
@@ -159,9 +156,7 @@ const createOrUpdateAddress = (address, orderId) => {
     axios[putOrPost](`/api/addresses/${id ? id : ''}`, { address })
       .then(res => res.data)
       .then(address => {
-        orderId
-          ? dispatch(editOrder({ id: orderId, address: address.id }))
-          : null;
+        orderId && dispatch(editOrder({ id: orderId, address: address.id }))
         dispatch(authenticateUser());
       });
   };
