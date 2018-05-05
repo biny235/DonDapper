@@ -24,7 +24,7 @@ class DashBoard extends Component {
   }
 
   render() {
-    const { orders, user, categories, products } = this.props;
+    const { orders, categories, products } = this.props;
     const { onChange } = this;
     return (
       <div>
