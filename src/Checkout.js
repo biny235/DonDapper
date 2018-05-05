@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import { editOrder } from './store';
+import axios from 'axios';
 class Checkout extends React.Component {
   constructor() {
     super();
@@ -31,7 +32,9 @@ class Checkout extends React.Component {
         <div>
           <AddressDropdown orderId={order.id} />
         </div>
-        <button type='submit' onClick={onSubmit}>Check Out</button>
+        <button type="submit" onClick={onSubmit}>
+          Check Out
+        </button>
       </div>
     );
   }
@@ -39,7 +42,8 @@ class Checkout extends React.Component {
 
 const mapStateToProps = ({ cart, user }) => {
   return {
-    cart, user
+    cart,
+    user
   };
 };
 
@@ -50,4 +54,3 @@ const mapDispatchToProps = (dispatch, { history }) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
-

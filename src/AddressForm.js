@@ -2,14 +2,7 @@ import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
 import { createOrUpdateAddress, editOrder } from './store';
 import { connect } from 'react-redux';
-import {
-  RIEToggle,
-  RIEInput,
-  RIETextArea,
-  RIENumber,
-  RIETags,
-  RIESelect
-} from 'riek';
+import { RIEInput } from 'riek';
 
 let setErrors = function(err) {
   this.setState({ errors: err });
