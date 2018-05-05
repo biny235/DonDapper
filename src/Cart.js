@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
-import { editOrder, fetchCart } from './store';
 
 const Cart = props => {
   const { cart, lineItems, total } = props;
@@ -22,17 +21,17 @@ const Cart = props => {
               <LineItem key={lineItem.id} line={lineItem} cart={true} />
             ))
           ) : (
-            <div className="line-item">Please Add Something to Your Cart</div>
-          )}
+              <div className="line-item">Please Add Something to Your Cart</div>
+            )}
           {lineItems.length ? (
             <Link to={'/checkout'} className="btn btn-success">
               Check Out
             </Link>
           ) : (
-            <button disabled={!lineItems.length} className="btn btn-success">
-              Check Out
-            </button>
-          )}
+              <button disabled={!lineItems.length} className="btn btn-success">
+                Check Out
+              </button>
+            )}
           <div className="order-total">Total:</div>
           <div>$ {total}</div>
         </div>
@@ -44,9 +43,10 @@ const Cart = props => {
 const mapStateToProps = ({ cart, lineItems, user, products }) => {
   const total =
     lineItems &&
-    lineItems.reduce((total, line) => {
+    lineItems.reduce((quantity, line) => {
       const product = products.find(_product => _product.id === line.productId);
-      return (total += product.price * line.quantity);
+      quantity += product.price * line.quantity;
+      return quantity;
     }, 0);
   return {
     cart,

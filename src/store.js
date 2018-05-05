@@ -95,9 +95,9 @@ const createOrUpdateUser = user => {
     return !id
       ? axios.post('api/users', { user })
       : axios
-          .put(`/api/users/${id}`, { user })
-          .then(res => res.data)
-          .then(user => login(user, dispatch));
+        .put(`/api/users/${id}`, { user })
+        .then(res => res.data)
+        .then(user => login(user, dispatch));
   };
 };
 
@@ -174,7 +174,7 @@ const addLineItem = (lineItem, history) => {
       .post(`/api/lineItems`, lineItem, history)
       .then(res => res.data)
       .then(lineItem => dispatch({ type: CREATE_LINE_ITEM, lineItem }))
-      .then(() => (history ? history.push(`/cart`) : null))
+      .then(() => history && history.push(`/cart`))
       .catch(err => console.log(err));
   };
 };
@@ -200,6 +200,16 @@ const deleteLineItem = lineItem => {
       .delete(`/api/lineItems/${lineItem.id}`)
       .then(res => res.data)
       .then(() => dispatch({ type: DELETE_LINE_ITEM, lineItem }))
+      .catch(err => console.log(err));
+  };
+};
+
+// EMAIL
+const sendEmail = (email, history) => {
+  return dispatch => {
+    axios
+      .post(`/api/email/send`, email, history)
+      .then(res => res.data)
       .catch(err => console.log(err));
   };
 };

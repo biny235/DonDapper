@@ -4,16 +4,16 @@ import { createOrUpdateAddress } from './store';
 import { connect } from 'react-redux';
 import EditableLabel from 'react-inline-editing';
 
-let setErrors = function(err) {
+let setErrors = function (err) {
   this.setState({ errors: err });
 };
 class AddressForm extends Component {
   constructor(props) {
-    super(props); 
+    super(props);
     this.state = {
-      address:{
+      address: {
         id: props.id || null,
-        lineOne: props.lineOne || '', 
+        lineOne: props.lineOne || '',
         lineTwo: props.lineTwo || '',
         city: props.city || '',
         state: props.state || '',
@@ -27,19 +27,19 @@ class AddressForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.address !== this.state.address)
+    console.log(nextProps.address !== this.state.address);
     const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
     nextProps.address !== this.state.address ?
 
-      this.setState({address: {id, lineOne, lineTwo, city, state, zipCode }})
-      : 
-      null
+      this.setState({ address: { id, lineOne, lineTwo, city, state, zipCode } })
+      :
+      null;
   }
   onChange(ev) {
-    const { name, value } = ev.target
-    let { address } = this.state; 
-    address = Object.assign({}, address, {[name]: value})
-    this.setState({address})
+    const { name, value } = ev.target;
+    let { address } = this.state;
+    address = Object.assign({}, address, { [name]: value });
+    this.setState({ address });
   }
 
   clearErrors() {
@@ -53,39 +53,39 @@ class AddressForm extends Component {
     return (
       <div>
         {errors ? (
-          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
+          <Alert color='info' isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
         ) : null}
         <div>
-          <input 
-          value={lineOne || ''} 
-          name="lineOne" 
-          onChange={onChange}/>
-          <input 
-          value={lineTwo || ''} 
-          name="lineTwo" 
-          onChange={onChange}/>
-          <input 
-          value={city || ''} 
-          name="city" 
-          onChange={onChange}/>
-          <input 
-          value={state || ''} 
-          name="state" 
-          onChange={onChange}/>
-          <input 
-          value={zipCode || ''} 
-          name="zipCode" 
-          onChange={onChange}/>
+          <input
+            value={lineOne || ''}
+            name='lineOne'
+            onChange={onChange} />
+          <input
+            value={lineTwo || ''}
+            name='lineTwo'
+            onChange={onChange} />
+          <input
+            value={city || ''}
+            name='city'
+            onChange={onChange} />
+          <input
+            value={state || ''}
+            name='state'
+            onChange={onChange} />
+          <input
+            value={zipCode || ''}
+            name='zipCode'
+            onChange={onChange} />
         </div>
       </div>
     );
   }
 }
-const mapStateToProps = ({user}, {addressId}) => {
+const mapStateToProps = ({ user }, { addressId }) => {
   const { addresses } = user;
-  const address = addresses && addresses.find(address => address.id === addressId)
+  const address = addresses && addresses.find(address => address.id === addressId);
   return { address };
 };
 const mapDispatchToProps = dispatch => {
@@ -95,6 +95,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);
-
-
 
