@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import { createOrUpdateAddress } from './store';
+import { createOrUpdateAddress, editOrder } from './store';
 import { connect } from 'react-redux';
-import EditableLabel from 'react-inline-editing';
+import {
+  RIEToggle,
+  RIEInput,
+  RIETextArea,
+  RIENumber,
+  RIETags,
+  RIESelect
+} from 'riek';
 
-let setErrors = function (err) {
+let setErrors = function(err) {
   this.setState({ errors: err });
 };
 class AddressForm extends Component {
@@ -17,7 +24,7 @@ class AddressForm extends Component {
         lineTwo: props.lineTwo || '',
         city: props.city || '',
         state: props.state || '',
-        zipCode: props.zipCode || '',
+        zipCode: props.zipCode || ''
       },
       errors: ''
     };
@@ -27,18 +34,28 @@ class AddressForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.address !== this.state.address);
-    const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
-    nextProps.address !== this.state.address ?
-
-      this.setState({ address: { id, lineOne, lineTwo, city, state, zipCode } })
-      :
-      null;
+    if (nextProps.address.id) {
+      const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
+      nextProps.address !== this.state.address
+        ? this.setState({
+            address: { id, lineOne, lineTwo, city, state, zipCode }
+          })
+        : null;
+    }
   }
-  onChange(ev) {
-    const { name, value } = ev.target;
+  componentDidMount() {
+    if (this.props.address) {
+      const { id, lineOne, lineTwo, city, state, zipCode } = this.props.address;
+      this.props.address !== this.state.address
+        ? this.setState({
+            address: { id, lineOne, lineTwo, city, state, zipCode }
+          })
+        : null;
+    }
+  }
+  onChange(val) {
     let { address } = this.state;
-    address = Object.assign({}, address, { [name]: value });
+    address = Object.assign({}, address, val);
     this.setState({ address });
   }
 
@@ -53,39 +70,26 @@ class AddressForm extends Component {
     return (
       <div>
         {errors ? (
-          <Alert color='info' isOpen={!!errors} toggle={this.clearErrors}>
+          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
         ) : null}
         <div>
-          <input
-            value={lineOne || ''}
-            name='lineOne'
-            onChange={onChange} />
-          <input
-            value={lineTwo || ''}
-            name='lineTwo'
-            onChange={onChange} />
-          <input
-            value={city || ''}
-            name='city'
-            onChange={onChange} />
-          <input
-            value={state || ''}
-            name='state'
-            onChange={onChange} />
-          <input
-            value={zipCode || ''}
-            name='zipCode'
-            onChange={onChange} />
+          <RIEInput value={lineOne} change={onChange} propName="lineOne" />
+          <RIEInput value={lineTwo} change={onChange} propName="lineTwo" />
+          <RIEInput value={city} change={onChange} propName="city" />
+          <RIEInput value={state} change={onChange} propName="state" />
+          <RIEInput value={zipCode} change={onChange} propName="zipCode" />
         </div>
+        <button onClick={() => createOrUpdateAddress(address)}>save</button>
       </div>
     );
   }
 }
 const mapStateToProps = ({ user }, { addressId }) => {
   const { addresses } = user;
-  const address = addresses && addresses.find(address => address.id === addressId);
+  const address =
+    addresses && addresses.find(address => address.id === addressId);
   return { address };
 };
 const mapDispatchToProps = dispatch => {
@@ -95,4 +99,3 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);
-

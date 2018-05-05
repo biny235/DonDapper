@@ -32,10 +32,13 @@ router.delete('/:id', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
   Address.findById(req.params.id)
     .then(address => {
-      Object.assign(address, req.body);
+      Object.assign(address, req.body.address);
       return address.save();
     })
-    .then(address => res.send(address))
+    .then(address => {
+      console.log(address);
+      res.send(address);
+    })
     .catch(next);
 });
 

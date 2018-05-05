@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editOrder } from './store';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import AddressForm from './AddressForm';
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from 'reactstrap';
 
 class AddressDropdown extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      dropdownOpen: false
+      dropdownOpen: false,
+      showForm: false,
+      addressId: null
     };
 
     this.toggle = this.toggle.bind(this);
@@ -23,30 +31,36 @@ class AddressDropdown extends Component {
   onClick(addressId) {
     const { editOrder, orderId } = this.props;
     const order = { id: orderId, addressId };
-    console.log(order);
-    //this.props.editOrder(order)
+    this.props.editOrder(order);
+    this.setState({ showForm: true, addressId });
   }
 
   render() {
     const { addresses } = this.props;
-    const { value } = this.state;
+    const { value, showForm } = this.state;
     const { toggle, onClick } = this;
     return (
-
-      <Dropdown isOpen={this.state.dropdownOpen} toggle={toggle}>
-        <DropdownToggle >
-          Choose an Address
-          </DropdownToggle>
-        <DropdownMenu>
-          {addresses.map(address => (
-            <DropdownItem key={address.id} onClick={() => onClick(address.id)}>
-              {address.fullAddress}
+      <div>
+        <Dropdown isOpen={this.state.dropdownOpen} toggle={toggle}>
+          <DropdownToggle>Choose an Address</DropdownToggle>
+          <DropdownMenu>
+            {addresses.map(address => {
+              return (
+                <DropdownItem
+                  key={address.id}
+                  onClick={() => onClick(address.id)}
+                >
+                  {address.fullAddress}
+                </DropdownItem>
+              );
+            })}
+            <DropdownItem key={null} onClick={() => onClick(null)}>
+              Add an Address
             </DropdownItem>
-          ))
-          }
-          <DropdownItem key={null} onClick={() => onClick(null)}>Add an Address</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+          </DropdownMenu>
+        </Dropdown>
+        {showForm && <AddressForm addressId={this.state.addressId} />}
+      </div>
     );
   }
 }
@@ -60,7 +74,6 @@ const mapStateToProps = ({ user }) => {
 };
 
 const mapDispatchToProps = dispatch => {
-
   return {
     editOrder: order => dispatch(editOrder(order))
   };

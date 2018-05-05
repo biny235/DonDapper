@@ -80,7 +80,7 @@ const seed = () => {
         Product.create({
           name: 'Conditioner',
           description: `Keep your hair soft and luscious with our proprietary conditioner.`,
-          imageUrl: 'images/comb.jpg',
+          imageUrl: 'images/conditioner.jpg',
           price: 12,
           categoryId: 2
         }),

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import LineItem from './LineItem';
 
 const Order = ({ order, lineItems, total }) => {
-  console.log(lineItems);
   return (
     <div>
       <h3>Order ID: {order && order.id}</h3>
@@ -26,6 +25,7 @@ const Order = ({ order, lineItems, total }) => {
 const mapStateToProps = ({ user, orders, products }, { id }) => {
   const order = orders && id && orders.find(order => order.id === id);
   const lineItems = order && order.lineItems;
+  console.log(order);
   const total =
     lineItems &&
     lineItems.reduce((total, line) => {
