@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import { editOrder } from './store';
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/origin/aj
 class Checkout extends React.Component {
   constructor() {
     super();
@@ -32,9 +35,13 @@ class Checkout extends React.Component {
         <div>
           <AddressDropdown orderId={order.id} />
         </div>
+<<<<<<< HEAD
         <button type="submit" onClick={onSubmit}>
           Check Out
         </button>
+=======
+        <button type='submit' onClick={onSubmit}>Check Out</button>
+>>>>>>> refs/remotes/origin/aj
       </div>
     );
   }
