@@ -2,8 +2,8 @@ import React from 'react';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import { editOrder } from './store';
-import UserAddresses from './UserAddresses';
 import axios from 'axios';
+
 class Checkout extends React.Component {
   constructor() {
     super();
