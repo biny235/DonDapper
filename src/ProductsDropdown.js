@@ -17,7 +17,7 @@ class ProductsDropdown extends Component {
     this.setState(prevState => ({
       dropdownOpen: !prevState.dropdownOpen
     }));
-  }
+  } 
 
   onClick(id) {
     if (location.hash === '#/products'){

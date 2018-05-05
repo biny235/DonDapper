@@ -13,7 +13,8 @@ router.post('/', (req, res, next) => {
     .then(user => res.send(user))
     .catch(next);
 });
-router.put('/:id', (req, res, next) => {
+router.put('/:id', auth, (req, res, next) => {
+  if (!req.user) next({ status: 401 });
   User.findById(req.params.id)
     .then(user => {
       Object.assign(user, req.body.user);
@@ -32,12 +33,14 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/:id/cart', auth, (req, res, next) => {
+  if (!req.user) next({ status: 401 });
   User.findOrCreateCart(req.params.id)
     .spread(cart => res.send(cart))
     .catch(next);
 });
 
 router.get('/:id/orders', auth, (req, res, next) => {
+  if (!req.user) next({ status: 401 });
   User.findById(req.params.id)
     .then(user =>
       user.getOrders({
@@ -49,6 +52,7 @@ router.get('/:id/orders', auth, (req, res, next) => {
     .catch(next);
 });
 router.get('/:id/addresses', auth, (req, res, next) => {
+  if (!req.user) next({ status: 401 });
   User.findById(req.params.id)
     .then(user =>
       user.getAddresses({

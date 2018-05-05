@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import omit from 'object.omit';
 import { createOrUpdateAddress } from './store';
 import { connect } from 'react-redux';
 import EditableLabel from 'react-inline-editing';
 
-let setErrors = function(err, user) {
-  if (!user.id) this.setState({ user: {} });
+let setErrors = function (err) {
   this.setState({ errors: err });
 };
 class AddressForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user || {},
-      addresses: props.user.addresses || {},
+      address: {
+        id: props.id || null,
+        lineOne: props.lineOne || '',
+        lineTwo: props.lineTwo || '',
+        city: props.city || '',
+        state: props.state || '',
+        zipCode: props.zipCode || '',
+      },
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -23,20 +27,19 @@ class AddressForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { user } = nextProps;
-    if (user.id !== this.state.user.id) this.setState({ user: user });
-  }
+    console.log(nextProps.address !== this.state.address);
+    const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
+    nextProps.address !== this.state.address ?
 
-  componentWillMount() {
-    const { user } = this.props;
+      this.setState({ address: { id, lineOne, lineTwo, city, state, zipCode } })
+      :
+      null;
   }
-
   onChange(ev) {
-    let { user } = this.state;
-    let key = ev.target.name;
-    let value = ev.target.value;
-    user[key] = value;
-    this.setState({ user: user });
+    const { name, value } = ev.target;
+    let { address } = this.state;
+    address = Object.assign({}, address, { [name]: value });
+    this.setState({ address });
   }
 
   clearErrors() {
@@ -44,69 +47,52 @@ class AddressForm extends Component {
   }
 
   render() {
-    const { createOrUpdateAddress } = this.props;
-    const { errors, user, addresses } = this.state;
+    const { errors, address } = this.state;
+    const { lineOne, lineTwo, city, state, zipCode } = address;
     const { onChange } = this;
     return (
       <div>
         {errors ? (
-          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
+          <Alert color='info' isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
         ) : null}
-
-        <div className="">
-          <h1>{user.id ? user.name : ''}</h1>
-          <EditableLabel
-            name="streetName"
-            text={address.name}
-            value={address.name}
-            change={console.log('yey')}
-          />
+        <div>
           <input
-            name="lastName"
-            placeholder="Last Name"
-            defaultValue={user.lastName || ''}
-            onChange={onChange}
-          />
-
+            value={lineOne || ''}
+            name='lineOne'
+            onChange={onChange} />
           <input
-            name="email"
-            placeholder="Email"
-            defaultValue={user.email || ''}
-            onChange={onChange}
-          />
+            value={lineTwo || ''}
+            name='lineTwo'
+            onChange={onChange} />
           <input
-            type="password"
-            name="password"
-            placeholder="password"
-            defaultValue={user.password || ''}
-            onChange={onChange}
-          />
-          <button
-            onClick={() => {
-              createOrUpdateUser(user);
-            }}
-          >
-            {user.id ? 'update' : 'create'}
-          </button>
+            value={city || ''}
+            name='city'
+            onChange={onChange} />
+          <input
+            value={state || ''}
+            name='state'
+            onChange={onChange} />
+          <input
+            value={zipCode || ''}
+            name='zipCode'
+            onChange={onChange} />
         </div>
       </div>
     );
   }
 }
-const mapStateToProps = ({ user }) => {
-  return { user };
+const mapStateToProps = ({ user }, { addressId }) => {
+  const { addresses } = user;
+  const address = addresses && addresses.find(address => address.id === addressId);
+  return { address };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    createOrUpdateUser: state => {
-      state = omit(state, 'fullAddress');
-      dispatch(createOrUpdateAddress(state)).catch(err => {
-        setErrors(err.response.data, state);
-      });
-    }
+    createOrUpdateAddress: address => createOrUpdateAddress(address)
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressForm);
+

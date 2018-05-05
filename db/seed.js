@@ -16,8 +16,8 @@ const generateProduct = () => {
 
 const generateAddress = () => {
   return {
-    streetName: faker.address.streetName(),
-    secondaryAddress: faker.address.secondaryAddress(),
+    lineOne: faker.address.streetName(),
+    lineTwo: faker.address.secondaryAddress(),
     city: faker.address.city(),
     state: faker.address.state(),
     zipCode: faker.address.zipCode(),
@@ -134,6 +134,17 @@ const seed = () => {
           fullName: 'Test User',
           email: 'test@test.com',
           password: '123456'
+        }).then(user => {
+          return Address.create(generateAddress()).then(address => {
+            address.update({ userId: user.id });
+            Order.create({ userId: user.id, addressId: address.id });
+          });
+        }),
+        User.create({
+          fullName: 'Test Admin',
+          email: 'test@admin.com',
+          password: '123456',
+          admin: true
         }).then(user => {
           return Address.create(generateAddress()).then(address => {
             address.update({ userId: user.id });

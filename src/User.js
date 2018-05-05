@@ -25,11 +25,14 @@ class User extends Component {
         <h1>Account</h1>
         <h2>{user.name}</h2>
         <h3>{!user.name ? 'Please sign in.' : 'Orders'}</h3>
-        {orders.map(order => (
-          <div key={order.id}>
-            <Link to={`/orders/${order.id}`}>Order ID: {order.id}</Link>
-          </div>
-        ))}
+        {orders.map(
+          order =>
+            order.userId === user.id ? (
+              <div key={order.id}>
+                <Link to={`/orders/${order.id}`}>Order ID: {order.id}</Link>
+              </div>
+            ) : null
+        )}
         <button onClick={() => this.click()}>
           {window.localStorage.getItem('token') ? 'update user' : 'create user'}
         </button>

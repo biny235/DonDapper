@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts, fetchCategories, authenticateUser } from './store';
+import { Container } from 'reactstrap';
 
 import Nav from './Nav';
 import Products from './Products';
@@ -12,9 +13,9 @@ import User from './User';
 import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
-import AddressForm from './AddressForm';
-import { Container } from 'reactstrap';
-
+import DashBoard from './DashBoard';
+import Checkout from './Checkout';
+import Autocomplete from './Autocomplete';
 
 class Main extends Component {
   componentDidMount() {
@@ -31,6 +32,11 @@ class Main extends Component {
           <Container>
             <Route path="/" exact render={() => <Home />} />
             <Switch>
+              <Route
+                path="/dashboard"
+                exact
+                render={({ history }) => <DashBoard history={history} />}
+              />
               <Route
                 path="/products"
                 exact
@@ -55,12 +61,21 @@ class Main extends Component {
                 render={({ history }) => <Cart history={history} />}
               />
               <Route
+                path="/checkout"
+                exact
+                render={({ history }) => <Checkout history={history} />}
+              />
+              <Route
                 path="/orders/:id"
                 exact
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
               <Route path="/user" exact render={() => <User />} />
-              <Route path="/test/addressform" exact render={()=> <AddressForm />} />
+              <Route
+                path="/test/google"
+                exact
+                render={() => <Autocomplete />}
+              />
             </Switch>
           </Container>
         </div>
@@ -68,8 +83,6 @@ class Main extends Component {
     );
   }
 }
-
-
 
 const mapDispatchToProps = dispatch => {
   return {
