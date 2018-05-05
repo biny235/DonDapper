@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import AddressDropdown from './AddressDropdown';
-import AddressForm from './AddressForm';
 import { editOrder } from './store';
 import axios from 'axios';
 
 class Checkout extends React.Component {
   constructor() {
     super();
+
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -25,15 +25,11 @@ class Checkout extends React.Component {
   }
 
   render() {
-    const order = { id: 1, addressId: 3 };
     const { onSubmit } = this;
     return (
       <div>
         <div>
-          <AddressDropdown orderId={order.id} />
-        </div>
-        <div>
-          <AddressForm addressId={order.addressId} />
+          <AddressDropdown />
         </div>
         <button type='submit' onClick={onSubmit}>Check Out</button>
       </div>

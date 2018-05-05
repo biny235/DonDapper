@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Category from './Category';
 
 class Products extends Component {
@@ -10,7 +11,7 @@ class Products extends Component {
         { id } = this.props.history.location.state
         : id = this.props.history.location.state);
     id && document.getElementById(id).scrollIntoView();
-  }
+}
 
   render() {
     const { categories } = this.props;
@@ -31,10 +32,9 @@ class Products extends Component {
   }
 }
 
-const mapStateToProps = ({ categories }, ) => {
+const mapStateToProps = ({ categories }) => {
   return {
     categories
   };
 };
-
 export default connect(mapStateToProps)(Products);

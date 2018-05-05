@@ -25,6 +25,7 @@ const Order = ({ order, lineItems, total }) => {
 const mapStateToProps = ({ user, orders, products }, { id }) => {
   const order = orders && id && orders.find(order => order.id === id);
   const lineItems = order && order.lineItems;
+  console.log(order);
   const total =
     lineItems &&
     lineItems.reduce((amounts, line) => {
