@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { NavLink, Link } from 'react-router-dom';
 import {
   Navbar,
   NavbarBrand,
@@ -11,9 +10,9 @@ import {
 import { connect } from 'react-redux';
 import LoginModal from './LoginModal';
 import AccountDropdown from './AccountDropdown';
-import ProductsDropdown from './ProductsDropdown'
+import ProductsDropdown from './ProductsDropdown';
 
-const Nav = ({user, counter}) => {
+const Nav = ({ user, counter }) => {
   return (
     <Navbar color="light" light>
       <NavbarBrand href="/#/">Grace Shopper</NavbarBrand>
@@ -27,10 +26,10 @@ const Nav = ({user, counter}) => {
         <NavItem>
           <AccountDropdown />
         </NavItem>
-        {user.admin ?(
-        <NavItem>
-          <_NavLink href="/#/dashboard">DashBoard</_NavLink>
-        </NavItem>):null
+        {user.admin && (
+          <NavItem>
+            <_NavLink href="/#/dashboard">Admin Dashboard</_NavLink>
+          </NavItem>)
         }
       </_Nav>
     </Navbar>
