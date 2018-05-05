@@ -1,58 +1,45 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
 import { editOrder, fetchCart } from './store';
-import UserAddresses from './UserAddresses';
 
-class Cart extends React.Component {
-  constructor() {
-    super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onSubmit() {
-    const { cart } = this.props;
-    this.props.editOrder({ status: 'order' }, cart.id);
-  }
-
-  render() {
-    const { cart, lineItems, total } = this.props;
-    const { onChange, onDelete, onSubmit } = this;
-    return (
-      <div>
-        <h1>Cart</h1>
-        <h3>{!cart.id && 'Please sign in.'}</h3>
-        {cart.id && (
-          <div className="order order-container">
-            <div>Item</div>
-            <div>Price</div>
-            <div>Quantity</div>
-            <div>Total</div>
-            <div>Remove</div>
-            {lineItems.map(lineItem => (
+const Cart = props => {
+  const { cart, lineItems, total } = props;
+  return (
+    <div>
+      <h1>Cart</h1>
+      <h3>{!cart.id && 'Please sign in.'}</h3>
+      {cart.id && (
+        <div className="order order-container">
+          <div>Item</div>
+          <div>Price</div>
+          <div>Quantity</div>
+          <div>Total</div>
+          <div>Remove</div>
+          {lineItems.length ? (
+            lineItems.map(lineItem => (
               <LineItem key={lineItem.id} line={lineItem} cart={true} />
-            ))}
-            {cart.id && (
-              <button
-                type="submit"
-                disabled={!lineItems.length}
-                onClick={onSubmit}
-              >
-                Check Out
-              </button>
-            )}
-            <div className="order-total">Total:</div>
-            <div>$ {total}</div>
-            
-          </div>
-        )}
-        <div>
-            <UserAddresses onSubmit={onSubmit} />
+            ))
+          ) : (
+            <div className="line-item">Please Add Something to Your Cart</div>
+          )}
+          {lineItems.length ? (
+            <Link to={'/checkout'} className="btn btn-success">
+              Check Out
+            </Link>
+          ) : (
+            <button disabled={!lineItems.length} className="btn btn-success">
+              Check Out
+            </button>
+          )}
+          <div className="order-total">Total:</div>
+          <div>$ {total}</div>
         </div>
-      </div>
-    );
-  }
-}
+      )}
+    </div>
+  );
+};
 
 const mapStateToProps = ({ cart, lineItems, user, products }) => {
   const total =
@@ -69,10 +56,4 @@ const mapStateToProps = ({ cart, lineItems, user, products }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, { history }) => {
-  return {
-    editOrder: (order, id) => dispatch(editOrder(order, id, history))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cart);
+export default connect(mapStateToProps)(Cart);

@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const db = require('../../db');
 const { Order, LineItem } = db.models;
+const auth = require('../auth');
 
-router.get('/', (req, res, next) => {
-  Order.findAll()
+router.get('/', auth, (req, res, next) => {
+  Order.findAll({ where: { status: 'order' } })
     .then(orders => {
       res.send(orders);
     })

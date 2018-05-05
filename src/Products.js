@@ -44,5 +44,5 @@ const mapStateToProps = ({ categories }, ownProps) => {
     categories
   };
 };
-
+0
 export default connect(mapStateToProps)(Products);
