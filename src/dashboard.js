@@ -10,11 +10,18 @@ class DashBoard extends Component {
     if (!user.admin) history.push('/home');
     this.onChange = this.onChange.bind(this);
   }
+  componentWillMount() {
+    const { history, user } = this.props;
+    if (!user.admin) history.push('/home');
+    this.onChange = this.onChange.bind(this);
+  }
 
   onChange(order) {
-    console.log(this);
+    !window.localStorage.getItem('checked')
+      ? window.localStorage.setItem('checked', 1)
+      : window.localStorage.removeItem('checked');
     order.shipped = !order.shipped;
-    editOrder(order);
+    this.props.editOrder(order);
   }
 
   render() {

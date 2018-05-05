@@ -8,7 +8,7 @@ const Product = ({ product, history }) => {
   return product ? (
     <Container className="product" id={product.id}>
       <span>
-        <img src={product.imageUrl} />
+        <img className="product-image" src={product.imageUrl} />
       </span>
       <span>
         <h1>{product && product.name}</h1>

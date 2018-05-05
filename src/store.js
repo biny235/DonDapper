@@ -1,5 +1,4 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-//import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
@@ -152,6 +151,22 @@ const editOrder = (order, history) => {
   };
 };
 
+//ADDRESS
+const createOrUpdateAddress = (address, orderId) => {
+  const { id } = address;
+  const putOrPost = id ? 'put' : 'post';
+  return dispatch => {
+    axios[putOrPost](`/api/addresses/${id ? id : ''}`, { address })
+      .then(res => res.data)
+      .then(address => {
+        orderId
+          ? dispatch(editOrder({ id: orderId, address: address.id }))
+          : null;
+        dispatch(authenticateUser());
+      });
+  };
+};
+
 // LINE ITEMS
 const addLineItem = (lineItem, history) => {
   return dispatch => {
@@ -159,11 +174,7 @@ const addLineItem = (lineItem, history) => {
       .post(`/api/lineItems`, lineItem, history)
       .then(res => res.data)
       .then(lineItem => dispatch({ type: CREATE_LINE_ITEM, lineItem }))
-      .then(() => {
-        if (history) {
-          history.push(`/cart`);
-        }
-      })
+      .then(() => (history ? history.push(`/cart`) : null))
       .catch(err => console.log(err));
   };
 };
@@ -305,5 +316,6 @@ export {
   deleteLineItem,
   createOrUpdateUser,
   logout,
-  authenticateUser
+  authenticateUser,
+  createOrUpdateAddress
 };

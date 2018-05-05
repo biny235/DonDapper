@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts, fetchCategories, authenticateUser } from './store';
+import { Container } from 'reactstrap';
 
 import Nav from './Nav';
 import Products from './Products';
@@ -13,8 +14,8 @@ import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
 import DashBoard from './DashBoard';
+import Checkout from './Checkout';
 import Autocomplete from './Autocomplete';
-import { Container } from 'reactstrap';
 
 class Main extends Component {
   componentDidMount() {
@@ -58,6 +59,11 @@ class Main extends Component {
                 path="/cart"
                 exact
                 render={({ history }) => <Cart history={history} />}
+              />
+              <Route
+                path="/checkout"
+                exact
+                render={({ history }) => <Checkout history={history} />}
               />
               <Route
                 path="/orders/:id"

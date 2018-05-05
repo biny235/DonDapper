@@ -1,15 +1,31 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+.order-container {
+    max-width: 75%;
+}
+
 .order {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    max-width: 75%;
+    grid-gap: 1rem;
+}
+
+.line-item {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1rem;
+    min-width: 100%;
+    grid-column: 1/6;
+}
+
+.line-item.order-line {
+    border-bottom: 0.5px solid lightgray;
 }
 
 .order-line {
     min-height: 50px;
-    border-top: 0.5px solid lightgray;
-    max-width: 100%;
-    grid-column-start: 1;
-    grid-column-end: 6;
 }
 
 .order-qty {
@@ -17,14 +33,28 @@
 }
 
 .order-total {
-    grid-column-start: 3;
-    grid-column-end: 4;
+    grid-column: 3 / 4;
 }
 
 .product-description-text {
     color: gray;
     font-style: italic;
     font-size: 0.8rem;
+}
+
+.product-name {
+    text-align: center;
+}
+
+.product-image {
+    width: 50%;
+    height: auto;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .product {
@@ -34,18 +64,21 @@
 
 .category {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr repeat(3, 2fr) 1fr;
     border-bottom: 1px solid lightgray;
+    padding: 2rem;
 }
 
 .category-products {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-column: 1 / 4;
+    grid-gap: 5rem;
+    grid-column: 2 / 5;
 }
 
 .category-head {
-    grid-column: 2 / 4;
+    text-align: center;
+    grid-column: 3 / 4;
 }
 
 .login-modal {
@@ -58,13 +91,13 @@
     /* The image used */
     background-image: url('images/img1-ad17af8da9.jpg');
     /* Set a specific height */
-    min-height: 750px;
+    min-height: 350px;
     /* Create the parallax scrolling effect */
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    width: 120%;
+    width: 100%;
 }
 
 .home {
@@ -80,7 +113,6 @@
 }
 
 .products {
-    background-image: url('images/Mens_grooming_1.jpg');
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
@@ -121,7 +153,6 @@
     left: 2px;
     bottom: 3px;
     background-color: white;
-    -webkit-transition: .4s;
     transition: .4s;
 }
 
@@ -135,4 +166,8 @@ input:focus+.slider {
 
 input:checked+.slider:before {
     transform: translateX(14px);
+}
+
+.remove-all {
+    all: unset;
 }

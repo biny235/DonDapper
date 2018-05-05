@@ -12,17 +12,26 @@ class UserForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user || {},
+      firstName: props.user.firstName || "",
+      user:{
+        firstName: props.user.firstName || '',
+        lastName: props.user.lastName || '',
+        email: props.user.email || '',
+        password: props.user.password || '',
+      },
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
     setErrors = setErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
-    if (user.id !== this.state.user.id) this.setState({ user: user });
+    if (user !== this.state.user) this.setState({ 
+      user: user 
+    });
   }
 
   componentWillMount() {
@@ -30,12 +39,17 @@ class UserForm extends Component {
   }
 
   onChange(ev) {
-    let { user } = this.state;
-    // user = omit(user, 'name');
-    let key = ev.target.name;
-    let value = ev.target.value;
-    user[key] = value;
-    this.setState({ user: user });
+    const { name, value } = ev.target;
+    let { user } = this.state; 
+    user = Object.assign({}, user, {[name]: value})
+    this.setState({user});
+    console.log(this.state)
+  }
+  onSubmit(id){
+    console.log(this.state.user)
+    const user = Object.assign({}, { id } , this.state.user)
+    console.log(user)
+    this.props.createOrUpdateUser(user)
   }
 
   clearErrors() {
@@ -43,9 +57,10 @@ class UserForm extends Component {
   }
 
   render() {
-    const { createOrUpdateUser } = this.props;
-    const { errors, user } = this.state;
-    const { onChange } = this;
+    const { createOrUpdateUser, user } = this.props;
+    const { errors, } = this.state;
+    const { firstName, lastName, email, password } = this.state.user
+    const { onChange, onSubmit } = this;
     return (
       <div>
         {errors ? (
@@ -59,33 +74,32 @@ class UserForm extends Component {
           <input
             name="firstName"
             placeholder="First Name"
-            defaultValue={user.firstName || ''}
+            value={firstName || ''}
             onChange={onChange}
+            
           />
           <input
             name="lastName"
             placeholder="Last Name"
-            defaultValue={user.lastName || ''}
+            defaultValue={lastName}
             onChange={onChange}
           />
 
           <input
             name="email"
             placeholder="Email"
-            defaultValue={user.email || ''}
+            defaultValue={email}
             onChange={onChange}
           />
           <input
             type="password"
             name="password"
             placeholder="password"
-            defaultValue={user.password || ''}
+            defaultValue={password}
             onChange={onChange}
           />
           <button
-            onClick={() => {
-              createOrUpdateUser(user);
-            }}
+            onClick={() => onSubmit(user.id)}
           >
             {user.id ? 'update' : 'create'}
           </button>
@@ -95,14 +109,14 @@ class UserForm extends Component {
   }
 }
 const mapStateToProps = ({ user }) => {
+  user = user || {}
   return { user };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    createOrUpdateUser: state => {
-      state = omit(state, 'name');
-      dispatch(createOrUpdateUser(state)).catch(err => {
-        setErrors(err.response.data, state);
+    createOrUpdateUser: user => {
+      dispatch(createOrUpdateUser(user)).catch(err => {
+        setErrors(err.response.data, user);
       });
     }
   };

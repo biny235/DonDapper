@@ -1,25 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import ProductCard from './ProductCard';
 
 const Category = ({ category, categoryProducts }) => {
   return (
     <div className="category">
       <h1 className="category-head">{category && category.name}</h1>
       <div className="category-products">
-        {categoryProducts.map(product => {
-          return (
-            <div key={product.id}>
-              {product.name}
-              <span> - ${product.price}</span>
-              <div>
-                <Link to={`/products/${product.id}`}>
-                  <img src={product.imageUrl} height="200" width="200" />
-                </Link>
-              </div>
-            </div>
-          );
-        })}
+        {categoryProducts.map(product => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
     </div>
   );

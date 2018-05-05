@@ -4,7 +4,7 @@ const { Sequelize } = conn;
 const Address = conn.define(
   'address',
   {
-    streetName: {
+    lineOne: {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
@@ -14,7 +14,7 @@ const Address = conn.define(
         }
       }
     },
-    secondaryAddress: {
+    lineTwo: {
       type: Sequelize.STRING,
       allowNull: true
     },
@@ -60,7 +60,7 @@ const Address = conn.define(
   {
     getterMethods: {
       fullAddress() {
-        return `${this.streetName} ${this.secondaryAddress} ${this.city} ${
+        return `${this.lineOne} ${this.lineTwo} ${this.city} ${
           this.state
         } ${this.zipCode}`;
       }
