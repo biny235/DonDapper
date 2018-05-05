@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import LineItem from './LineItem';
-import { editOrder, fetchCart } from './store';
+import { editOrder } from './store';
 import UserAddresses from './UserAddresses';
+import axios from 'axios';
 
 class Cart extends React.Component {
   constructor() {
@@ -11,13 +12,21 @@ class Cart extends React.Component {
   }
 
   onSubmit() {
-    const { cart } = this.props;
+    const { cart, user } = this.props;
+    const email = {
+      from: '"Grace Shopper" <grace@shopper.com>',
+      to: user.email,
+      subject: 'Order Confirmed',
+      text: `Hi, ${user.firstName}. Your order ID is ${cart.id}.`
+    };
+    axios.post(`/api/email/send`, email)
+      .then(res => res.data);
     this.props.editOrder({ status: 'order' }, cart.id);
   }
 
   render() {
     const { cart, lineItems, total } = this.props;
-    const { onChange, onDelete, onSubmit } = this;
+    const { onSubmit } = this;
     return (
       <div>
         <h1>Cart</h1>
@@ -43,11 +52,11 @@ class Cart extends React.Component {
             )}
             <div className="order-total">Total:</div>
             <div>$ {total}</div>
-            
+
           </div>
         )}
         <div>
-            <UserAddresses onSubmit={onSubmit} />
+          <UserAddresses onSubmit={onSubmit} />
         </div>
       </div>
     );
@@ -57,9 +66,10 @@ class Cart extends React.Component {
 const mapStateToProps = ({ cart, lineItems, user, products }) => {
   const total =
     lineItems &&
-    lineItems.reduce((total, line) => {
+    lineItems.reduce((quantity, line) => {
       const product = products.find(_product => _product.id === line.productId);
-      return (total += product.price * line.quantity);
+      quantity += product.price * line.quantity;
+      return quantity;
     }, 0);
   return {
     cart,
