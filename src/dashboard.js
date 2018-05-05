@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Products from './Products';
 import { editOrder } from './store';
 
 class DashBoard extends Component {
@@ -25,7 +24,7 @@ class DashBoard extends Component {
   }
 
   render() {
-    const { orders, user } = this.props;
+    const { orders, user, categories, products } = this.props;
     const { onChange } = this;
     return (
       <div>
@@ -51,15 +50,30 @@ class DashBoard extends Component {
               </div>
             ))
           : null}
+        <h1>Products By Category</h1>
+        {categories.map(category => {
+          return (
+            <div key={category.id}>
+              <h2 key={category.id}>{category.name}</h2>
+              {products.map(product => {
+                if ((product.categoryId = category.id)) {
+                  return <button key={product.id}>{product.name}</button>;
+                }
+              })}
+            </div>
+          );
+        })}
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ user, orders }) => {
+const mapStateToProps = ({ user, orders, products, categories }) => {
   return {
     user,
-    orders
+    orders,
+    categories,
+    products
   };
 };
 
