@@ -1,23 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Product from './Product';
 import Category from './Category';
 
 class Products extends Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     let id;
-      this.props.history.location.state ?
-        this.props.history.location.state.id ?
-          { id } = this.props.history.location.state
-          :
-          id = this.props.history.location.state
-        :
-        null
-    id ? document.getElementById(id).scrollIntoView() : null
+    this.props.history.location.state &&
+      (this.props.history.location.state.id ?
+        { id } = this.props.history.location.state
+        : id = this.props.history.location.state);
+    id && document.getElementById(id).scrollIntoView();
   }
 
   render() {
@@ -39,10 +31,10 @@ class Products extends Component {
   }
 }
 
-const mapStateToProps = ({ categories }, ownProps) => {
+const mapStateToProps = ({ categories }, ) => {
   return {
     categories
   };
 };
-0
+
 export default connect(mapStateToProps)(Products);
