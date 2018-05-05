@@ -95,9 +95,9 @@ const createOrUpdateUser = user => {
     return !id
       ? axios.post('api/users', { user })
       : axios
-        .put(`/api/users/${id}`, { user })
-        .then(res => res.data)
-        .then(user => login(user, dispatch));
+          .put(`/api/users/${id}`, { user })
+          .then(res => res.data)
+          .then(user => login(user, dispatch));
   };
 };
 
@@ -149,17 +149,11 @@ const editOrder = (order, history) => {
 };
 
 //ADDRESS
-const createOrUpdateAddress = (address, orderId) => {
+const createOrUpdateAddress = address => {
   const { id } = address;
-  const putOrPost = id ? 'put' : 'post';
-  return dispatch => {
-    axios[putOrPost](`/api/addresses/${id ? id : ''}`, { address })
-      .then(res => res.data)
-      .then(address => {
-        orderId && dispatch(editOrder({ id: orderId, address: address.id }))
-        dispatch(authenticateUser());
-      });
-  };
+  return !id
+    ? axios.post('api/addresses', { address })
+    : axios.put(`/api/addresses/${id}`, { address });
 };
 
 // LINE ITEMS

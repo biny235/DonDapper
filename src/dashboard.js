@@ -11,7 +11,7 @@ class DashBoard extends Component {
   }
   componentWillMount() {
     const { history, user } = this.props;
-    if (!user.admin) history.push('/home');
+    if (!user.admin) history.push('/');
     this.onChange = this.onChange.bind(this);
   }
 
@@ -59,7 +59,7 @@ class DashBoard extends Component {
               })}
             </div>
           );
-        })}
+        })}{' '}
       </div>
     );
   }
