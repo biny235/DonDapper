@@ -40,6 +40,7 @@
         "redux-thunk": "^2.2.0",
         "riek": "^1.1.0",
         "sequelize": "^4.35.1",
+        "stripe": "^5.8.0",
         "webpack": "^3.11.0"
     },
     "devDependencies": {

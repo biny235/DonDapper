@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fetchProducts, fetchCategories, authenticateUser } from './store';
 import { Container } from 'reactstrap';
 
-import Nav from './Nav';
+import Navigation from './Navigation';
 import Products from './Products';
 import Product from './Product';
 import Categories from './Categories';
@@ -28,7 +28,7 @@ class Main extends Component {
     return (
       <Router>
         <div>
-          <Nav history={history} />
+          <Navigation history={history} />
           <Container>
             <Route path="/" exact render={() => <Home />} />
             <Switch>

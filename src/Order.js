@@ -28,9 +28,10 @@ const mapStateToProps = ({ user, orders, products }, { id }) => {
   console.log(order);
   const total =
     lineItems &&
-    lineItems.reduce((total, line) => {
+    lineItems.reduce((amounts, line) => {
       const product = products.find(_product => _product.id === line.productId);
-      return (total += product.price * line.quantity);
+      amounts += product.price * line.quantity;
+      return amounts;
     }, 0);
   return { user, order, products, lineItems, total };
 };

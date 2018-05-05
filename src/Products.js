@@ -4,18 +4,14 @@ import { Link } from 'react-router-dom';
 import Category from './Category';
 
 class Products extends Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     let id;
-    this.props.history.location.state
-      ? this.props.history.location.state.id
-        ? ({ id } = this.props.history.location.state)
-        : (id = this.props.history.location.state)
-      : null;
-    id ? document.getElementById(id).scrollIntoView() : null;
-  }
+    this.props.history.location.state &&
+      (this.props.history.location.state.id ?
+        { id } = this.props.history.location.state
+        : id = this.props.history.location.state);
+    id && document.getElementById(id).scrollIntoView();
+}
 
   render() {
     const { categories } = this.props;
@@ -41,5 +37,4 @@ const mapStateToProps = ({ categories }) => {
     categories
   };
 };
-0;
 export default connect(mapStateToProps)(Products);

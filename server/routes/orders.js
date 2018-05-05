@@ -4,7 +4,10 @@ const { Order, LineItem } = db.models;
 const auth = require('../auth');
 
 router.get('/', auth, (req, res, next) => {
-  Order.findAll({ where: { status: 'order' } })
+  Order.findAll({
+    where: { status: 'order' },
+    include: [{ all: true }]
+  })
     .then(orders => {
       res.send(orders);
     })

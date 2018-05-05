@@ -119,11 +119,10 @@ const fetchOrders = user => {
   const { id, admin } = user;
   const userId = id;
   return dispatch => {
-    let pathName = '';
+    let pathName;
     admin
       ? (pathName = `/api/orders`)
       : (pathName = `/api/users/${userId}/orders`);
-
     authCall('get', pathName)
       .then(res => res.data)
       .then(orders => {
@@ -145,14 +144,12 @@ const editOrder = (order, history) => {
           history.push(`/user`);
         }
       })
-
       .catch(err => console.log(err));
   };
 };
 
 //ADDRESS
 const createOrUpdateAddress = address => {
-  console.log(address);
   const { id } = address;
   return !id
     ? axios.post('api/addresses', { address })
@@ -302,7 +299,7 @@ const reducer = combineReducers({
   orders: ordersReducer
 });
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const store = createStore(reducer, applyMiddleware(thunk, logger));
 
 export default store;
 
