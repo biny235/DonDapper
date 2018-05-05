@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
 import { editOrder, fetchCart } from './store';
 
-const Cart = (props)=>{
+const Cart = props => {
   const { cart, lineItems, total } = props;
   return (
     <div>
@@ -17,33 +17,29 @@ const Cart = (props)=>{
           <div>Quantity</div>
           <div>Total</div>
           <div>Remove</div>
-          {lineItems.length ? lineItems.map(lineItem => (
-            <LineItem key={lineItem.id} line={lineItem} cart={true} />
-          )) : <div className="line-item">Please Add Something to Your Cart</div>}
           {lineItems.length ? (
-            <Link
-              to={'/checkout'}
-              className="btn btn-success"
-            >
+            lineItems.map(lineItem => (
+              <LineItem key={lineItem.id} line={lineItem} cart={true} />
+            ))
+          ) : (
+            <div className="line-item">Please Add Something to Your Cart</div>
+          )}
+          {lineItems.length ? (
+            <Link to={'/checkout'} className="btn btn-success">
               Check Out
             </Link>
-          )
-          :
-          <button
-              disabled={!lineItems.length}
-              className="btn btn-success"
-            >
+          ) : (
+            <button disabled={!lineItems.length} className="btn btn-success">
               Check Out
             </button>
-        }
+          )}
           <div className="order-total">Total:</div>
           <div>$ {total}</div>
         </div>
       )}
     </div>
   );
-}
-
+};
 
 const mapStateToProps = ({ cart, lineItems, user, products }) => {
   const total =

@@ -13,10 +13,9 @@ import User from './User';
 import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
+import DashBoard from './DashBoard';
 import Checkout from './Checkout';
 import Autocomplete from './Autocomplete';
-
-
 
 class Main extends Component {
   componentDidMount() {
@@ -33,6 +32,11 @@ class Main extends Component {
           <Container>
             <Route path="/" exact render={() => <Home />} />
             <Switch>
+              <Route
+                path="/dashboard"
+                exact
+                render={({ history }) => <DashBoard history={history} />}
+              />
               <Route
                 path="/products"
                 exact
@@ -56,14 +60,22 @@ class Main extends Component {
                 exact
                 render={({ history }) => <Cart history={history} />}
               />
-              <Route path="/checkout" exact render={({history}) => <Checkout history={history} />} />
+              <Route
+                path="/checkout"
+                exact
+                render={({ history }) => <Checkout history={history} />}
+              />
               <Route
                 path="/orders/:id"
                 exact
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
               <Route path="/user" exact render={() => <User />} />
-              <Route path="/test/google" exact render={()=> <Autocomplete />} />
+              <Route
+                path="/test/google"
+                exact
+                render={() => <Autocomplete />}
+              />
             </Switch>
           </Container>
         </div>
@@ -71,8 +83,6 @@ class Main extends Component {
     );
   }
 }
-
-
 
 const mapDispatchToProps = dispatch => {
   return {
