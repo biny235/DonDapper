@@ -39,7 +39,8 @@ class Checkout extends React.Component {
 
 const mapStateToProps = ({ cart, user }) => {
   return {
-    cart, user
+    cart,
+    user
   };
 };
 
@@ -50,4 +51,3 @@ const mapDispatchToProps = (dispatch, { history }) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
-
