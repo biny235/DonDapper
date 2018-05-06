@@ -12,7 +12,6 @@ class UserForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: props.user.firstName || '',
       user: {
         firstName: props.user.firstName || '',
         lastName: props.user.lastName || '',
