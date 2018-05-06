@@ -187,6 +187,10 @@ input:checked+.slider:before {
 .account .user-form{
     grid-column: 4 / 5
 }
+.account-order{
+    padding-top: 5rem;
+    grid-column: 2 / 5;
+}
 .order-row{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
