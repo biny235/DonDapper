@@ -144,13 +144,7 @@ const editOrder = (order, history) => {
           history.push(`/user`);
         }
       })
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> master
-=======
->>>>>>> refs/remotes/origin/aj
+    
       .catch(err => console.log(err));
   };
 };
@@ -158,27 +152,9 @@ const editOrder = (order, history) => {
 //ADDRESS
 const createOrUpdateAddress = address => {
   const { id } = address;
-<<<<<<< HEAD
-<<<<<<< HEAD
   return !id
     ? axios.post('api/addresses', { address })
     : axios.put(`/api/addresses/${id}`, { address });
-=======
-  const putOrPost = id ? 'put' : 'post';
-  return dispatch => {
-    axios[putOrPost](`/api/addresses/${id ? id : ''}`, { address })
-      .then(res => res.data)
-      .then(address => {
-        orderId && dispatch(editOrder({ id: orderId, address: address.id }))
-        dispatch(authenticateUser());
-      });
-  };
->>>>>>> master
-=======
-  return !id
-    ? axios.post('api/addresses', { address })
-    : axios.put(`/api/addresses/${id}`, { address });
->>>>>>> refs/remotes/origin/aj
 };
 
 // LINE ITEMS
