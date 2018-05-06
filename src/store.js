@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
+import omit from 'object.omit';
 
 /*
 CONSTANTS
@@ -144,17 +145,34 @@ const editOrder = (order, history) => {
           history.push(`/user`);
         }
       })
-    
+
       .catch(err => console.log(err));
   };
 };
 
 //ADDRESS
-const createOrUpdateAddress = address => {
+const createOrUpdateAddress = (address, user) => {
+  const userId = user.id;
   const { id } = address;
-  return !id
-    ? axios.post('api/addresses', { address })
-    : axios.put(`/api/addresses/${id}`, { address });
+  !address.userId ? (address.userId = userId) : null;
+  // user.addresses.map(_address => {
+  //   _address = omit(_address, [
+  //     'id',
+  //     'fullAddress',
+  //     'latitude',
+  //     'longitude',
+  //     'createdAt',
+  //     'updatedAt'
+  //   ]);
+  //   console.log(_address);
+  //   console.log(JSON.stringify(_address) === JSON.stringify(address));
+  // });
+  const putOrPost = !id ? 'post' : 'put';
+  axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
+    .then(res => res.data)
+    .then(() => {
+      return dispatch => dispatch(authenticateUser);
+    });
 };
 
 // LINE ITEMS
@@ -300,7 +318,7 @@ const reducer = combineReducers({
   orders: ordersReducer
 });
 
-const store = createStore(reducer, applyMiddleware(thunk, logger));
+const store = createStore(reducer, applyMiddleware(thunk));
 
 export default store;
 
