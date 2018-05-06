@@ -1,12 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import AddressDropdown from './AddressDropdown';
-import AddressForm from './AddressForm';
 import { editOrder } from './store';
-<<<<<<< HEAD
+import axios from 'axios';
 
-=======
->>>>>>> refs/remotes/origin/aj
 class Checkout extends React.Component {
   constructor() {
     super();
@@ -15,33 +12,26 @@ class Checkout extends React.Component {
   }
 
   onSubmit() {
-    const { cart, user, history } = this.props;
+    const { cart, user } = this.props;
     const email = {
       from: '"Grace Shopper" <grace@shopper.com>',
       to: user.email,
       subject: 'Order Confirmed',
       text: `Hi, ${user.firstName}. Your order ID is ${cart.id}.`
     };
-    axios.post(`/api/email/send`, email).then(res => res.data);
-    cart.status = 'order';
-    this.props.editOrder(cart, history);
+    axios.post(`/api/email/send`, email)
+      .then(res => res.data);
+    this.props.editOrder({ id: cart.id, status: 'order' });
   }
 
   render() {
-    const order = { id: 1, addressId: 3 };
     const { onSubmit } = this;
     return (
       <div>
         <div>
-          <AddressDropdown orderId={order.id} />
+          <AddressDropdown />
         </div>
-<<<<<<< HEAD
-        <button type="submit" onClick={onSubmit}>
-          Check Out
-        </button>
-=======
         <button type='submit' onClick={onSubmit}>Check Out</button>
->>>>>>> refs/remotes/origin/aj
       </div>
     );
   }
