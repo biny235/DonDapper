@@ -13,7 +13,7 @@ import User from './User';
 import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
-import DashBoard from './DashBoard';
+import Dashboard from './Dashboard';
 import Checkout from './Checkout';
 import Autocomplete from './Autocomplete';
 
@@ -35,7 +35,7 @@ class Main extends Component {
               <Route
                 path="/dashboard"
                 exact
-                render={({ history }) => <DashBoard history={history} />}
+                render={({ history }) => <Dashboard history={history} />}
               />
               <Route
                 path="/products"
