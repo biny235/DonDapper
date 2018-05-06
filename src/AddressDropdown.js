@@ -10,8 +10,8 @@ import {
 } from 'reactstrap';
 
 class AddressDropdown extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.state = {
       dropdownOpen: false,
@@ -28,20 +28,21 @@ class AddressDropdown extends Component {
       dropdownOpen: !prevState.dropdownOpen
     }));
   }
+
   onClick(addressId) {
-    const { editOrder, orderId } = this.props;
-    const order = { id: orderId, addressId };
+    const { cart } = this.props;
+    const order = { id: cart.id, addressId };
     this.props.editOrder(order);
     this.setState({ showForm: true, addressId });
   }
 
   render() {
     const { addresses } = this.props;
-    const { value, showForm } = this.state;
+    const { dropdownOpen, showForm, addressId } = this.state;
     const { toggle, onClick } = this;
     return (
       <div>
-        <Dropdown isOpen={this.state.dropdownOpen} toggle={toggle}>
+        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
           <DropdownToggle>Choose an Address</DropdownToggle>
           <DropdownMenu>
             {addresses.map(address => {
@@ -54,22 +55,22 @@ class AddressDropdown extends Component {
                 </DropdownItem>
               );
             })}
-            <DropdownItem key={null} onClick={() => onClick(null)}>
+            <DropdownItem onClick={() => onClick(null)}>
               Add an Address
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        {showForm && <AddressForm addressId={this.state.addressId} />}
+        {showForm && <AddressForm addressId={addressId} />}
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user, cart }) => {
   let { addresses } = user;
   addresses = addresses || [];
   return {
-    addresses
+    addresses, cart
   };
 };
 

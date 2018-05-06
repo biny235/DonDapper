@@ -144,6 +144,7 @@ const editOrder = (order, history) => {
           history.push(`/user`);
         }
       })
+    
       .catch(err => console.log(err));
   };
 };

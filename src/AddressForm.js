@@ -27,7 +27,7 @@ class AddressForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.address.id) {
+    if (nextProps.address && nextProps.address.id) {
       const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
       nextProps.address !== this.state.address
         ? this.setState({
@@ -74,7 +74,7 @@ class AddressForm extends Component {
           <RIEInput value={state} change={onChange} propName="state" />
           <RIEInput value={zipCode} change={onChange} propName="zipCode" />
         </div>
-        <button onClick={() => createOrUpdateAddress(address)}>save</button>
+        <button onClick={() => createOrUpdateAddress(address)}>Save</button>
       </div>
     );
   }
