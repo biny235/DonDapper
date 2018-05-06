@@ -81,7 +81,7 @@ class AddressForm extends Component {
           <RIEInput value={state} change={onChange} propName="state" />
           <RIEInput value={zipCode} change={onChange} propName="zipCode" />
         </div>
-        <button onClick={() => createOrUpdateAddress(address)}>save</button>
+        <button onClick={() => createOrUpdateAddress(address)}>Save</button>
       </div>
     );
   }
