@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { editOrder } from './store';
 
-class DashBoard extends Component {
+class Dashboard extends Component {
   componentWillReceiveProps(nextProps) {
     const { history, user } = nextProps;
     if (!user.admin) history.push('/home');
@@ -82,4 +82,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashBoard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
