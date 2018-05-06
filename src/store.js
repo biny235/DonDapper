@@ -80,6 +80,7 @@ const logout = dispatch => {
 };
 
 const authenticateUser = dispatch => {
+  console.log('yey');
   return authCall('get', '/api/users')
     .then(res => res.data)
     .then(user => {

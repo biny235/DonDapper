@@ -23,6 +23,7 @@ class AddressForm extends Component {
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
     setErrors = setErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
   }
@@ -54,6 +55,11 @@ class AddressForm extends Component {
     address = Object.assign({}, address, val);
     this.setState({ address });
   }
+  onClick() {
+    const { address } = this.state;
+    const { user } = this.props;
+    this.props.createOrUpdateAddress(address, user);
+  }
 
   clearErrors() {
     this.setState({ errors: '' });
@@ -63,7 +69,7 @@ class AddressForm extends Component {
     const { errors, address } = this.state;
     const { user } = this.props;
     const { lineOne, lineTwo, city, state, zipCode } = address;
-    const { onChange } = this;
+    const { onChange, onClick } = this;
     return (
       <div>
         {errors ? (
@@ -101,9 +107,7 @@ class AddressForm extends Component {
             propName="zipCode"
           />
         </div>
-        <button onClick={() => createOrUpdateAddress(address, user)}>
-          Save
-        </button>
+        <button onClick={() => onClick()}>Save</button>
       </div>
     );
   }
