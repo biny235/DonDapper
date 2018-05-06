@@ -28,9 +28,10 @@ class UserForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
-    if (user !== this.state.user)
+    const { firstName, lastName, email, password } = user;
+    if (user.firstName !== this.state.user)
       this.setState({
-        user: user
+        user: { firstName, lastName, email, password }
       });
   }
 
@@ -43,12 +44,9 @@ class UserForm extends Component {
     let { user } = this.state;
     user = Object.assign({}, user, { [name]: value });
     this.setState({ user });
-    console.log(this.state);
   }
   onSubmit(id) {
-    console.log(this.state.user);
     const user = Object.assign({}, { id }, this.state.user);
-    console.log(user);
     this.props.createOrUpdateUser(user);
   }
 
@@ -69,36 +67,39 @@ class UserForm extends Component {
           </Alert>
         ) : null}
 
-        <div className="">
-          <h1>{user.id ? user.name : ''}</h1>
+        <div>
           <input
+            className="form-control" 
             name="firstName"
             placeholder="First Name"
             value={firstName || ''}
             onChange={onChange}
           />
           <input
+            className="form-control" 
             name="lastName"
             placeholder="Last Name"
-            defaultValue={lastName}
+            value={lastName || ''}
             onChange={onChange}
           />
 
           <input
+            className="form-control" 
             name="email"
             placeholder="Email"
-            defaultValue={email}
+            value={email || ''}
             onChange={onChange}
           />
           <input
+            className="form-control" 
             type="password"
             name="password"
             placeholder="password"
-            defaultValue={password}
+            value={password || ''}
             onChange={onChange}
           />
-          <button onClick={() => onSubmit(user.id)}>
-            {user.id ? 'update' : 'create'}
+          <button className="btn btn-success" style={{"width":"100%"}}onClick={() => onSubmit(user.id)}>
+            {user.id ? 'Update' : 'Create'}
           </button>
         </div>
       </div>

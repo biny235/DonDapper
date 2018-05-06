@@ -83,7 +83,7 @@
 
 .login-modal {
     position: absolute;
-    right: 0px;
+    right: 2rem;
     width: 18rem;
 }
 
@@ -170,4 +170,30 @@ input:checked+.slider:before {
 
 .remove-all {
     all: unset;
+}
+
+.account{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 2fr 1fr;
+}
+
+.account .user{
+    grid-column: 2 / 3;
+}
+
+.account .orders{
+    grid-column: 2 / 3
+}
+.account .user-form{
+    grid-column: 4 / 5
+}
+.order-row{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    border-bottom: 0.5px solid lightgray;
+}
+.account-login{
+    position: absolute!important;
+    left: 25.5rem;
 }
