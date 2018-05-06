@@ -11,7 +11,7 @@ class Checkout extends React.Component {
   }
 
   onSubmit() {
-    const { cart, user } = this.props;
+    const { cart, user, history } = this.props;
     const email = {
       from: '"Grace Shopper" <grace@shopper.com>',
       to: user.email,
@@ -19,7 +19,7 @@ class Checkout extends React.Component {
       text: `Hi, ${user.firstName}. Your order ID is ${cart.id}.`
     };
     axios.post(`/api/email/send`, email).then(res => res.data);
-    this.props.editOrder({ id: cart.id, status: 'order' });
+    this.props.editOrder({ id: cart.id, status: 'order' }, history);
   }
 
   render() {
