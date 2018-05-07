@@ -95,9 +95,9 @@ class UserForm extends Component {
         {
           Object.keys(fields).map(field => {
             return !this.state.user[field].length &&
-              <div key={field} className="alert alert-danger">
-                {`${fields[field]} cannot be left blank.`}
-              </div>;
+              <Alert key={field} color="info">
+                {`${fields[field]} cannot be empty.`}
+              </Alert>;
           })
         }
       </div>

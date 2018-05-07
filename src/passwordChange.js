@@ -14,6 +14,7 @@ class UserForm extends Component {
     this.state = {
       oldPassword: '',
       newPassword: '',
+      inputEdited: {},
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -24,13 +25,14 @@ class UserForm extends Component {
 
   onChange(ev) {
     const { name, value } = ev.target;
-    let { user } = this.state;
-    user = Object.assign({}, user, { [name]: value });
-    this.setState({ user });
+    const { inputEdited } = this.state;
+    inputEdited[name] = true;
+    this.setState({ [name]: value, inputEdited });
   }
 
   onSubmit(id) {
-    const user = Object.assign({}, { id }, this.state.user);
+    const { newPassword } = this.state;
+    const user = Object.assign({}, { id }, { password: newPassword });
     this.props.createOrUpdateUser(user);
   }
 
@@ -41,8 +43,9 @@ class UserForm extends Component {
   render() {
     const { user } = this.props;
     const { errors } = this.state;
-    const { oldPassword, newPassword } = this.state.user;
+    const { oldPassword, newPassword, inputEdited } = this.state;
     const { onChange, onSubmit } = this;
+    const passwordCorrect = oldPassword === user.password;
     return (
       <div>
         {errors && (
@@ -54,21 +57,22 @@ class UserForm extends Component {
           <input
             className="form-control"
             type="password"
-            name="password"
+            name="oldPassword"
             placeholder="Old Password"
             onChange={onChange}
           />
           <input
             className="form-control"
             type="password"
-            name="password"
+            name="newPassword"
             placeholder="New Password"
-            // value={password || ''}
             onChange={onChange}
           />
-          <button type="submit" className="btn btn-success" onClick={() => onSubmit(user.id)}>
+          <button type="submit" className="btn btn-success" onClick={() => onSubmit(user.id)} disabled={!passwordCorrect || !newPassword.length}>
             Change
           </button>
+          {!passwordCorrect && inputEdited.oldPassword && <Alert color="info">Old Password is incorrect.</Alert>}
+          {passwordCorrect && inputEdited.newPassword && !newPassword.length && <Alert color="info">New Password must be valid.</Alert>}
         </div>
       </div>
     );
@@ -80,10 +84,10 @@ const mapStateToProps = ({ user }) => {
   return { user };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, { history }) => {
   return {
     createOrUpdateUser: user => {
-      dispatch(createOrUpdateUser(user)).catch(err => {
+      dispatch(createOrUpdateUser(user, history)).catch(err => {
         setErrors(err.response.data, user);
       });
     }
