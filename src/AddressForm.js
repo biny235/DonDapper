@@ -29,7 +29,6 @@ class AddressForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.address, 'x');
     if (nextProps.address && nextProps.address.id) {
       const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
       nextProps.address !== this.state.address
@@ -40,7 +39,6 @@ class AddressForm extends Component {
     }
   }
   componentDidMount() {
-    console.log(this.props.address, 'y');
     if (this.props.address) {
       const { id, lineOne, lineTwo, city, state, zipCode } = this.props.address;
       this.props.address !== this.state.address
@@ -116,7 +114,6 @@ const mapStateToProps = ({ user }, { addressId }) => {
   const { addresses } = user;
   const address =
     addresses && addresses.find(address => address.id === addressId);
-  console.log(address, 'z');
   return { address, user };
 };
 const mapDispatchToProps = dispatch => {

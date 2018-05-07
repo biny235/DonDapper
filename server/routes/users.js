@@ -6,7 +6,6 @@ const { User, Order, LineItem, Address } = db.models;
 router.get('/', (req, res, next) => {
   User.exchangeToken(req.headers.token)
     .then(user => {
-      console.log(user.addresses.length);
       res.send(user);
     })
     .catch(next);
