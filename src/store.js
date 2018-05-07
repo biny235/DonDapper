@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import axios from 'axios';
 import omit from 'object.omit';
 
@@ -279,12 +280,7 @@ const ordersReducer = (state = [], action) => {
     case GET_ORDERS:
       return action.orders;
     case EDIT_ORDER:
-      let index = state.findIndex(order => order.id === action.order.id);
-      return (state = [
-        ...state.slice(0, index),
-        action.order,
-        ...state.slice(index + 1)
-      ]);
+      return state.map(order => order.id === action.id ? action.order : order)
     case RESET_STATE:
       return [];
   }
@@ -318,7 +314,8 @@ const reducer = combineReducers({
   orders: ordersReducer
 });
 
-const store = createStore(reducer, applyMiddleware(thunk));
+
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;
 
