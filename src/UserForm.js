@@ -16,7 +16,8 @@ class UserForm extends Component {
       user: {
         firstName: props.user.firstName || '',
         lastName: props.user.lastName || '',
-        email: props.user.email || ''
+        email: props.user.email || '',
+        password: props.user.password || '',
       },
       errors: ''
     };
@@ -28,10 +29,10 @@ class UserForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
-    const { firstName, lastName, email } = user;
+    const { firstName, lastName, email, password } = user;
     if (user.firstName !== this.state.user) {
       this.setState({
-        user: { firstName, lastName, email }
+        user: { firstName, lastName, email, password }
       });
     }
   }
@@ -54,7 +55,7 @@ class UserForm extends Component {
   render() {
     const { user } = this.props;
     const { errors } = this.state;
-    const { firstName, lastName, email } = this.state.user;
+    const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
     const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail' };
     const inputEmpty = Object.keys(fields).some(field => !this.state.user[field].length);
@@ -87,14 +88,23 @@ class UserForm extends Component {
             value={email || ''}
             onChange={onChange}
           />
-          <Link to="/user/password">Change Password</Link>
+          {!user.id ? <input
+            className="form-control"
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={password || ''}
+            onChange={onChange}
+          /> :
+            <Link to="/user/password">Change Password</Link>
+          }
           <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={inputEmpty}>
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>
         {
           Object.keys(fields).map(field => {
-            return !this.state.user[field].length &&
+            return user.id && !this.state.user[field].length &&
               <Alert key={field} color="info">
                 {`${fields[field]} cannot be empty.`}
               </Alert>;
