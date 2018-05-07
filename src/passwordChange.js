@@ -12,10 +12,8 @@ class UserForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {
-        password: props.user.password
-      },
       oldPassword: '',
+      newPassword: '',
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -43,7 +41,7 @@ class UserForm extends Component {
   render() {
     const { user } = this.props;
     const { errors } = this.state;
-    const { firstName, lastName, email, password } = this.state.user;
+    const { oldPassword, newPassword } = this.state.user;
     const { onChange, onSubmit } = this;
     return (
       <div>
