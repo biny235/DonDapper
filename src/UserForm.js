@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import omit from 'object.omit';
 import { createOrUpdateUser } from './store';
 import { connect } from 'react-redux';
 
-let setErrors = function(err, user) {
+let setErrors = function (err, user) {
   if (!user.id) this.setState({ user: {} });
   this.setState({ errors: err });
 };
@@ -29,14 +28,11 @@ class UserForm extends Component {
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
     const { firstName, lastName, email, password } = user;
-    if (user.firstName !== this.state.user)
+    if (user.firstName !== this.state.user) {
       this.setState({
         user: { firstName, lastName, email, password }
       });
-  }
-
-  componentWillMount() {
-    const { user } = this.props;
+    }
   }
 
   onChange(ev) {
@@ -55,7 +51,7 @@ class UserForm extends Component {
   }
 
   render() {
-    const { createOrUpdateUser, user } = this.props;
+    const { user } = this.props;
     const { errors } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
@@ -69,14 +65,14 @@ class UserForm extends Component {
 
         <div>
           <input
-            className="form-control" 
+            className="form-control"
             name="firstName"
             placeholder="First Name"
             value={firstName || ''}
             onChange={onChange}
           />
           <input
-            className="form-control" 
+            className="form-control"
             name="lastName"
             placeholder="Last Name"
             value={lastName || ''}
@@ -84,21 +80,21 @@ class UserForm extends Component {
           />
 
           <input
-            className="form-control" 
+            className="form-control"
             name="email"
             placeholder="Email"
             value={email || ''}
             onChange={onChange}
           />
           <input
-            className="form-control" 
+            className="form-control"
             type="password"
             name="password"
             placeholder="password"
             value={password || ''}
             onChange={onChange}
           />
-          <button className="btn btn-success" style={{"width":"100%"}}onClick={() => onSubmit(user.id)}>
+          <button className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)}>
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>

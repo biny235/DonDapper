@@ -12,13 +12,11 @@ import {
 class AddressDropdown extends Component {
   constructor() {
     super();
-
     this.state = {
       dropdownOpen: false,
       showForm: false,
       addressId: null
     };
-
     this.toggle = this.toggle.bind(this);
     this.onClick = this.onClick.bind(this);
   }
@@ -43,7 +41,7 @@ class AddressDropdown extends Component {
     return (
       <div>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-          <DropdownToggle>Choose an Address</DropdownToggle>
+          <DropdownToggle>Choose or Add Address</DropdownToggle>
           <DropdownMenu>
             {addresses.map(address => {
               return (
@@ -56,7 +54,7 @@ class AddressDropdown extends Component {
               );
             })}
             <DropdownItem onClick={() => onClick(null)}>
-              Add an Address
+              New Address
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>

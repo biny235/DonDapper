@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import axios from 'axios';
-import omit from 'object.omit';
 
 /*
 CONSTANTS
@@ -88,7 +87,10 @@ const authenticateUser = dispatch => {
       dispatch(fetchCart(user.id));
       dispatch(fetchOrders(user));
     })
-    .catch(err => window.localStorage.removeItem('token'));
+    .catch(err => {
+      window.localStorage.removeItem('token');
+      console.log(err);
+    });
 };
 
 const createOrUpdateUser = user => {
@@ -97,9 +99,9 @@ const createOrUpdateUser = user => {
     return !id
       ? axios.post('api/users', { user })
       : axios
-          .put(`/api/users/${id}`, { user })
-          .then(res => res.data)
-          .then(user => login(user, dispatch));
+        .put(`/api/users/${id}`, { user })
+        .then(res => res.data)
+        .then(user => login(user, dispatch));
   };
 };
 
@@ -156,7 +158,7 @@ const createOrUpdateAddress = (address, user) => {
   return dispatch => {
     const userId = user.id;
     const { id } = address;
-    !address.userId ? (address.userId = userId) : null;
+    !address.userId && (address.userId = userId);
     // user.addresses.map(_address => {
     //   _address = omit(_address, [
     //     'id',

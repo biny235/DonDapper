@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import UserForm from './UserForm';
+import React from 'react';
 import { connect } from 'react-redux';
 
 const Home = () => {
   return (
     <div className="home">
-      <h1>Home</h1>
-      <p>Welcome to our online store.</p>
+      <h1>Welcome</h1>
+      <h3>Look, feel, and smell like a gentleman.</h3>
     </div>
   );
 };
