@@ -12,14 +12,19 @@ class Checkout extends React.Component {
 
   onSubmit() {
     const { cart, user, history } = this.props;
-    const email = {
-      from: '"Grace Shopper" <grace@shopper.com>',
-      to: user.email,
-      subject: 'Order Confirmed',
-      text: `Hi, ${user.firstName}. Your order ID is ${cart.id}.`
-    };
-    axios.post(`/api/email/send`, email).then(res => res.data);
-    this.props.editOrder({ id: cart.id, status: 'order' }, history);
+    // const email = {
+    //   from: '"Grace Shopper" <grace@shopper.com>',
+    //   to: user.email,
+    //   subject: 'Order Confirmed',
+    //   text: `Hi, ${user.firstName}. Your order ID is ${cart.id}.`
+    // };
+    // axios.post(`/api/email/send`, email).then(res => res.data);
+    cart.addressId
+      ? this.props.editOrder({ id: cart.id, status: 'order' }, history)
+      : this.props.editOrder(
+          { id: cart.id, status: 'order', addressId: user.addresses[0].id },
+          history
+        );
   }
 
   render() {

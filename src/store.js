@@ -81,7 +81,6 @@ const logout = dispatch => {
 };
 
 const authenticateUser = dispatch => {
-  console.log('yey');
   return authCall('get', '/api/users')
     .then(res => res.data)
     .then(user => {
@@ -154,27 +153,27 @@ const editOrder = (order, history) => {
 
 //ADDRESS
 const createOrUpdateAddress = (address, user) => {
-  const userId = user.id;
-  const { id } = address;
-  !address.userId ? (address.userId = userId) : null;
-  // user.addresses.map(_address => {
-  //   _address = omit(_address, [
-  //     'id',
-  //     'fullAddress',
-  //     'latitude',
-  //     'longitude',
-  //     'createdAt',
-  //     'updatedAt'
-  //   ]);
-  //   console.log(_address);
-  //   console.log(JSON.stringify(_address) === JSON.stringify(address));
-  // });
-  const putOrPost = !id ? 'post' : 'put';
-  axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
-    .then(res => res.data)
-    .then(() => {
-      return dispatch => dispatch(authenticateUser);
-    });
+  return dispatch => {
+    const userId = user.id;
+    const { id } = address;
+    !address.userId ? (address.userId = userId) : null;
+    // user.addresses.map(_address => {
+    //   _address = omit(_address, [
+    //     'id',
+    //     'fullAddress',
+    //     'latitude',
+    //     'longitude',
+    //     'createdAt',
+    //     'updatedAt'
+    //   ]);
+    //   console.log(_address);
+    //   console.log(JSON.stringify(_address) === JSON.stringify(address));
+    // });
+    const putOrPost = !id ? 'post' : 'put';
+    axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
+      .then(res => res.data)
+      .then(() => dispatch(authenticateUser));
+  };
 };
 
 // LINE ITEMS
@@ -281,7 +280,9 @@ const ordersReducer = (state = [], action) => {
     case GET_ORDERS:
       return action.orders;
     case EDIT_ORDER:
-      return state.map(order => order.id === action.id ? action.order : order)
+      return state.map(
+        order => (order.id === action.id ? action.order : order)
+      );
     case RESET_STATE:
       return [];
   }
@@ -314,7 +315,6 @@ const reducer = combineReducers({
   lineItems: lineItemsReducer,
   orders: ordersReducer
 });
-
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 

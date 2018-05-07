@@ -24,23 +24,32 @@ class AddressForm extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
-    setErrors = setErrors.bind(this);
+    this.setErrors = setErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.address, 'x');
-    if (nextProps.address && nextProps.address.id) {
+    if (nextProps.address) {
       const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
       nextProps.address !== this.state.address
         ? this.setState({
             address: { id, lineOne, lineTwo, city, state, zipCode }
           })
         : null;
+    } else {
+      this.setState({
+        address: {
+          id: null,
+          lineOne: '',
+          lineTwo: '',
+          city: '',
+          state: '',
+          zipCode: ''
+        }
+      });
     }
   }
   componentDidMount() {
-    console.log(this.props.address, 'y');
     if (this.props.address) {
       const { id, lineOne, lineTwo, city, state, zipCode } = this.props.address;
       this.props.address !== this.state.address
@@ -66,8 +75,9 @@ class AddressForm extends Component {
   }
 
   render() {
+    console.log(this.state);
     const { errors, address } = this.state;
-    const { user } = this.props;
+    const { user, changeState } = this.props;
     const { lineOne, lineTwo, city, state, zipCode } = address;
     const { onChange, onClick } = this;
     return (
@@ -114,9 +124,17 @@ class AddressForm extends Component {
 }
 const mapStateToProps = ({ user }, { addressId }) => {
   const { addresses } = user;
-  const address =
+  let address =
     addresses && addresses.find(address => address.id === addressId);
-  console.log(address, 'z');
+  // if (!address)
+  //   address = {
+  //     id: null,
+  //     lineOne: '',
+  //     lineTwo: '',
+  //     city: '',
+  //     state: '',
+  //     zipCode: ''
+  //   };
   return { address, user };
 };
 const mapDispatchToProps = dispatch => {

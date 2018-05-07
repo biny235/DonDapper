@@ -4,9 +4,9 @@ const auth = require('../auth');
 const { User, Order, LineItem, Address } = db.models;
 
 router.get('/', (req, res, next) => {
+  console.log('yey');
   User.exchangeToken(req.headers.token)
     .then(user => {
-      console.log(user.addresses.length);
       res.send(user);
     })
     .catch(next);
