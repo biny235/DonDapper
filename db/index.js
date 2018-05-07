@@ -35,7 +35,6 @@ User.findOrCreateCart = function(userId) {
 
 User.authenticate = function(user) {
   const { email, password } = user;
-  console.log(secret);
   return User.find({
     where: { email, password },
     attributes: ['id', 'firstName', 'lastName', 'email']
@@ -50,9 +49,11 @@ User.authenticate = function(user) {
 User.exchangeToken = function(token) {
   try {
     const id = jwt.decode(token, secret).id;
+    console.log(id)
     return User.findById(id, {
-      include: [{ model: Address, where: { userId: id } }]
+      include: [{ model: Address }]
     }).then(user => {
+      console.log(user)
       if (user) {
         return user;
       }

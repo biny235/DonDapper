@@ -3,6 +3,9 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
+let token = window.localStorage.getItem('token')
+axios.defaults.headers.common['token'] = token;
+
 
 /*
 CONSTANTS
@@ -70,6 +73,7 @@ const login = (user, dispatch) => {
     .post(`/api/users/login`, { user })
     .then(res => res.data)
     .then(token => {
+      axios.defaults.headers.common['token'] = token;
       window.localStorage.setItem('token', token);
       dispatch(authenticateUser);
     });
@@ -81,7 +85,7 @@ const logout = dispatch => {
 };
 
 const authenticateUser = dispatch => {
-  return authCall('get', '/api/users')
+  return axios.get('/api/users')
     .then(res => res.data)
     .then(user => {
       dispatch({ type: GET_USER, user });
@@ -96,18 +100,16 @@ const authenticateUser = dispatch => {
 
 const createOrUpdateUser = (user, history) => {
   const { id } = user;
+  const putOrPost = id ? 'put' : 'post'
   return dispatch => {
-    return !id
-      ? axios.post('api/users', { user })
-      : axios
-        .put(`/api/users/${id}`, { user })
-        .then(res => res.data)
-        .then(user => {
-          login(user, dispatch);
-          if (history) {
-            history.push(`/user`);
-          }
-        });
+    axios[putOrPost](`/api/users/${id ? id : ''}`, { user })
+      .then(res => res.data)
+      .then(user => {
+        login(user, dispatch);
+        if (history) {
+          history.push(`/user`);
+        }
+      });
   };
 };
 
@@ -238,10 +240,12 @@ AUTHORIZATION
 
 const authCall = (reqType, path, body) => {
   const token = window.localStorage.getItem('token');
+  const config = { headers: { 'token' : token} }
   if (!token) {
     throw { err: 'Not authorized. Please login' };
   }
-  return axios[reqType](path, { headers: { token }, body });
+  console.log(path, body, config)
+  return axios[reqType](path, body, config);
 };
 
 /*
