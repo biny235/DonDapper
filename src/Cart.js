@@ -28,7 +28,7 @@ const Cart = props => {
               Check Out
             </Link>
           ) : (
-              <button disabled={!lineItems.length} className="btn btn-success">
+              <button type='submit' disabled={!lineItems.length} className="btn btn-success">
                 Check Out
               </button>
             )}

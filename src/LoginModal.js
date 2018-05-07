@@ -5,57 +5,50 @@ import UserForm from './UserForm';
 import { Link } from 'react-router-dom';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-class LoginModal extends React.Component{
+class LoginModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       slideIndex: 0,
     };
-    this.onChange = this.onChange.bind(this)
+    this.onChange = this.onChange.bind(this);
   }
-  onChange(slideIndex){
-    this.setState({slideIndex})
+  onChange(slideIndex) {
+    this.setState({ slideIndex });
   }
-  
 
   render() {
     const { slideIndex } = this.state;
     const { user } = this.props;
     const { onChange } = this;
     return (
-
       <div className="card login-modal" >
-          {!user.id && 
-            (<div className='card-header btn-group'>
-                <button className="btn btn-secondary" onClick={()=>onChange(0)}>Login</button>
-                <button className="btn btn-secondary" onClick={()=>onChange(1)}>Sign Up</button>
-              </div>
+        {!user.id &&
+          (<div className='card-header btn-group'>
+            <button className="btn btn-secondary" onClick={() => onChange(0)}>Login</button>
+            <button className="btn btn-secondary" onClick={() => onChange(1)}>Sign Up</button>
+          </div>
           )}
         <div className="card-body">
           {
-          slideIndex === 0 ? 
-            <div>
-              <LoginForm />
-              <Link to={'/user'}>Account</Link>
-            </div>
-            :
-            user.id ? 
-              null
+            slideIndex === 0 ?
+              <div>
+                <LoginForm />
+                <Link to={'/user'}>Account</Link>
+              </div>
               :
-              <UserForm />
-                
+              !user.id && <UserForm />
           }
         </div>
-          
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = ({user})=>{
-  return{
+const mapStateToProps = ({ user }) => {
+  return {
     user
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps)(LoginModal)
+export default connect(mapStateToProps)(LoginModal);
