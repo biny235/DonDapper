@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import axios from 'axios';
 
 /*
@@ -22,6 +22,7 @@ const GET_CART = 'GET_CART';
 const EDIT_ORDER = 'EDIT_ORDER';
 
 // ORDERS
+const ADD_ORDER = 'ADD_ORDER';
 const GET_ORDERS = 'GET_ORDERS';
 
 // LINE ITEMS
@@ -125,8 +126,8 @@ const fetchOrders = user => {
   return dispatch => {
     let pathName;
     admin
-      ? (pathName = `/api/orders`)
-      : (pathName = `/api/users/${userId}/orders`);
+      ? pathName = `/api/orders`
+      : pathName = `/api/users/${userId}/orders`;
     authCall('get', pathName)
       .then(res => res.data)
       .then(orders => {
@@ -144,6 +145,7 @@ const editOrder = (order, history) => {
       .then(order => {
         dispatch({ type: EDIT_ORDER, order });
         if (history) {
+          dispatch({ type: ADD_ORDER, order });
           dispatch(fetchCart(order.userId));
           history.push(`/user`);
         }
@@ -285,6 +287,8 @@ const ordersReducer = (state = [], action) => {
       return state.map(
         order => (order.id === action.id ? action.order : order)
       );
+    case ADD_ORDER:
+      return [...state, action.order];
     case RESET_STATE:
       return [];
   }
