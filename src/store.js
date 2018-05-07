@@ -3,9 +3,9 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
+//Setting axios headers
 let token = window.localStorage.getItem('token')
 axios.defaults.headers.common['token'] = token;
-
 
 /*
 CONSTANTS
@@ -116,7 +116,7 @@ const createOrUpdateUser = (user, history) => {
 // CART
 const fetchCart = userId => {
   return dispatch => {
-    authCall('get', `/api/users/${userId}/cart`)
+    axios.get(`/api/users/${userId}/cart`)
       .then(res => res.data)
       .then(cart => {
         dispatch({ type: GET_CART, cart });
@@ -135,7 +135,7 @@ const fetchOrders = user => {
     admin
       ? pathName = `/api/orders`
       : pathName = `/api/users/${userId}/orders`;
-    authCall('get', pathName)
+    axios.get(pathName)
       .then(res => res.data)
       .then(orders => {
         dispatch({ type: GET_ORDERS, orders });
@@ -232,20 +232,6 @@ const sendEmail = (email, history) => {
       .then(res => res.data)
       .catch(err => console.log(err));
   };
-};
-
-/*
-AUTHORIZATION
-*/
-
-const authCall = (reqType, path, body) => {
-  const token = window.localStorage.getItem('token');
-  const config = { headers: { 'token' : token} }
-  if (!token) {
-    throw { err: 'Not authorized. Please login' };
-  }
-  console.log(path, body, config)
-  return axios[reqType](path, body, config);
 };
 
 /*
