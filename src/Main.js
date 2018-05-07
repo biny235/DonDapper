@@ -16,6 +16,7 @@ import Cart from './Cart';
 import Dashboard from './Dashboard';
 import Checkout from './Checkout';
 import Autocomplete from './Autocomplete';
+import PasswordChange from './PasswordChange';
 
 class Main extends Component {
   componentDidMount() {
@@ -71,6 +72,7 @@ class Main extends Component {
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
               <Route path="/user" exact render={() => <User />} />
+              <Route path="/user/password" exact render={({ history }) => <PasswordChange history={history} />} />
               <Route
                 path="/test/google"
                 exact

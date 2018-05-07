@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
 import { createOrUpdateUser } from './store';
-import { connect } from 'react-redux';
 
 let setErrors = function (err, user) {
   if (!user.id) this.setState({ user: {} });
   this.setState({ errors: err });
 };
+
 class UserForm extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +17,7 @@ class UserForm extends Component {
         firstName: props.user.firstName || '',
         lastName: props.user.lastName || '',
         email: props.user.email || '',
-        password: props.user.password || ''
+        password: props.user.password || '',
       },
       errors: ''
     };
@@ -55,14 +57,15 @@ class UserForm extends Component {
     const { errors } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
+    const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail' };
+    const inputEmpty = Object.keys(fields).some(field => !this.state.user[field].length);
     return (
       <div>
-        {errors ? (
+        {errors && (
           <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
-        ) : null}
-
+        )}
         <div>
           <input
             className="form-control"
@@ -78,34 +81,45 @@ class UserForm extends Component {
             value={lastName || ''}
             onChange={onChange}
           />
-
           <input
             className="form-control"
             name="email"
-            placeholder="Email"
+            placeholder="E-mail"
             value={email || ''}
             onChange={onChange}
           />
-          <input
+          {!user.id ? <input
             className="form-control"
             type="password"
             name="password"
-            placeholder="password"
+            placeholder="Password"
             value={password || ''}
             onChange={onChange}
-          />
-          <button className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)}>
+          /> :
+            <Link to="/user/password">Change Password</Link>
+          }
+          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={inputEmpty}>
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>
+        {
+          Object.keys(fields).map(field => {
+            return user.id && !this.state.user[field].length &&
+              <Alert key={field} color="info">
+                {`${fields[field]} cannot be empty.`}
+              </Alert>;
+          })
+        }
       </div>
     );
   }
 }
+
 const mapStateToProps = ({ user }) => {
   user = user || {};
   return { user };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     createOrUpdateUser: user => {

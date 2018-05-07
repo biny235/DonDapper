@@ -94,7 +94,7 @@ const authenticateUser = dispatch => {
     });
 };
 
-const createOrUpdateUser = user => {
+const createOrUpdateUser = (user, history) => {
   const { id } = user;
   return dispatch => {
     return !id
@@ -102,7 +102,12 @@ const createOrUpdateUser = user => {
       : axios
         .put(`/api/users/${id}`, { user })
         .then(res => res.data)
-        .then(user => login(user, dispatch));
+        .then(user => {
+          login(user, dispatch);
+          if (history) {
+            history.push(`/user`);
+          }
+        });
   };
 };
 
