@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Alert } from 'reactstrap';
-import omit from 'object.omit';
-import { createOrUpdateUser } from './store';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Alert } from 'reactstrap';
+import { createOrUpdateUser } from './store';
 
-let setErrors = function(err, user) {
+let setErrors = function (err, user) {
   if (!user.id) this.setState({ user: {} });
   this.setState({ errors: err });
 };
+
 class UserForm extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +17,7 @@ class UserForm extends Component {
         firstName: props.user.firstName || '',
         lastName: props.user.lastName || '',
         email: props.user.email || '',
-        password: props.user.password || ''
+        password: props.user.password || '',
       },
       errors: ''
     };
@@ -29,14 +30,11 @@ class UserForm extends Component {
   componentWillReceiveProps(nextProps) {
     const { user } = nextProps;
     const { firstName, lastName, email, password } = user;
-    if (user.firstName !== this.state.user)
+    if (user.firstName !== this.state.user) {
       this.setState({
         user: { firstName, lastName, email, password }
       });
-  }
-
-  componentWillMount() {
-    const { user } = this.props;
+    }
   }
 
   onChange(ev) {
@@ -55,61 +53,73 @@ class UserForm extends Component {
   }
 
   render() {
-    const { createOrUpdateUser, user } = this.props;
+    const { user } = this.props;
     const { errors } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
+    const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail' };
+    const inputEmpty = Object.keys(fields).some(field => !this.state.user[field].length);
     return (
       <div>
-        {errors ? (
+        {errors && (
           <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
-        ) : null}
-
+        )}
         <div>
           <input
-            className="form-control" 
+            className="form-control"
             name="firstName"
             placeholder="First Name"
             value={firstName || ''}
             onChange={onChange}
           />
           <input
-            className="form-control" 
+            className="form-control"
             name="lastName"
             placeholder="Last Name"
             value={lastName || ''}
             onChange={onChange}
           />
-
           <input
-            className="form-control" 
+            className="form-control"
             name="email"
-            placeholder="Email"
+            placeholder="E-mail"
             value={email || ''}
             onChange={onChange}
           />
-          <input
-            className="form-control" 
+          {!user.id ? <input
+            className="form-control"
             type="password"
             name="password"
-            placeholder="password"
+            placeholder="Password"
             value={password || ''}
             onChange={onChange}
-          />
-          <button className="btn btn-success" style={{"width":"100%"}}onClick={() => onSubmit(user.id)}>
+          /> :
+            <Link to="/user/password">Change Password</Link>
+          }
+          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={inputEmpty}>
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>
+        {
+          Object.keys(fields).map(field => {
+            return user.id && !this.state.user[field].length &&
+              <Alert key={field} color="info">
+                {`${fields[field]} cannot be empty.`}
+              </Alert>;
+          })
+        }
       </div>
     );
   }
 }
+
 const mapStateToProps = ({ user }) => {
   user = user || {};
   return { user };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     createOrUpdateUser: user => {

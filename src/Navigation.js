@@ -8,7 +8,6 @@ import {
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import LoginModal from './LoginModal';
 import AccountDropdown from './AccountDropdown';
 import ProductsDropdown from './ProductsDropdown';
 
@@ -34,7 +33,8 @@ const Navigation = ({ user, counter }) => {
       </Nav>
     </Navbar>
   );
-}
+};
+
 const mapStateToProps = ({ user, lineItems }) => {
   const counter = lineItems.length;
   return {

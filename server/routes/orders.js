@@ -6,7 +6,7 @@ const auth = require('../auth');
 router.get('/', auth, (req, res, next) => {
   Order.findAll({
     where: { status: 'order' },
-    include: [{ all: true }]
+    include: [{ model: LineItem }]
   })
     .then(orders => {
       res.send(orders);

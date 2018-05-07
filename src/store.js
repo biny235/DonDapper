@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import axios from 'axios';
 
 /*
@@ -22,6 +22,7 @@ const GET_CART = 'GET_CART';
 const EDIT_ORDER = 'EDIT_ORDER';
 
 // ORDERS
+const ADD_ORDER = 'ADD_ORDER';
 const GET_ORDERS = 'GET_ORDERS';
 
 // LINE ITEMS
@@ -87,18 +88,26 @@ const authenticateUser = dispatch => {
       dispatch(fetchCart(user.id));
       dispatch(fetchOrders(user));
     })
-    .catch(err => window.localStorage.removeItem('token'));
+    .catch(err => {
+      window.localStorage.removeItem('token');
+      console.log(err);
+    });
 };
 
-const createOrUpdateUser = user => {
+const createOrUpdateUser = (user, history) => {
   const { id } = user;
   return dispatch => {
     return !id
       ? axios.post('api/users', { user })
       : axios
-          .put(`/api/users/${id}`, { user })
-          .then(res => res.data)
-          .then(user => login(user, dispatch));
+        .put(`/api/users/${id}`, { user })
+        .then(res => res.data)
+        .then(user => {
+          login(user, dispatch);
+          if (history) {
+            history.push(`/user`);
+          }
+        });
   };
 };
 
@@ -122,8 +131,8 @@ const fetchOrders = user => {
   return dispatch => {
     let pathName;
     admin
-      ? (pathName = `/api/orders`)
-      : (pathName = `/api/users/${userId}/orders`);
+      ? pathName = `/api/orders`
+      : pathName = `/api/users/${userId}/orders`;
     authCall('get', pathName)
       .then(res => res.data)
       .then(orders => {
@@ -141,21 +150,39 @@ const editOrder = (order, history) => {
       .then(order => {
         dispatch({ type: EDIT_ORDER, order });
         if (history) {
+          dispatch({ type: ADD_ORDER, order });
           dispatch(fetchCart(order.userId));
           history.push(`/user`);
         }
       })
-    
+
       .catch(err => console.log(err));
   };
 };
 
 //ADDRESS
-const createOrUpdateAddress = address => {
-  const { id } = address;
-  return !id
-    ? axios.post('api/addresses', { address })
-    : axios.put(`/api/addresses/${id}`, { address });
+const createOrUpdateAddress = (address, user) => {
+  return dispatch => {
+    const userId = user.id;
+    const { id } = address;
+    !address.userId && (address.userId = userId);
+    // user.addresses.map(_address => {
+    //   _address = omit(_address, [
+    //     'id',
+    //     'fullAddress',
+    //     'latitude',
+    //     'longitude',
+    //     'createdAt',
+    //     'updatedAt'
+    //   ]);
+    //   console.log(_address);
+    //   console.log(JSON.stringify(_address) === JSON.stringify(address));
+    // });
+    const putOrPost = !id ? 'post' : 'put';
+    axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
+      .then(res => res.data)
+      .then(() => dispatch(authenticateUser));
+  };
 };
 
 // LINE ITEMS
@@ -262,7 +289,11 @@ const ordersReducer = (state = [], action) => {
     case GET_ORDERS:
       return action.orders;
     case EDIT_ORDER:
-      return state.map(order => order.id === action.id ? action.order : order)
+      return state.map(
+        order => (order.id === action.id ? action.order : order)
+      );
+    case ADD_ORDER:
+      return [...state, action.order];
     case RESET_STATE:
       return [];
   }

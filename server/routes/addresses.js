@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  Address.create(req.body)
+  Address.create(req.body.address)
     .then(address => res.send(address))
     .catch(next);
 });
@@ -36,7 +36,6 @@ router.put('/:id', (req, res, next) => {
       return address.save();
     })
     .then(address => {
-      console.log(address);
       res.send(address);
     })
     .catch(next);

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import { createOrUpdateAddress, editOrder } from './store';
+import { createOrUpdateAddress } from './store';
 import { connect } from 'react-redux';
 import { RIEInput } from 'riek';
 
-let setErrors = function(err) {
+let setErrors = function (err) {
   this.setState({ errors: err });
 };
 class AddressForm extends Component {
@@ -17,39 +17,57 @@ class AddressForm extends Component {
         lineTwo: props.lineTwo || '',
         city: props.city || '',
         state: props.state || '',
-        zipCode: props.zipCode || ''
+        zipCode: props.zipCode || '',
+        userId: props.userId || ''
       },
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
-    setErrors = setErrors.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.setErrors = setErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.address && nextProps.address.id) {
+    if (nextProps.address) {
       const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
-      nextProps.address !== this.state.address
-        ? this.setState({
-            address: { id, lineOne, lineTwo, city, state, zipCode }
-          })
-        : null;
+      nextProps.address !== this.state.address && this.setState({
+        address: { id, lineOne, lineTwo, city, state, zipCode }
+      });
+    } else {
+      this.setState({
+        address: {
+          id: null,
+          lineOne: '',
+          lineTwo: '',
+          city: '',
+          state: '',
+          zipCode: ''
+        }
+      });
     }
   }
+
   componentDidMount() {
     if (this.props.address) {
       const { id, lineOne, lineTwo, city, state, zipCode } = this.props.address;
-      this.props.address !== this.state.address
-        ? this.setState({
-            address: { id, lineOne, lineTwo, city, state, zipCode }
-          })
-        : null;
+      this.props.address !== this.state.address &&
+        this.setState({
+          address: { id, lineOne, lineTwo, city, state, zipCode }
+        });
     }
   }
-  onChange(val) {
+
+  onChange(value) {
     let { address } = this.state;
-    address = Object.assign({}, address, val);
+    address = Object.assign({}, address, value);
     this.setState({ address });
+  }
+
+  onClick() {
+    const { address } = this.state;
+    const { user } = this.props;
+    this.props.createOrUpdateAddress(address, user);
   }
 
   clearErrors() {
@@ -59,7 +77,7 @@ class AddressForm extends Component {
   render() {
     const { errors, address } = this.state;
     const { lineOne, lineTwo, city, state, zipCode } = address;
-    const { onChange } = this;
+    const { onChange, onClick } = this;
     return (
       <div>
         {errors ? (
@@ -67,27 +85,75 @@ class AddressForm extends Component {
             {errors}
           </Alert>
         ) : null}
-        <div>
-          <RIEInput value={lineOne} change={onChange} propName="lineOne" />
-          <RIEInput value={lineTwo} change={onChange} propName="lineTwo" />
-          <RIEInput value={city} change={onChange} propName="city" />
-          <RIEInput value={state} change={onChange} propName="state" />
-          <RIEInput value={zipCode} change={onChange} propName="zipCode" />
-        </div>
-        <button onClick={() => createOrUpdateAddress(address)}>Save</button>
+        <form>
+          <div>Click fields to edit. Save address to check out.</div>
+          <div>
+            <label><b>Address Line 1</b></label><br />
+            <RIEInput
+              value={lineOne || '123 Main St'}
+              change={onChange}
+              propName="lineOne"
+            />
+          </div>
+          <div>
+            <br /><label><b>Address Line 2</b></label><br />
+            <RIEInput
+              value={lineTwo || 'Apt 4B'}
+              change={onChange}
+              propName="lineTwo"
+            />
+          </div>
+          <div>
+            <br /><label><b>City</b></label><br />
+            <RIEInput
+              value={city || 'Springfield'}
+              change={onChange}
+              propName="city"
+            />
+          </div>
+          <div>
+            <br /><label><b>State</b></label><br />
+            <RIEInput
+              value={state || 'XY'}
+              change={onChange}
+              propName="state"
+            />
+          </div>
+          <div>
+            <br /><label><b>State</b></label><br />
+            <RIEInput
+              value={zipCode || '10001'}
+              change={onChange}
+              propName="zipCode"
+            />
+          </div>
+        </form>
+        <button type='submit' onClick={onClick}>Save</button>
       </div>
     );
   }
 }
+
 const mapStateToProps = ({ user }, { addressId }) => {
   const { addresses } = user;
-  const address =
+  let address =
     addresses && addresses.find(address => address.id === addressId);
-  return { address };
+  // if (!address)
+  //   address = {
+  //     id: null,
+  //     lineOne: '',
+  //     lineTwo: '',
+  //     city: '',
+  //     state: '',
+  //     zipCode: ''
+  //   };
+  return { address, user };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
-    createOrUpdateAddress: address => createOrUpdateAddress(address)
+    createOrUpdateAddress: (address, user) =>
+      dispatch(createOrUpdateAddress(address, user))
   };
 };
 
