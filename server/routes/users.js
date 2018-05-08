@@ -18,7 +18,6 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/:id', auth, (req, res, next) => {
-  console.log(req.user)
   if (!req.user) next({ status: 401 });
   User.findById(req.params.id)
     .then(user => {
@@ -49,7 +48,8 @@ router.get('/:id/orders', auth, (req, res, next) => {
       user.getOrders({
         where: { status: 'order' },
         include: [{ model: LineItem }]
-      }))
+      })
+    )
     .then(orders => res.send(orders))
     .catch(next);
 });
@@ -59,7 +59,8 @@ router.get('/:id/addresses', auth, (req, res, next) => {
     .then(user =>
       user.getAddresses({
         where: { userId: user.id }
-      }))
+      })
+    )
     .then(addresses => {
       res.send(addresses);
     })
