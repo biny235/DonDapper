@@ -19,7 +19,7 @@ class LoginModal extends React.Component {
 
   render() {
     const { slideIndex } = this.state;
-    const { user } = this.props;
+    const { user, path, history } = this.props;
     const { onChange } = this;
     return (
       <div className="card login-modal" >
@@ -33,8 +33,8 @@ class LoginModal extends React.Component {
           {
             slideIndex === 0 ?
               <div>
-                <LoginForm />
-                <Link to={'/user'}>Account</Link>
+                <LoginForm path={path} history={history} />
+                {user.id && <Link to={'/user'}>Account</Link>}
               </div>
               :
               !user.id && <UserForm />

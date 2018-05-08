@@ -48,7 +48,8 @@ router.get('/:id/orders', auth, (req, res, next) => {
       user.getOrders({
         where: { status: 'order' },
         include: [{ model: LineItem }]
-      }))
+      })
+    )
     .then(orders => res.send(orders))
     .catch(next);
 });
@@ -58,7 +59,8 @@ router.get('/:id/addresses', auth, (req, res, next) => {
     .then(user =>
       user.getAddresses({
         where: { userId: user.id }
-      }))
+      })
+    )
     .then(addresses => {
       res.send(addresses);
     })

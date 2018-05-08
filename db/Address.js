@@ -60,9 +60,7 @@ const Address = conn.define(
   {
     getterMethods: {
       fullAddress() {
-        return `${this.lineOne} ${this.lineTwo} ${this.city} ${
-          this.state
-        } ${this.zipCode}`;
+        return `${this.lineOne} ${this.lineTwo} ${this.city} ${this.state} ${this.zipCode}`;
       }
     }
   }

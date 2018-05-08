@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import AddressDropdown from './AddressDropdown';
 import { editOrder } from './store';
 import axios from 'axios';
+import AddressForm from './AddressForm';
+
 class Checkout extends React.Component {
   constructor() {
     super();
-
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -29,30 +30,34 @@ class Checkout extends React.Component {
 
   render() {
     const { onSubmit } = this;
-    const { cart } = this.props;
+    const { user, cart } = this.props;
     return (
       <div>
-        <div>
-          <AddressDropdown />
-        </div>
-        <button disabled={!cart.addressId} type="submit" onClick={onSubmit}>
+        <h1>Checkout</h1>
+        {!user.id ? <div>Please sign in.</div> :
+          <div>
+            <AddressDropdown />
+          </div>}
+          <AddressForm addressId={ cart.addressId }/>
+        {user.id && <button type="submit" onClick={onSubmit} disabled={!cart.addressId}>
           Check Out
-        </button>
+        </button>}
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ cart, user }) => {
+  console.log(cart)
   return {
     cart,
     user
   };
 };
 
-const mapDispatchToProps = (dispatch, { history }) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    editOrder: (order, id) => dispatch(editOrder(order, id, history))
+    editOrder: (order, history) => dispatch(editOrder(order, history))
   };
 };
 
