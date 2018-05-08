@@ -22,10 +22,6 @@ class LoginForm extends React.Component {
 
   onSubmit() {
     this.props.fetchUser(this.state);
-    this.setState({
-      email: '',
-      password: ''
-    });
   }
 
   onSignOut() {

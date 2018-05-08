@@ -18,9 +18,9 @@ class Dashboard extends Component {
     const { history, user } = nextProps;
     if (!user.admin) history.push('/');
   }
-  componenWillMount() {
+  componenDidMount() {
     const { history, user } = this.props;
-    //if (!user.admin) history.push('/')
+    // if (!user && !user.admin) history.push('/')
   }
 
   onChange(order) {
@@ -32,10 +32,12 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { orders, categories, products, createOrUpdateProduct } = this.props;
+    const { orders, categories, products, createOrUpdateProduct, user } = this.props;
     const { onChange, onClick, create } = this;
     const { showForm, productId } = this.state;
-    return (
+    return !user.admin ?  (null) 
+    :
+    (
       <div>
         <h1>All Orders</h1>
         <div>
@@ -85,7 +87,7 @@ class Dashboard extends Component {
           <button onClick={() => onClick(null)}>Add New Product</button>
         </div>
       </div>
-    );
+    )
   }
 }
 
