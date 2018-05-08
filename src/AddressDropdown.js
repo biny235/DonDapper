@@ -14,11 +14,15 @@ class AddressDropdown extends Component {
     super();
     this.state = {
       dropdownOpen: false,
-      showForm: false,
+      showForm: true,
       addressId: null
     };
     this.toggle = this.toggle.bind(this);
     this.onClick = this.onClick.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ addressId: nextProps.cart.addressId });
   }
 
   toggle() {
@@ -38,6 +42,7 @@ class AddressDropdown extends Component {
     const { addresses } = this.props;
     const { dropdownOpen, showForm, addressId } = this.state;
     const { toggle, onClick } = this;
+    console.log(addressId);
     return (
       <div>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
