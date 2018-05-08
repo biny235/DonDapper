@@ -29,7 +29,7 @@ class Checkout extends React.Component {
 
   render() {
     const { onSubmit } = this;
-    const { user } = this.props;
+    const { user, cart } = this.props;
     return (
       <div>
         <h1>Checkout</h1>
@@ -37,7 +37,7 @@ class Checkout extends React.Component {
           <div>
             <AddressDropdown />
           </div>}
-        {user.id && <button type="submit" onClick={onSubmit}>
+        {user.id && <button type="submit" onClick={onSubmit} disabled={!cart.addressId}>
           Check Out
         </button>}
       </div>

@@ -66,7 +66,7 @@ class AddressForm extends Component {
     const { address } = this.state;
     const { addressId, user } = this.props;
     address.userId = user && user.id;
-    this.props.createOrUpdateAddress(address, addressId).then(console.log(data))
+    this.props.createOrUpdateAddress(address, addressId);
   }
 
   clearErrors() {
@@ -141,15 +141,6 @@ class AddressForm extends Component {
 const mapStateToProps = ({ user }, { addressId }) => {
   const { addresses } = user;
   const address = addresses && addresses.find(address => address.id === addressId);
-  // if (!address)
-  //   address = {
-  //     id: null,
-  //     lineOne: '',
-  //     lineTwo: '',
-  //     city: '',
-  //     state: '',
-  //     zipCode: ''
-  //   };
   return { address, addressId, user };
 };
 
