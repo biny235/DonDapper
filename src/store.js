@@ -167,11 +167,12 @@ const editOrder = (order, history) => {
 };
 
 //ADDRESS
-const createOrUpdateAddress = (address, user) => {
+const createOrUpdateAddress = (address, id) => {
+  console.log(address);
   return dispatch => {
-    const userId = user.id;
-    const { id } = address;
-    !address.userId && (address.userId = userId);
+    // const userId = user.id;
+    // const { id } = address;
+    // !address.userId && (address.userId = userId);
     // user.addresses.map(_address => {
     //   _address = omit(_address, [
     //     'id',

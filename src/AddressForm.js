@@ -12,13 +12,12 @@ class AddressForm extends Component {
     super(props);
     this.state = {
       address: {
-        id: props.id || null,
+        // id: props.id || null,
         lineOne: props.lineOne || '',
         lineTwo: props.lineTwo || '',
         city: props.city || '',
         state: props.state || '',
-        zipCode: props.zipCode || '',
-        userId: props.userId || ''
+        zipCode: props.zipCode || ''
       },
       errors: ''
     };
@@ -30,14 +29,14 @@ class AddressForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.address) {
-      const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
+      const { lineOne, lineTwo, city, state, zipCode } = nextProps.address;
       nextProps.address !== this.state.address && this.setState({
-        address: { id, lineOne, lineTwo, city, state, zipCode }
+        address: { lineOne, lineTwo, city, state, zipCode }
       });
     } else {
       this.setState({
         address: {
-          id: null,
+          // id: null,
           lineOne: '',
           lineTwo: '',
           city: '',
@@ -50,10 +49,10 @@ class AddressForm extends Component {
 
   componentDidMount() {
     if (this.props.address) {
-      const { id, lineOne, lineTwo, city, state, zipCode } = this.props.address;
+      const { lineOne, lineTwo, city, state, zipCode } = this.props.address;
       this.props.address !== this.state.address &&
         this.setState({
-          address: { id, lineOne, lineTwo, city, state, zipCode }
+          address: { lineOne, lineTwo, city, state, zipCode }
         });
     }
   }
@@ -66,8 +65,9 @@ class AddressForm extends Component {
 
   onClick() {
     const { address } = this.state;
-    const { user } = this.props;
-    this.props.createOrUpdateAddress(address, user);
+    const { addressId, user } = this.props;
+    address.userId = user && user.id;
+    this.props.createOrUpdateAddress(address, addressId);
   }
 
   clearErrors() {
@@ -151,13 +151,13 @@ const mapStateToProps = ({ user }, { addressId }) => {
   //     state: '',
   //     zipCode: ''
   //   };
-  return { address, user };
+  return { address, addressId, user };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    createOrUpdateAddress: (address, user) =>
-      dispatch(createOrUpdateAddress(address, user))
+    createOrUpdateAddress: (address, id) =>
+      dispatch(createOrUpdateAddress(address, id))
   };
 };
 

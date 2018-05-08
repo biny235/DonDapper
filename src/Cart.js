@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
 
-const Cart = props => {
-  const { cart, lineItems, total } = props;
+const Cart = ({ cart, lineItems, total }) => {
   return (
     <div>
       <h1>Cart</h1>
