@@ -23,7 +23,7 @@ export default class AccountDropdown extends React.Component {
         <DropdownToggle className="remove-all" caret>
           Account
         </DropdownToggle>
-        <DropdownMenu>
+        <DropdownMenu className="account-dropdown">
           <LoginModal />
         </DropdownMenu>
       </Dropdown>

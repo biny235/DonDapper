@@ -178,7 +178,10 @@ input:checked+.slider:before {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 2fr 1fr;
 }
-
+.account-dropdown{
+    border: none!important;
+    background-color: rgba(0, 0, 0, 0);
+}
 .account .user{
     grid-column: 2 / 3;
 }
