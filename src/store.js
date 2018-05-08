@@ -3,6 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
+
 //Setting axios headers
 let token = window.localStorage.getItem('token')
 axios.defaults.headers.common['token'] = token;
@@ -102,7 +103,7 @@ const createOrUpdateUser = (user, history) => {
   const { id } = user;
   const putOrPost = id ? 'put' : 'post'
   return dispatch => {
-    axios[putOrPost](`/api/users/${id ? id : ''}`, { user })
+    return axios[putOrPost](`/api/users/${id ? id : ''}`, { user })
       .then(res => res.data)
       .then(user => {
         login(user, dispatch);
@@ -135,7 +136,7 @@ const fetchOrders = user => {
     admin
       ? pathName = `/api/orders`
       : pathName = `/api/users/${userId}/orders`;
-    axios.get(pathName)
+    return axios.get(pathName)
       .then(res => res.data)
       .then(orders => {
         dispatch({ type: GET_ORDERS, orders });
