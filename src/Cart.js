@@ -3,35 +3,25 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
 
-const Cart = props => {
-  const { cart, lineItems, total } = props;
+const Cart = ({ cart, lineItems, total }) => {
   return (
     <div>
       <h1>Cart</h1>
-      <h3>{!cart.id && 'Please sign in.'}</h3>
-      {cart.id && (
+      {!cart.id && <div>Please sign in.</div>}
+      {cart.id && !lineItems.length && <div>Your have no items in your cart.</div>}
+      {cart.id && !!lineItems.length && (
         <div className="order order-container">
           <div>Item</div>
           <div>Price</div>
           <div>Quantity</div>
           <div>Total</div>
           <div>Remove</div>
-          {lineItems.length ? (
+          {
             lineItems.map(lineItem => (
               <LineItem key={lineItem.id} line={lineItem} cart={true} />
             ))
-          ) : (
-              <div className="line-item">Please Add Something to Your Cart</div>
-            )}
-          {lineItems.length ? (
-            <Link to={'/checkout'} className="btn btn-success">
-              Check Out
-            </Link>
-          ) : (
-              <button type='submit' disabled={!lineItems.length} className="btn btn-success">
-                Check Out
-              </button>
-            )}
+          }
+          <Link to={'/checkout'} className="btn btn-success">Check Out</Link>
           <div className="order-total">Total:</div>
           <div>$ {total}</div>
         </div>
@@ -40,7 +30,7 @@ const Cart = props => {
   );
 };
 
-const mapStateToProps = ({ cart, lineItems, user, products }) => {
+const mapStateToProps = ({ cart, lineItems, products }) => {
   const total =
     lineItems &&
     lineItems.reduce((quantity, line) => {
@@ -51,7 +41,6 @@ const mapStateToProps = ({ cart, lineItems, user, products }) => {
   return {
     cart,
     lineItems,
-    user,
     total
   };
 };

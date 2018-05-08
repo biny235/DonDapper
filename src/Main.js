@@ -29,7 +29,7 @@ class Main extends Component {
     return (
       <Router>
         <div>
-          <Navigation history={history} />
+          <Route render={({ history, location }) => <Navigation history={history} path={location.pathname} />} />
           <Container>
             <Route path="/" exact render={() => <Home />} />
             <Switch>

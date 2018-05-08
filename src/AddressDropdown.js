@@ -21,6 +21,10 @@ class AddressDropdown extends Component {
     this.onClick = this.onClick.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ addressId: nextProps.cart.addressId });
+  }
+
   toggle() {
     this.setState(prevState => ({
       dropdownOpen: !prevState.dropdownOpen

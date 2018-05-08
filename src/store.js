@@ -6,7 +6,7 @@ import axios from 'axios';
 
 //Setting axios headers
 let token = window.localStorage.getItem('token');
-axios.defaults.headers.common['token'] = token;
+axios.defaults.headers.common.token = token;
 
 /*
 CONSTANTS
@@ -92,14 +92,17 @@ const login = (user, dispatch) => {
     .post(`/api/users/login`, { user })
     .then(res => res.data)
     .then(token => {
-      axios.defaults.headers.common['token'] = token;
+      axios.defaults.headers.common.token = token;
       window.localStorage.setItem('token', token);
       dispatch(authenticateUser);
     });
 };
 
-const logout = dispatch => {
+const logout = (path, history, dispatch) => {
   window.localStorage.removeItem('token');
+  if (path === '/checkout' || path === '/user') {
+    history.push(`/`);
+  }
   return dispatch({ type: RESET_STATE });
 };
 
@@ -185,27 +188,11 @@ const editOrder = (order, history) => {
 };
 
 //ADDRESS
-const createOrUpdateAddress = (address, user) => {
+const createOrUpdateAddress = (address, id) => {
   return dispatch => {
-    const userId = user.id;
-    const { id } = address;
-    !address.userId && (address.userId = userId);
-    // user.addresses.map(_address => {
-    //   _address = omit(_address, [
-    //     'id',
-    //     'fullAddress',
-    //     'latitude',
-    //     'longitude',
-    //     'createdAt',
-    //     'updatedAt'
-    //   ]);
-    //   console.log(_address);
-    //   console.log(JSON.stringify(_address) === JSON.stringify(address));
-    // });
     const putOrPost = !id ? 'post' : 'put';
-    return axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
-      .then(res => res.data)
-      .then(() => dispatch(authenticateUser));
+    axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
+      .then(res => res.data);
   };
 };
 

@@ -196,11 +196,23 @@ input:checked+.slider:before {
     padding-top: 5rem;
     grid-column: 2 / 5;
 }
+.header-row{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    border-bottom: 0.5px solid lightgray;
+}
 .order-row{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
     border-bottom: 0.5px solid lightgray;
+}
+.order-row:hover{
+    background-color: lightblue;
+}
+.address:hover{
+    background-color: lightblue;
 }
 .account-login{
     position: absolute!important;

@@ -24,14 +24,15 @@ class User extends Component {
     this.setState({ showOrder: true, orderId });
     window.scrollTo(0, 345);
   }
-  
-  passwordClick(){
-    this.setState({ password: !this.state.password })
+
+  passwordClick() {
+    this.setState({ password: !this.state.password });
   }
 
-  onUpdate(){
-    this.setState({ password: false })
+  onUpdate() {
+    this.setState({ password: false });
   }
+
   hide() {
     window.scrollTo(0, 0);
     this.setState({ showOrder: false, orderId: null });
@@ -40,62 +41,64 @@ class User extends Component {
   render() {
     const { user, orders } = this.props;
     const { showOrder, orderId, password } = this.state;
-    const { onClick, hide, passwordClick, onUpdate  } = this;
-    if (!user.id) {
-      return (
-        <div>
-          <h1>Please Sign In</h1>
-          <div className="account-login">
-            <LoginModal />
-          </div>
-        </div>
-      );
-    }
+    const { onClick, hide, passwordClick, onUpdate } = this;
+    // if (!user.id) {
+    //   return (
+    //     <div>
+    //       <h1>Please Sign In</h1>
+    //       <div className="account-login">
+    //         <LoginModal />
+    //       </div>
+    //     </div>
+    //   );
+    // }
     return (
-      <div className="account">
-        <h2 className="user">{user.name}</h2>
-        <div className="orders">
-          <h3>Orders</h3>
-          <div className="order-row">
-            <div>ID</div>
-            <div>Shipped</div>
-            <div>Total</div>
-          </div>
-          {orders.map(order => (
-            <span onClick={() => onClick(order.id)} key={order.id}>
-              <OrderRow order={order} />
-            </span>
-          ))}
-        </div>
-        <div className="user-form">
-          <h3>Update Info</h3>
-          {password ? (
-            <div>
-              <PasswordChange onUpdate={onUpdate}/>
-              <button className="btn btn-danger" style={{ "width": "100%" }} onClick={passwordClick}> Cancel </button>
+      <div>
+        {!user.id && <h1>Account</h1>}
+        {!user.id ? <div>Please sign in.</div> :
+          <div className="account">
+            <h2 className="user">{user.name}</h2>
+            <div className="orders">
+              <h3>Orders</h3>
+              <div className="header-row">
+                <div>ID</div>
+                <div>Shipped</div>
+                <div>Total</div>
+              </div>
+              {orders.map(order => (
+                <span onClick={() => onClick(order.id)} key={order.id}>
+                  <OrderRow order={order} />
+                </span>
+              ))}
             </div>
-          ) : (
-            <div>
-              <UserForm />
-              <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Update Password </button>
+            <div className="user-form">
+              <h3>Update Info</h3>
+              {password ? (
+                <div>
+                  <PasswordChange onUpdate={onUpdate} />
+                  <button className="btn btn-danger" style={{ "width": "100%" }} onClick={passwordClick}> Cancel </button>
+                </div>
+              ) : (
+                  <div>
+                    <UserForm />
+                    <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Change Password </button>
+                  </div>
+                )}
             </div>
-          )}
-          
-          
-        </div>
-        {showOrder && orderId && (
-          <div id="order" className="account-order" >
-            <div className="close" onClick={hide}>Hide</div>
-            <Order id={orderId} />
-          </div>
-        )}
+            {showOrder && orderId && (
+              <div id="order" className="account-order" >
+                <div className="close" onClick={hide}>Hide</div>
+                <Order id={orderId} />
+              </div>
+            )}
+          </div>}
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ user, orders }) => {
-  orders = orders && orders.filter(order => order.userId === user.id)
+  orders = orders && orders.filter(order => order.userId === user.id);
   return { user, orders };
 };
 

@@ -20,7 +20,7 @@ class LoginForm extends React.Component {
     this.setState(change);
   }
 
-  onSubmit(ev) {
+  onSubmit() {
     this.props.fetchUser(this.state);
     this.setState({
       email: '',
@@ -28,8 +28,9 @@ class LoginForm extends React.Component {
     });
   }
 
-  onSignOut(ev) {
-    this.props.logout();
+  onSignOut() {
+    const { path, history } = this.props;
+    this.props.logout(path, history);
   }
 
   render() {
@@ -62,12 +63,12 @@ const mapStateToProps = ({ user }) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     fetchUser: user => {
       dispatch(fetchUser(user));
     },
-    logout: () => dispatch(logout(dispatch))
+    logout: (path, history) => dispatch(logout(path, history, dispatch))
   };
 };
 

@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import AccountDropdown from './AccountDropdown';
 import ProductsDropdown from './ProductsDropdown';
 
-const Navigation = ({ user, counter }) => {
+const Navigation = ({ user, counter, history, path }) => {
   return (
     <Navbar color="light" light>
       <NavbarBrand href="/#/">Grace Shopper</NavbarBrand>
@@ -23,7 +23,7 @@ const Navigation = ({ user, counter }) => {
           <NavLink href="/#/cart">Cart ({counter})</NavLink>
         </NavItem>
         <NavItem>
-          <AccountDropdown />
+          <AccountDropdown path={path} history={history} />
         </NavItem>
         {user.admin && (
           <NavItem>
