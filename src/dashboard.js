@@ -12,17 +12,15 @@ class Dashboard extends Component {
       productId: null
     };
     this.onClick = this.onClick.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     const { history, user } = nextProps;
     if (!user.admin) history.push('/');
-    this.onChange = this.onChange.bind(this);
-    this.onClick = this.onClick.bind(this);
   }
-  componentDidMount() {
+  componenWillMount() {
     const { history, user } = this.props;
-    //if (!user.admin) history.push('/');
-    this.onChange = this.onChange.bind(this);
+    //if (!user.admin) history.push('/')
   }
 
   onChange(order) {
