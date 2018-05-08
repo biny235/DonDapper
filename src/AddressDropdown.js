@@ -42,7 +42,6 @@ class AddressDropdown extends Component {
     const { addresses } = this.props;
     const { dropdownOpen, showForm, addressId } = this.state;
     const { toggle, onClick } = this;
-    console.log(addressId);
     return (
       <div>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>

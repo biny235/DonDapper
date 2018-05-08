@@ -80,16 +80,17 @@ class AddressForm extends Component {
     const { onChange, onClick } = this;
     return (
       <div>
-        {errors ? (
+        {errors && (
           <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
-        ) : null}
+        )}
         <form>
           <div>Click fields to edit.</div>
           <div>
             <label><b>Address Line 1</b></label><br />
             <RIEInput
+              className="address"
               value={lineOne || '123 Main St'}
               change={onChange}
               propName="lineOne"
@@ -98,6 +99,7 @@ class AddressForm extends Component {
           <div>
             <br /><label><b>Address Line 2</b></label><br />
             <RIEInput
+              className="address"
               value={lineTwo || 'Apt 4B'}
               change={onChange}
               propName="lineTwo"
@@ -106,6 +108,7 @@ class AddressForm extends Component {
           <div>
             <br /><label><b>City</b></label><br />
             <RIEInput
+              className="address"
               value={city || 'Springfield'}
               change={onChange}
               propName="city"
@@ -114,6 +117,7 @@ class AddressForm extends Component {
           <div>
             <br /><label><b>State</b></label><br />
             <RIEInput
+              className="address"
               value={state || 'XY'}
               change={onChange}
               propName="state"
@@ -122,13 +126,14 @@ class AddressForm extends Component {
           <div>
             <br /><label><b>State</b></label><br />
             <RIEInput
+              className="address"
               value={zipCode || '10001'}
               change={onChange}
               propName="zipCode"
             />
           </div>
         </form>
-        <button type='submit' onClick={onClick}>Save</button>
+        <button type='submit' onClick={onClick}>Save Address</button>
       </div>
     );
   }

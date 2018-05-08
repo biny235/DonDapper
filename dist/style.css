@@ -211,6 +211,9 @@ input:checked+.slider:before {
 .order-row:hover{
     background-color: lightblue;
 }
+.address:hover{
+    background-color: lightblue;
+}
 .account-login{
     position: absolute!important;
     left: 25.5rem;
