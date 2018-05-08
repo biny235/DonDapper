@@ -69,7 +69,7 @@ class UserForm extends Component {
             placeholder="New Password"
             onChange={onChange}
           />
-          <button type="submit" className="btn btn-success" onClick={() => onSubmit(user.id)} disabled={!passwordCorrect || !newPassword.length}>
+          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={!passwordCorrect || !newPassword.length}>
             Change
           </button>
           {!passwordCorrect && inputEdited.oldPassword && <Alert color="info">Old Password is incorrect.</Alert>}

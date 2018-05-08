@@ -26,7 +26,7 @@ class User extends Component {
   }
   
   passwordClick(){
-    this.setState({ password: true })
+    this.setState({ password: !this.state.password })
   }
 
   onUpdate(){
@@ -69,10 +69,15 @@ class User extends Component {
         </div>
         <div className="user-form">
           <h3>Update Info</h3>
-          {password ? <PasswordChange onUpdate={onUpdate}/> : (
+          {password ? (
+            <div>
+              <PasswordChange onUpdate={onUpdate}/>
+              <button className="btn btn-danger" style={{ "width": "100%" }} onClick={passwordClick}> Cancel </button>
+            </div>
+          ) : (
             <div>
               <UserForm />
-              <button onClick={passwordClick}> Update Password </button>
+              <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Update Password </button>
             </div>
           )}
           
