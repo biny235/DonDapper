@@ -9,33 +9,23 @@ const Cart = props => {
     <div>
       <h1>Cart</h1>
       <h3>{!cart.id && 'Please sign in.'}</h3>
-      {cart.id && (
+      {cart.id && lineItems.length ? (
         <div className="order order-container">
           <div>Item</div>
           <div>Price</div>
           <div>Quantity</div>
           <div>Total</div>
           <div>Remove</div>
-          {lineItems.length ? (
+          {
             lineItems.map(lineItem => (
               <LineItem key={lineItem.id} line={lineItem} cart={true} />
             ))
-          ) : (
-              <div className="line-item">Please Add Something to Your Cart</div>
-            )}
-          {lineItems.length ? (
-            <Link to={'/checkout'} className="btn btn-success">
-              Check Out
-            </Link>
-          ) : (
-              <button type='submit' disabled={!lineItems.length} className="btn btn-success">
-                Check Out
-              </button>
-            )}
+          }
+          <Link to={'/checkout'} className="btn btn-success">Check Out</Link>
           <div className="order-total">Total:</div>
           <div>$ {total}</div>
         </div>
-      )}
+      ) : <div>Your have no items in your cart.</div>}
     </div>
   );
 };

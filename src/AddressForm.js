@@ -86,7 +86,7 @@ class AddressForm extends Component {
           </Alert>
         ) : null}
         <form>
-          <div>Click fields to edit. Save address to check out.</div>
+          <div>Click fields to edit.</div>
           <div>
             <label><b>Address Line 1</b></label><br />
             <RIEInput

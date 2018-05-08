@@ -24,14 +24,15 @@ class User extends Component {
     this.setState({ showOrder: true, orderId });
     window.scrollTo(0, 345);
   }
-  
-  passwordClick(){
-    this.setState({ password: !this.state.password })
+
+  passwordClick() {
+    this.setState({ password: !this.state.password });
   }
 
-  onUpdate(){
-    this.setState({ password: false })
+  onUpdate() {
+    this.setState({ password: false });
   }
+
   hide() {
     window.scrollTo(0, 0);
     this.setState({ showOrder: false, orderId: null });
@@ -40,7 +41,7 @@ class User extends Component {
   render() {
     const { user, orders } = this.props;
     const { showOrder, orderId, password } = this.state;
-    const { onClick, hide, passwordClick, onUpdate  } = this;
+    const { onClick, hide, passwordClick, onUpdate } = this;
     if (!user.id) {
       return (
         <div>
@@ -56,7 +57,7 @@ class User extends Component {
         <h2 className="user">{user.name}</h2>
         <div className="orders">
           <h3>Orders</h3>
-          <div className="order-row">
+          <div className="header-row">
             <div>ID</div>
             <div>Shipped</div>
             <div>Total</div>
@@ -71,17 +72,15 @@ class User extends Component {
           <h3>Update Info</h3>
           {password ? (
             <div>
-              <PasswordChange onUpdate={onUpdate}/>
+              <PasswordChange onUpdate={onUpdate} />
               <button className="btn btn-danger" style={{ "width": "100%" }} onClick={passwordClick}> Cancel </button>
             </div>
           ) : (
-            <div>
-              <UserForm />
-              <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Update Password </button>
-            </div>
-          )}
-          
-          
+              <div>
+                <UserForm />
+                <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Change Password </button>
+              </div>
+            )}
         </div>
         {showOrder && orderId && (
           <div id="order" className="account-order" >
@@ -95,7 +94,7 @@ class User extends Component {
 }
 
 const mapStateToProps = ({ user, orders }) => {
-  orders = orders && orders.filter(order => order.userId === user.id)
+  orders = orders && orders.filter(order => order.userId === user.id);
   return { user, orders };
 };
 
