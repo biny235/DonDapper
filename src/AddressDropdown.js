@@ -14,7 +14,6 @@ class AddressDropdown extends Component {
     super();
     this.state = {
       dropdownOpen: false,
-      showForm: false,
       addressId: null
     };
     this.toggle = this.toggle.bind(this);
@@ -35,12 +34,11 @@ class AddressDropdown extends Component {
     const { cart } = this.props;
     const order = { id: cart.id, addressId };
     this.props.editOrder(order);
-    this.setState({ showForm: true, addressId });
   }
 
   render() {
     const { addresses } = this.props;
-    const { dropdownOpen, showForm, addressId } = this.state;
+    const { dropdownOpen, addressId } = this.state;
     const { toggle, onClick } = this;
     return (
       <div>
@@ -62,7 +60,6 @@ class AddressDropdown extends Component {
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        {showForm && <AddressForm addressId={addressId} />}
       </div>
     );
   }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import AddressDropdown from './AddressDropdown';
 import { editOrder } from './store';
 import axios from 'axios';
+import AddressForm from './AddressForm';
 
 class Checkout extends React.Component {
   constructor() {
@@ -37,6 +38,7 @@ class Checkout extends React.Component {
           <div>
             <AddressDropdown />
           </div>}
+          <AddressForm addressId={ cart.addressId }/>
         {user.id && <button type="submit" onClick={onSubmit} disabled={!cart.addressId}>
           Check Out
         </button>}
@@ -46,6 +48,7 @@ class Checkout extends React.Component {
 }
 
 const mapStateToProps = ({ cart, user }) => {
+  console.log(cart)
   return {
     cart,
     user

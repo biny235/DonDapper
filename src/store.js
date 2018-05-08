@@ -176,9 +176,9 @@ const editOrder = (order, history) => {
       .then(res => res.data)
       .then(order => {
         dispatch({ type: EDIT_ORDER, order });
+        dispatch(fetchCart(order.userId));
         if (history) {
           dispatch({ type: ADD_ORDER, order });
-          dispatch(fetchCart(order.userId));
           history.push(`/user`);
         }
       })
