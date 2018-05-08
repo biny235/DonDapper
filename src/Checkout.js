@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import AddressDropdown from './AddressDropdown';
 import { editOrder } from './store';
 import axios from 'axios';
+
 class Checkout extends React.Component {
   constructor() {
     super();
@@ -29,13 +30,12 @@ class Checkout extends React.Component {
 
   render() {
     const { onSubmit } = this;
-    const { cart } = this.props;
     return (
       <div>
         <div>
           <AddressDropdown />
         </div>
-        <button disabled={!cart.addressId} type="submit" onClick={onSubmit}>
+        <button type="submit" onClick={onSubmit}>
           Check Out
         </button>
       </div>
