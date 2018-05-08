@@ -41,7 +41,7 @@ class AddressDropdown extends Component {
     return (
       <div>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-          <DropdownToggle>Choose or Add Address</DropdownToggle>
+          <DropdownToggle>Choose an Address</DropdownToggle>
           <DropdownMenu>
             {addresses.map(address => {
               return (
