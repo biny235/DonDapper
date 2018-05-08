@@ -42,52 +42,55 @@ class User extends Component {
     const { user, orders } = this.props;
     const { showOrder, orderId, password } = this.state;
     const { onClick, hide, passwordClick, onUpdate } = this;
-    if (!user.id) {
-      return (
-        <div>
-          <h1>Please Sign In</h1>
-          <div className="account-login">
-            <LoginModal />
-          </div>
-        </div>
-      );
-    }
+    // if (!user.id) {
+    //   return (
+    //     <div>
+    //       <h1>Please Sign In</h1>
+    //       <div className="account-login">
+    //         <LoginModal />
+    //       </div>
+    //     </div>
+    //   );
+    // }
     return (
-      <div className="account">
-        <h2 className="user">{user.name}</h2>
-        <div className="orders">
-          <h3>Orders</h3>
-          <div className="header-row">
-            <div>ID</div>
-            <div>Shipped</div>
-            <div>Total</div>
-          </div>
-          {orders.map(order => (
-            <span onClick={() => onClick(order.id)} key={order.id}>
-              <OrderRow order={order} />
-            </span>
-          ))}
-        </div>
-        <div className="user-form">
-          <h3>Update Info</h3>
-          {password ? (
-            <div>
-              <PasswordChange onUpdate={onUpdate} />
-              <button className="btn btn-danger" style={{ "width": "100%" }} onClick={passwordClick}> Cancel </button>
+      <div>
+        {!user.id ? <div>Please sign in.</div> :
+          <div className="account">
+            <h2 className="user">{user.name}</h2>
+            <div className="orders">
+              <h3>Orders</h3>
+              <div className="header-row">
+                <div>ID</div>
+                <div>Shipped</div>
+                <div>Total</div>
+              </div>
+              {orders.map(order => (
+                <span onClick={() => onClick(order.id)} key={order.id}>
+                  <OrderRow order={order} />
+                </span>
+              ))}
             </div>
-          ) : (
-              <div>
-                <UserForm />
-                <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Change Password </button>
+            <div className="user-form">
+              <h3>Update Info</h3>
+              {password ? (
+                <div>
+                  <PasswordChange onUpdate={onUpdate} />
+                  <button className="btn btn-danger" style={{ "width": "100%" }} onClick={passwordClick}> Cancel </button>
+                </div>
+              ) : (
+                  <div>
+                    <UserForm />
+                    <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Change Password </button>
+                  </div>
+                )}
+            </div>
+            {showOrder && orderId && (
+              <div id="order" className="account-order" >
+                <div className="close" onClick={hide}>Hide</div>
+                <Order id={orderId} />
               </div>
             )}
-        </div>
-        {showOrder && orderId && (
-          <div id="order" className="account-order" >
-            <div className="close" onClick={hide}>Hide</div>
-            <Order id={orderId} />
-          </div>
-        )}
+          </div>}
       </div>
     );
   }

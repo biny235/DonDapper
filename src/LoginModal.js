@@ -34,7 +34,7 @@ class LoginModal extends React.Component {
             slideIndex === 0 ?
               <div>
                 <LoginForm path={path} history={history} />
-                <Link to={'/user'}>Account</Link>
+                {user.id && <Link to={'/user'}>Account</Link>}
               </div>
               :
               !user.id && <UserForm />
