@@ -4,7 +4,7 @@ import { createOrUpdateAddress, editOrder } from './store';
 import { connect } from 'react-redux';
 import { RIEInput } from 'riek';
 
-let setErrors = function (err) {
+let setErrors = function(err) {
   this.setState({ errors: err });
 };
 
@@ -87,7 +87,10 @@ class AddressForm extends Component {
         <form>
           <div>Click fields to edit.</div>
           <div>
-            <label><b>Address Line 1</b></label><br />
+            <label>
+              <b>Address Line 1</b>
+            </label>
+            <br />
             <RIEInput
               className="address"
               value={lineOne || '123 Main St'}
@@ -96,7 +99,11 @@ class AddressForm extends Component {
             />
           </div>
           <div>
-            <br /><label><b>Address Line 2</b></label><br />
+            <br />
+            <label>
+              <b>Address Line 2</b>
+            </label>
+            <br />
             <RIEInput
               className="address"
               value={lineTwo || 'Apt. 4B'}
@@ -105,7 +112,11 @@ class AddressForm extends Component {
             />
           </div>
           <div>
-            <br /><label><b>City</b></label><br />
+            <br />
+            <label>
+              <b>City</b>
+            </label>
+            <br />
             <RIEInput
               className="address"
               value={city || 'Springfield'}
@@ -114,7 +125,11 @@ class AddressForm extends Component {
             />
           </div>
           <div>
-            <br /><label><b>State</b></label><br />
+            <br />
+            <label>
+              <b>State</b>
+            </label>
+            <br />
             <RIEInput
               className="address"
               value={state || 'Ohio'}
@@ -123,7 +138,11 @@ class AddressForm extends Component {
             />
           </div>
           <div>
-            <br /><label><b>State</b></label><br />
+            <br />
+            <label>
+              <b>State</b>
+            </label>
+            <br />
             <RIEInput
               className="address"
               value={zipCode || '10001'}
