@@ -183,7 +183,6 @@ const seed = () => {
         })
       ]);
     })
-
     .then(() => {
       return Promise.all([
         generateOrder(),

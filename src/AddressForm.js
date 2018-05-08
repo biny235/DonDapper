@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import { createOrUpdateAddress } from './store';
+import { createOrUpdateAddress, editOrder } from './store';
 import { connect } from 'react-redux';
 import { RIEInput } from 'riek';
 
 let setErrors = function (err) {
   this.setState({ errors: err });
 };
+
 class AddressForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       address: {
-        // id: props.id || null,
         lineOne: props.lineOne || '',
         lineTwo: props.lineTwo || '',
         city: props.city || '',
@@ -36,7 +36,6 @@ class AddressForm extends Component {
     } else {
       this.setState({
         address: {
-          // id: null,
           lineOne: '',
           lineTwo: '',
           city: '',
@@ -67,7 +66,7 @@ class AddressForm extends Component {
     const { address } = this.state;
     const { addressId, user } = this.props;
     address.userId = user && user.id;
-    this.props.createOrUpdateAddress(address, addressId);
+    this.props.createOrUpdateAddress(address, addressId).then(console.log(data))
   }
 
   clearErrors() {
@@ -156,6 +155,7 @@ const mapStateToProps = ({ user }, { addressId }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    editOrder: order => dispatch(editOrder(order)),
     createOrUpdateAddress: (address, id) =>
       dispatch(createOrUpdateAddress(address, id))
   };

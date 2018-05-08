@@ -54,6 +54,7 @@ class User extends Component {
     // }
     return (
       <div>
+        {!user.id && <h1>Account</h1>}
         {!user.id ? <div>Please sign in.</div> :
           <div className="account">
             <h2 className="user">{user.name}</h2>

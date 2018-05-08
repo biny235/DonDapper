@@ -29,14 +29,17 @@ class Checkout extends React.Component {
 
   render() {
     const { onSubmit } = this;
+    const { user } = this.props;
     return (
       <div>
-        <div>
-          <AddressDropdown />
-        </div>
-        <button type="submit" onClick={onSubmit}>
+        <h1>Checkout</h1>
+        {!user.id ? <div>Please sign in.</div> :
+          <div>
+            <AddressDropdown />
+          </div>}
+        {user.id && <button type="submit" onClick={onSubmit}>
           Check Out
-        </button>
+        </button>}
       </div>
     );
   }
