@@ -25,7 +25,7 @@ Address.belongsTo(User);
 
 Address.hasMany(Order);
 
-User.findOrCreateCart = function(userId) {
+User.findOrCreateCart = function (userId) {
   return Order.findOrCreate({
     where: { status: 'cart', userId },
     defaults: { status: 'cart', userId },
@@ -33,7 +33,7 @@ User.findOrCreateCart = function(userId) {
   });
 };
 
-User.authenticate = function(user) {
+User.authenticate = function (user) {
   const { email, password } = user;
   return User.find({
     where: { email, password },
@@ -46,7 +46,7 @@ User.authenticate = function(user) {
   });
 };
 
-User.exchangeToken = function(token) {
+User.exchangeToken = function (token) {
   try {
     const id = jwt.decode(token, secret).id;
     return User.findById(id, {
