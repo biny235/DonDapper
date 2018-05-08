@@ -18,7 +18,6 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/:id', auth, (req, res, next) => {
-  console.log(req.user)
   if (!req.user) next({ status: 401 });
   User.findById(req.params.id)
     .then(user => {
