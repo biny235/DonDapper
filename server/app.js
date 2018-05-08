@@ -14,6 +14,8 @@ app.get('/', (req, res, next) => {
 app.use('/api', require('./routes'));
 
 app.use((err, req, res, next) => {
+  const message = err.errors && err.errors[0].message
+  err.message = message || err.message
   res.status(err.status || 500).send(err.message || 'Internal Server Error');
 });
 
