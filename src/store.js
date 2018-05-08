@@ -203,7 +203,7 @@ const createOrUpdateAddress = (address, user) => {
     //   console.log(JSON.stringify(_address) === JSON.stringify(address));
     // });
     const putOrPost = !id ? 'post' : 'put';
-    axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
+    return axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
       .then(res => res.data)
       .then(() => dispatch(authenticateUser));
   };
@@ -261,7 +261,6 @@ REDUCERS
 */
 
 const productsReducer = (state = [], action) => {
-  console.log(action.product);
   switch (action.type) {
     case GET_PRODUCTS:
       return action.products;
