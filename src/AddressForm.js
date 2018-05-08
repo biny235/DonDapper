@@ -100,7 +100,7 @@ class AddressForm extends Component {
             <br /><label><b>Address Line 2</b></label><br />
             <RIEInput
               className="address"
-              value={lineTwo || 'Apt 4B'}
+              value={lineTwo || 'Apt. 4B'}
               change={onChange}
               propName="lineTwo"
             />
@@ -118,7 +118,7 @@ class AddressForm extends Component {
             <br /><label><b>State</b></label><br />
             <RIEInput
               className="address"
-              value={state || 'XY'}
+              value={state || 'Ohio'}
               change={onChange}
               propName="state"
             />
@@ -141,8 +141,7 @@ class AddressForm extends Component {
 
 const mapStateToProps = ({ user }, { addressId }) => {
   const { addresses } = user;
-  let address =
-    addresses && addresses.find(address => address.id === addressId);
+  const address = addresses && addresses.find(address => address.id === addressId);
   // if (!address)
   //   address = {
   //     id: null,

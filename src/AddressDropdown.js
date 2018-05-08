@@ -14,7 +14,7 @@ class AddressDropdown extends Component {
     super();
     this.state = {
       dropdownOpen: false,
-      showForm: true,
+      showForm: false,
       addressId: null
     };
     this.toggle = this.toggle.bind(this);

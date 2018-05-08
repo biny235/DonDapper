@@ -8,8 +8,9 @@ const Cart = props => {
   return (
     <div>
       <h1>Cart</h1>
-      <h3>{!cart.id && 'Please sign in.'}</h3>
-      {cart.id && lineItems.length ? (
+      {!cart.id && <div>Please sign in.</div>}
+      {cart.id && !lineItems.length && <div>Your have no items in your cart.</div>}
+      {cart.id && !!lineItems.length && (
         <div className="order order-container">
           <div>Item</div>
           <div>Price</div>
@@ -25,12 +26,12 @@ const Cart = props => {
           <div className="order-total">Total:</div>
           <div>$ {total}</div>
         </div>
-      ) : <div>Your have no items in your cart.</div>}
+      )}
     </div>
   );
 };
 
-const mapStateToProps = ({ cart, lineItems, user, products }) => {
+const mapStateToProps = ({ cart, lineItems, products }) => {
   const total =
     lineItems &&
     lineItems.reduce((quantity, line) => {
@@ -41,7 +42,6 @@ const mapStateToProps = ({ cart, lineItems, user, products }) => {
   return {
     cart,
     lineItems,
-    user,
     total
   };
 };

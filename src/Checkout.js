@@ -7,7 +7,6 @@ import axios from 'axios';
 class Checkout extends React.Component {
   constructor() {
     super();
-
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -50,9 +49,9 @@ const mapStateToProps = ({ cart, user }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, { history }) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    editOrder: (order, id) => dispatch(editOrder(order, id, history))
+    editOrder: (order, history) => dispatch(editOrder(order, history))
   };
 };
 

@@ -3,8 +3,8 @@ import LoginModal from './LoginModal';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 export default class AccountDropdown extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.toggle = this.toggle.bind(this);
     this.state = {
       dropdownOpen: false
@@ -18,13 +18,14 @@ export default class AccountDropdown extends React.Component {
   }
 
   render() {
+    const { path, history } = this.props;
     return (
       <Dropdown className="nav-link" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle className="remove-all" caret>
           Account
         </DropdownToggle>
         <DropdownMenu className="account-dropdown">
-          <LoginModal />
+          <LoginModal path={path} history={history} />
         </DropdownMenu>
       </Dropdown>
     );

@@ -5,8 +5,8 @@ import logger from 'redux-logger';
 import axios from 'axios';
 
 //Setting axios headers
-let token = window.localStorage.getItem('token')
-axios.defaults.headers.common['token'] = token;
+let token = window.localStorage.getItem('token');
+axios.defaults.headers.common.token = token;
 
 /*
 CONSTANTS
@@ -74,14 +74,17 @@ const login = (user, dispatch) => {
     .post(`/api/users/login`, { user })
     .then(res => res.data)
     .then(token => {
-      axios.defaults.headers.common['token'] = token;
+      axios.defaults.headers.common.token = token;
       window.localStorage.setItem('token', token);
       dispatch(authenticateUser);
     });
 };
 
-const logout = dispatch => {
+const logout = (path, history, dispatch) => {
   window.localStorage.removeItem('token');
+  if (path === '/checkout' || path === '/user') {
+    history.push(`/`);
+  }
   return dispatch({ type: RESET_STATE });
 };
 
@@ -101,7 +104,7 @@ const authenticateUser = dispatch => {
 
 const createOrUpdateUser = (user, history) => {
   const { id } = user;
-  const putOrPost = id ? 'put' : 'post'
+  const putOrPost = id ? 'put' : 'post';
   return dispatch => {
     return axios[putOrPost](`/api/users/${id ? id : ''}`, { user })
       .then(res => res.data)
@@ -183,8 +186,8 @@ const createOrUpdateAddress = (address, user) => {
     // });
     const putOrPost = !id ? 'post' : 'put';
     axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
-      .then(res => res.data)
-      .then(() => dispatch(authenticateUser));
+      .then(res => res.data);
+    // .then(() => dispatch(authenticateUser));
   };
 };
 
