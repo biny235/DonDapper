@@ -53,6 +53,17 @@ class ProductForm extends Component {
       this.setState({
         product: { id, name, imageUrl, description, price, quantity }
       });
+    } else {
+      this.setState({
+        product: {
+          id: null,
+          name: '',
+          imageUrl: '',
+          description: '',
+          price: null,
+          quantity: null
+        }
+      });
     }
   }
   componentDidMount() {
@@ -67,6 +78,17 @@ class ProductForm extends Component {
       } = this.props.product;
       this.setState({
         product: { id, name, imageUrl, description, price, quantity }
+      });
+    } else {
+      this.setState({
+        product: {
+          id: null,
+          name: '',
+          imageUrl: '',
+          description: '',
+          price: null,
+          quantity: null
+        }
       });
     }
   }
