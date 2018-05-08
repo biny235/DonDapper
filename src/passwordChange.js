@@ -34,6 +34,7 @@ class UserForm extends Component {
     const { newPassword } = this.state;
     const user = Object.assign({}, { id }, { password: newPassword });
     this.props.createOrUpdateUser(user);
+    this.props.onUpdate()
   }
 
   clearErrors() {

@@ -4,23 +4,34 @@ import UserForm from './UserForm';
 import OrderRow from './OrderRow';
 import LoginModal from './LoginModal';
 import Order from './Order';
+import PasswordChange from './PasswordChange';
 
 class User extends Component {
   constructor() {
     super();
     this.state = {
       showOrder: false,
-      orderId: null
+      orderId: null,
+      password: false
     };
     this.onClick = this.onClick.bind(this);
     this.hide = this.hide.bind(this);
+    this.passwordClick = this.passwordClick.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
   }
 
   onClick(orderId) {
     this.setState({ showOrder: true, orderId });
     window.scrollTo(0, 345);
   }
+  
+  passwordClick(){
+    this.setState({ password: true })
+  }
 
+  onUpdate(){
+    this.setState({ password: false })
+  }
   hide() {
     window.scrollTo(0, 0);
     this.setState({ showOrder: false, orderId: null });
@@ -28,8 +39,8 @@ class User extends Component {
 
   render() {
     const { user, orders } = this.props;
-    const { showOrder, orderId } = this.state;
-    const { onClick, hide } = this;
+    const { showOrder, orderId, password } = this.state;
+    const { onClick, hide, passwordClick, onUpdate  } = this;
     if (!user.id) {
       return (
         <div>
@@ -58,7 +69,14 @@ class User extends Component {
         </div>
         <div className="user-form">
           <h3>Update Info</h3>
-          <UserForm />
+          {password ? <PasswordChange onUpdate={onUpdate}/> : (
+            <div>
+              <UserForm />
+              <button onClick={passwordClick}> Update Password </button>
+            </div>
+          )}
+          
+          
         </div>
         {showOrder && orderId && (
           <div id="order" className="account-order" >

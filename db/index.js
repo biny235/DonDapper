@@ -49,11 +49,9 @@ User.authenticate = function(user) {
 User.exchangeToken = function(token) {
   try {
     const id = jwt.decode(token, secret).id;
-    console.log(id)
     return User.findById(id, {
       include: [{ model: Address }]
     }).then(user => {
-      console.log(user)
       if (user) {
         return user;
       }
