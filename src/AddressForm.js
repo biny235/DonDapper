@@ -4,7 +4,7 @@ import { createOrUpdateAddress } from './store';
 import { connect } from 'react-redux';
 import { RIEInput } from 'riek';
 
-let setErrors = function (err) {
+let setErrors = function(err) {
   this.setState({ errors: err });
 };
 class AddressForm extends Component {
@@ -31,9 +31,10 @@ class AddressForm extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.address) {
       const { id, lineOne, lineTwo, city, state, zipCode } = nextProps.address;
-      nextProps.address !== this.state.address && this.setState({
-        address: { id, lineOne, lineTwo, city, state, zipCode }
-      });
+      nextProps.address !== this.state.address &&
+        this.setState({
+          address: { id, lineOne, lineTwo, city, state, zipCode }
+        });
     } else {
       this.setState({
         address: {
@@ -88,7 +89,10 @@ class AddressForm extends Component {
         <form>
           <div>Click fields to edit. Save address to check out.</div>
           <div>
-            <label><b>Address Line 1</b></label><br />
+            <label>
+              <b>Address Line 1</b>
+            </label>
+            <br />
             <RIEInput
               value={lineOne || '123 Main St'}
               change={onChange}
@@ -96,7 +100,11 @@ class AddressForm extends Component {
             />
           </div>
           <div>
-            <br /><label><b>Address Line 2</b></label><br />
+            <br />
+            <label>
+              <b>Address Line 2</b>
+            </label>
+            <br />
             <RIEInput
               value={lineTwo || 'Apt 4B'}
               change={onChange}
@@ -104,7 +112,11 @@ class AddressForm extends Component {
             />
           </div>
           <div>
-            <br /><label><b>City</b></label><br />
+            <br />
+            <label>
+              <b>City</b>
+            </label>
+            <br />
             <RIEInput
               value={city || 'Springfield'}
               change={onChange}
@@ -112,7 +124,11 @@ class AddressForm extends Component {
             />
           </div>
           <div>
-            <br /><label><b>State</b></label><br />
+            <br />
+            <label>
+              <b>State</b>
+            </label>
+            <br />
             <RIEInput
               value={state || 'XY'}
               change={onChange}
@@ -120,7 +136,11 @@ class AddressForm extends Component {
             />
           </div>
           <div>
-            <br /><label><b>State</b></label><br />
+            <br />
+            <label>
+              <b>State</b>
+            </label>
+            <br />
             <RIEInput
               value={zipCode || '10001'}
               change={onChange}
@@ -128,7 +148,9 @@ class AddressForm extends Component {
             />
           </div>
         </form>
-        <button type='submit' onClick={onClick}>Save</button>
+        <button type="submit" onClick={onClick}>
+          Save
+        </button>
       </div>
     );
   }
@@ -153,7 +175,9 @@ const mapStateToProps = ({ user }, { addressId }) => {
 const mapDispatchToProps = dispatch => {
   return {
     createOrUpdateAddress: (address, user) =>
-      dispatch(createOrUpdateAddress(address, user))
+      dispatch(createOrUpdateAddress(address, user)).catch(err =>
+        setErrors(err.response.data)
+      )
   };
 };
 

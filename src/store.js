@@ -5,7 +5,7 @@ import logger from 'redux-logger';
 import axios from 'axios';
 
 //Setting axios headers
-let token = window.localStorage.getItem('token')
+let token = window.localStorage.getItem('token');
 axios.defaults.headers.common['token'] = token;
 
 /*
@@ -14,6 +14,8 @@ CONSTANTS
 
 // PRODUCTS
 const GET_PRODUCTS = 'GET_PRODUCTS';
+const EDIT_PRODUCT = 'EDIT_PRODUCT';
+const CREATE_PRODUCT = 'CREATE_PRODUCT';
 
 // CATEGORIES
 const GET_CATEGORIES = 'GET_CATEGORIES';
@@ -52,6 +54,22 @@ const fetchProducts = () => {
   };
 };
 
+const createOrUpdateProduct = product => {
+  return dispatch => {
+    const { id } = product;
+    const putOrPost = !id ? 'post' : 'put';
+    return axios[putOrPost](`/api/products/${id ? id : ''}`, { product })
+      .then(res => res.data)
+      .then(product => {
+        if (!id) {
+          return dispatch({ type: CREATE_PRODUCT, product });
+        } else {
+          return dispatch({ type: EDIT_PRODUCT, product });
+        }
+      });
+  };
+};
+
 // CATEGORIES
 const fetchCategories = () => {
   return dispatch => {
@@ -86,7 +104,8 @@ const logout = dispatch => {
 };
 
 const authenticateUser = dispatch => {
-  return axios.get('/api/users')
+  return axios
+    .get('/api/users')
     .then(res => res.data)
     .then(user => {
       dispatch({ type: GET_USER, user });
@@ -101,7 +120,7 @@ const authenticateUser = dispatch => {
 
 const createOrUpdateUser = (user, history) => {
   const { id } = user;
-  const putOrPost = id ? 'put' : 'post'
+  const putOrPost = id ? 'put' : 'post';
   return dispatch => {
     return axios[putOrPost](`/api/users/${id ? id : ''}`, { user })
       .then(res => res.data)
@@ -117,7 +136,8 @@ const createOrUpdateUser = (user, history) => {
 // CART
 const fetchCart = userId => {
   return dispatch => {
-    axios.get(`/api/users/${userId}/cart`)
+    axios
+      .get(`/api/users/${userId}/cart`)
       .then(res => res.data)
       .then(cart => {
         dispatch({ type: GET_CART, cart });
@@ -134,9 +154,10 @@ const fetchOrders = user => {
   return dispatch => {
     let pathName;
     admin
-      ? pathName = `/api/orders`
-      : pathName = `/api/users/${userId}/orders`;
-    return axios.get(pathName)
+      ? (pathName = `/api/orders`)
+      : (pathName = `/api/users/${userId}/orders`);
+    return axios
+      .get(pathName)
       .then(res => res.data)
       .then(orders => {
         dispatch({ type: GET_ORDERS, orders });
@@ -240,9 +261,16 @@ REDUCERS
 */
 
 const productsReducer = (state = [], action) => {
+  console.log(action.product);
   switch (action.type) {
     case GET_PRODUCTS:
       return action.products;
+    case EDIT_PRODUCT:
+      return state.map(
+        product => (product.id === action.product.id ? action.product : product)
+      );
+    case CREATE_PRODUCT:
+      return [...state, action.product];
   }
   return state;
 };
@@ -335,5 +363,6 @@ export {
   createOrUpdateUser,
   logout,
   authenticateUser,
-  createOrUpdateAddress
+  createOrUpdateAddress,
+  createOrUpdateProduct
 };

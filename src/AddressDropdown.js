@@ -68,7 +68,8 @@ const mapStateToProps = ({ user, cart }) => {
   let { addresses } = user;
   addresses = addresses || [];
   return {
-    addresses, cart
+    addresses,
+    cart
   };
 };
 

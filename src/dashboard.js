@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { editOrder } from './store';
-import { RIEInput, RIETextArea } from 'riek';
+import { editOrder, createOrUpdateProduct } from './store';
+import ProductForm from './ProductForm';
 
 class Dashboard extends Component {
+  constructor() {
+    super();
+    this.state = {
+      showForm: false,
+      productId: null
+    };
+    this.onClick = this.onClick.bind(this);
+  }
   componentWillReceiveProps(nextProps) {
     const { history, user } = nextProps;
     if (!user.admin) history.push('/');
     this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
-  componentWillMount() {
+  componentDidMount() {
     const { history, user } = this.props;
-    if (!user.admin) history.push('/');
+    //if (!user.admin) history.push('/');
     this.onChange = this.onChange.bind(this);
   }
 
@@ -20,11 +29,14 @@ class Dashboard extends Component {
     order.shipped = !order.shipped;
     this.props.editOrder(order);
   }
+  onClick(productId) {
+    this.setState({ showForm: true, productId: productId });
+  }
 
   render() {
-    const { orders, categories, products } = this.props;
-    const { onChange } = this;
-    let checked = '';
+    const { orders, categories, products, createOrUpdateProduct } = this.props;
+    const { onChange, onClick, create } = this;
+    const { showForm, productId } = this.state;
     return (
       <div>
         <h1>All Orders</h1>
@@ -55,12 +67,25 @@ class Dashboard extends Component {
               <h2>{category.name}</h2>
               {products.map(product => {
                 if (product.categoryId === category.id) {
-                  return <button key={product.id}>{product.name}</button>;
+                  return (
+                    <button
+                      key={product.id}
+                      onClick={() => onClick(product.id)}
+                    >
+                      {product.name}
+                    </button>
+                  );
                 }
               })}
             </div>
           );
-        })}{' '}
+        })}
+        <br />
+        {showForm && <ProductForm productId={productId} />}
+        <br />
+        <div>
+          <button onClick={() => onClick(null)}>Add New Product</button>
+        </div>
       </div>
     );
   }
