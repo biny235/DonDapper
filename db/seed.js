@@ -137,7 +137,7 @@ const seed = () => {
         }).then(user => {
           return Address.create(generateAddress()).then(address => {
             address.update({ userId: user.id });
-            Order.create({ userId: user.id, addressId: address.id });
+            Order.create({ userId: user.id });
           });
         }),
         User.create({
@@ -148,37 +148,37 @@ const seed = () => {
         }).then(user => {
           return Address.create(generateAddress()).then(address => {
             address.update({ userId: user.id });
-            Order.create({ userId: user.id, addressId: address.id });
+            Order.create({ userId: user.id });
           });
         }),
         User.create(generateUser()).then(user => {
           return Address.create(generateAddress()).then(address => {
             address.update({ userId: user.id });
-            Order.create({ userId: user.id, addressId: address.id });
+            Order.create({ userId: user.id });
           });
         }),
         User.create(generateUser()).then(user => {
           return Address.create(generateAddress()).then(address => {
             address.update({ userId: user.id });
-            Order.create({ userId: user.id, addressId: address.id });
+            Order.create({ userId: user.id });
           });
         }),
         User.create(generateUser()).then(user => {
           return Address.create(generateAddress()).then(address => {
             address.update({ userId: user.id });
-            Order.create({ userId: user.id, addressId: address.id });
+            Order.create({ userId: user.id });
           });
         }),
         User.create(generateUser()).then(user => {
           return Address.create(generateAddress()).then(address => {
             address.update({ userId: user.id });
-            Order.create({ userId: user.id, addressId: address.id });
+            Order.create({ userId: user.id });
           });
         }),
         User.create(generateUser()).then(user => {
           return Address.create(generateAddress()).then(address => {
             address.update({ userId: user.id });
-            Order.create({ userId: user.id, addressId: address.id });
+            Order.create({ userId: user.id });
           });
         })
       ]);

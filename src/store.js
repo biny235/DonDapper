@@ -170,25 +170,9 @@ const editOrder = (order, history) => {
 const createOrUpdateAddress = (address, id) => {
   console.log(address);
   return dispatch => {
-    // const userId = user.id;
-    // const { id } = address;
-    // !address.userId && (address.userId = userId);
-    // user.addresses.map(_address => {
-    //   _address = omit(_address, [
-    //     'id',
-    //     'fullAddress',
-    //     'latitude',
-    //     'longitude',
-    //     'createdAt',
-    //     'updatedAt'
-    //   ]);
-    //   console.log(_address);
-    //   console.log(JSON.stringify(_address) === JSON.stringify(address));
-    // });
     const putOrPost = !id ? 'post' : 'put';
     axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
       .then(res => res.data);
-    // .then(() => dispatch(authenticateUser));
   };
 };
 
