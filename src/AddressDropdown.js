@@ -65,8 +65,7 @@ class AddressDropdown extends Component {
 }
 
 const mapStateToProps = ({ user, cart }) => {
-  let { addresses } = user;
-  addresses = addresses || [];
+  const addresses = user.addresses || [];
   return {
     addresses, cart
   };
