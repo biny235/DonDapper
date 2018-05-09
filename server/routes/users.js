@@ -10,6 +10,11 @@ router.get('/', (req, res, next) => {
     })
     .catch(next);
 });
+router.get('/all', (req, res, next) => {
+  User.exchangeToken(req.headers.token)
+    .then(user => {})
+    .catch(next);
+});
 
 router.post('/', (req, res, next) => {
   User.create(req.body.user)

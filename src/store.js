@@ -188,11 +188,16 @@ const editOrder = (order, history) => {
 };
 
 //ADDRESS
-const createOrUpdateAddress = (address, id) => {
+const createOrUpdateAddress = (address, cart) => {
   return dispatch => {
+    const { id } = address;
     const putOrPost = !id ? 'post' : 'put';
     axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
-      .then(res => res.data);
+      .then(res => res.data)
+      .then(address => {
+        dispatch(editOrder({ id: cart.id, addressId: address.id }));
+      })
+      .then(() => dispatch(authenticateUser));
   };
 };
 
