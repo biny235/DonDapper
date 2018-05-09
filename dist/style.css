@@ -183,51 +183,71 @@ input:checked+.slider:before {
     all: unset;
 }
 
-.account{
+.account {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 2fr 1fr;
 }
-.account-dropdown{
+
+.account-dropdown {
     border: none!important;
     background-color: rgba(0, 0, 0, 0);
     min-width: 7.89rem!important;
 }
-.account .user{
+
+.account .user {
     grid-column: 2 / 3;
 }
 
-.account .orders{
+.account .orders {
     grid-column: 2 / 3
 }
-.account .user-form{
+
+.account .user-form {
     grid-column: 4 / 5
 }
-.account-order{
+
+.account-order {
     padding-top: 5rem;
     grid-column: 2 / 5;
 }
-.header-row{
+
+.header-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
     border-bottom: 0.5px solid lightgray;
 }
-.order-row{
+
+.order-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
     border-bottom: 0.5px solid lightgray;
 }
-.order-row:hover{
+
+.order-row:hover {
     background-color: lightblue;
 }
-.address:hover{
+
+.address:hover {
     background-color: lightblue;
 }
-.account-login{
+
+.account-login {
     position: absolute!important;
     left: 25.5rem;
 }
+
+
+.placeHolder {
+    color: grey;
+}
+
+.address {
+    border: 1px solid gray;
+    padding: 3px;
+}
+
 .container{
     min-height: 90%;
 }
