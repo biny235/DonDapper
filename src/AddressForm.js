@@ -93,7 +93,7 @@ class AddressForm extends Component {
             <br />
             <RIEInput
               className="address"
-              value={lineOne || '123 Main St'}
+              value={lineOne || '1'}
               change={onChange}
               propName="lineOne"
             />
@@ -106,8 +106,9 @@ class AddressForm extends Component {
             <br />
             <RIEInput
               className="address"
-              value={lineTwo || 'Apt. 4B'}
+              value={lineTwo || ''}
               change={onChange}
+              placeholder='address'
               propName="lineTwo"
             />
           </div>
