@@ -48,7 +48,6 @@ class Checkout extends React.Component {
 }
 
 const mapStateToProps = ({ cart, user }) => {
-  console.log(cart)
   return {
     cart,
     user
