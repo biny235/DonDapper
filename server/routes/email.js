@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const nodemailer = require('nodemailer');
-const { SENDGRID_USERNAME, SENDGRID_PASSWORD } = require('../../secret').sendGrid
+const secret = require('../../secret')
+const { SENDGRID_USERNAME, SENDGRID_PASSWORD } = process.env || secret
 
 router.post('/send', (req, res, next) => {
   const transporter = nodemailer.createTransport({
