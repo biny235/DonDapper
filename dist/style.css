@@ -229,9 +229,13 @@ input:checked+.slider:before {
     left: 25.5rem;
 }
 .container{
-    min-height: 95%;
+    min-height: 90%;
 }
 .footer{
-    height: 5rem;
-    background-color: lightgray;
+    background-color: #2196F3;
+    position: fixed;
+    height: 45px;
+    bottom: 0;
+    z-index: 500;
+    width: 100%
 }

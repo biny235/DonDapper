@@ -22,7 +22,6 @@ class User extends Component {
 
   onClick(orderId) {
     this.setState({ showOrder: true, orderId });
-    window.scrollTo(0, 345);
   }
 
   passwordClick() {

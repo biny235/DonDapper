@@ -81,7 +81,7 @@ class Main extends Component {
               />
             </Switch>
           </Container>
-          <Footer/>
+          <Footer />
         </div>
       </Router>
     );
