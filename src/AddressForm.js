@@ -122,6 +122,7 @@ class AddressForm extends Component {
 
           <div>
             <br />
+
             <div onClick={this.editSwitch}>
               <label>
                 <b>Address Line 2</b>
