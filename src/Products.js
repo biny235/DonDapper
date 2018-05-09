@@ -17,7 +17,9 @@ class Products extends Component {
     const { categories } = this.props;
     return (
       <div>
-        <div className="parallax" />
+        <div className="clip" >
+          PRODUCTS
+        </div>
         <div className="products">
           <div className="products-grid">
             {categories.map(category => (

@@ -257,8 +257,32 @@ input:checked+.slider:before {
 .footer{
     background-color: #2196F3;
     position: fixed;
-    height: 45px;
+    height: 25px;
     bottom: 0;
     z-index: 500;
     width: 100%
+}
+.clip{
+    background-image: url('https://media1.mensxp.com/media/content/2015/Oct/genius-shaving-hacks-that-will-make-your-life-easier-and-face-smoother-980x457-1445863687_1100x513.jpg');
+  
+    background-attachment: fixed;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    /* border: black 5px solid; */
+    font-size: 12rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.small-clip{
+    
+    background-image: url('https://media1.mensxp.com/media/content/2015/Oct/genius-shaving-hacks-that-will-make-your-life-easier-and-face-smoother-980x457-1445863687_1100x513.jpg');
+    
+    background-attachment: fixed;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    
 }
