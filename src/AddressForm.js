@@ -19,20 +19,24 @@ class AddressForm extends Component {
         state: props.state || '',
         zipCode: props.zipCode || ''
       },
-      errors: ''
+      errors: '',
+      showForm: false
     };
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
     this.setErrors = setErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
+    this.editSwitch = this.editSwitch.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.address) {
       const { lineOne, lineTwo, city, state, zipCode } = nextProps.address;
-      nextProps.address !== this.state.address && this.setState({
-        address: { lineOne, lineTwo, city, state, zipCode }
-      });
+      nextProps.address !== this.state.address &&
+        this.setState({
+          address: { lineOne, lineTwo, city, state, zipCode },
+          showForm: false
+        });
     } else {
       this.setState({
         address: {
@@ -51,7 +55,8 @@ class AddressForm extends Component {
       const { lineOne, lineTwo, city, state, zipCode } = this.props.address;
       this.props.address !== this.state.address &&
         this.setState({
-          address: { lineOne, lineTwo, city, state, zipCode }
+          address: { lineOne, lineTwo, city, state, zipCode },
+          showForm: false
         });
     }
   }
@@ -61,12 +66,22 @@ class AddressForm extends Component {
     address = Object.assign({}, address, value);
     this.setState({ address });
   }
+  editSwitch() {
+    const { showForm } = this.state;
+
+    this.setState({ showForm: !showForm });
+  }
 
   onClick() {
     const { address } = this.state;
-    const { addressId, user } = this.props;
+    const { user, cart } = this.props;
     address.userId = user && user.id;
-    this.props.createOrUpdateAddress(address, addressId);
+
+    this.props.createOrUpdateAddress(address, cart);
+    this.setState({
+      address: address,
+      showForm: false
+    });
   }
 
   clearErrors() {
@@ -74,7 +89,7 @@ class AddressForm extends Component {
   }
 
   render() {
-    const { errors, address } = this.state;
+    const { errors, address, showForm } = this.state;
     const { lineOne, lineTwo, city, state, zipCode } = address;
     const { onChange, onClick } = this;
     return (
@@ -87,81 +102,116 @@ class AddressForm extends Component {
         <form>
           <div>Click fields to edit.</div>
           <div>
-            <label>
-              <b>Address Line 1</b>
-            </label>
+            <div onClick={this.editSwitch}>
+              <label>
+                <b>Address Line 1</b>
+              </label>
+              <br />
+              {showForm ? (
+                <RIEInput
+                  className="address placeHolder"
+                  value={lineOne || 'lineOne'}
+                  change={onChange}
+                  propName="lineOne"
+                />
+              ) : (
+                <div>{lineOne}</div>
+              )}
+            </div>
+          </div>
+
+          <div>
             <br />
-            <RIEInput
-              className="address"
-              value={lineOne || '1'}
-              change={onChange}
-              propName="lineOne"
-            />
+
+            <div onClick={this.editSwitch}>
+              <label>
+                <b>Address Line 2</b>
+              </label>
+              <br />
+              {showForm ? (
+                <RIEInput
+                  className="address placeHolder"
+                  value={lineTwo || 'Apt. 4B'}
+                  change={onChange}
+                  propName="lineTwo"
+                />
+              ) : (
+                <div>{lineTwo}</div>
+              )}
+            </div>
           </div>
           <div>
             <br />
-            <label>
-              <b>Address Line 2</b>
-            </label>
-            <br />
-            <RIEInput
-              className="address"
-              value={lineTwo || ''}
-              change={onChange}
-              placeholder='address'
-              propName="lineTwo"
-            />
+            <div onClick={this.editSwitch}>
+              <label>
+                <b>City</b>
+              </label>
+              <br />
+              {showForm ? (
+                <RIEInput
+                  className="address placeHolder"
+                  value={city || 'Springfield'}
+                  change={onChange}
+                  propName="city"
+                />
+              ) : (
+                <div>{city}</div>
+              )}
+            </div>
           </div>
           <div>
             <br />
-            <label>
-              <b>City</b>
-            </label>
-            <br />
-            <RIEInput
-              className="address"
-              value={city || 'Springfield'}
-              change={onChange}
-              propName="city"
-            />
+            <div onClick={this.editSwitch}>
+              <label>
+                <b>State</b>
+              </label>
+              <br />
+              {showForm ? (
+                <RIEInput
+                  className="address placeHolder"
+                  value={state || 'Ohio'}
+                  change={onChange}
+                  propName="state"
+                />
+              ) : (
+                <div>{state}</div>
+              )}
+            </div>
           </div>
           <div>
             <br />
-            <label>
-              <b>State</b>
-            </label>
-            <br />
-            <RIEInput
-              className="address"
-              value={state || 'Ohio'}
-              change={onChange}
-              propName="state"
-            />
-          </div>
-          <div>
-            <br />
-            <label>
-              <b>State</b>
-            </label>
-            <br />
-            <RIEInput
-              className="address"
-              value={zipCode || '10001'}
-              change={onChange}
-              propName="zipCode"
-            />
+            <div onClick={this.editSwitch}>
+              <label>
+                <b>State</b>
+              </label>
+              <br />
+              {showForm ? (
+                <RIEInput
+                  className="address placeHolder"
+                  value={zipCode || '10001'}
+                  change={onChange}
+                  propName="zipCode"
+                />
+              ) : (
+                <div>{zipCode}</div>
+              )}
+            </div>
           </div>
         </form>
-        <button type='submit' onClick={onClick}>Save Address</button>
+        <button type="submit" onClick={onClick}>
+          Save Address
+        </button>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ user }, { addressId }) => {
+const mapStateToProps = ({ user }, { cart }) => {
+  const addressId = cart.addressId;
   const { addresses } = user;
-  const address = addresses && addresses.find(address => address.id === addressId);
-  return { address, addressId, user };
+  const address =
+    addresses && addresses.find(address => address.id === addressId);
+  return { address, addressId, user, cart };
 };
 
 const mapDispatchToProps = dispatch => {

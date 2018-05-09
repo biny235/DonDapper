@@ -23,9 +23,9 @@ class Checkout extends React.Component {
     cart.addressId
       ? this.props.editOrder({ id: cart.id, status: 'order' }, history)
       : this.props.editOrder(
-        { id: cart.id, status: 'order', addressId: user.addresses[0].id },
-        history
-      );
+          { id: cart.id, status: 'order', addressId: user.addresses[0].id },
+          history
+        );
   }
 
   render() {
@@ -34,14 +34,19 @@ class Checkout extends React.Component {
     return (
       <div>
         <h1>Checkout</h1>
-        {!user.id ? <div>Please sign in.</div> :
+        {!user.id ? (
+          <div>Please sign in.</div>
+        ) : (
           <div>
             <AddressDropdown />
-          </div>}
-          <AddressForm addressId={ cart.addressId }/>
-        {user.id && <button type="submit" onClick={onSubmit} disabled={!cart.addressId}>
-          Check Out
-        </button>}
+          </div>
+        )}
+        <AddressForm cart={cart} />
+        {user.id && (
+          <button type="submit" onClick={onSubmit} disabled={!cart.addressId}>
+            Check Out
+          </button>
+        )}
       </div>
     );
   }
@@ -54,7 +59,7 @@ const mapStateToProps = ({ cart, user }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     editOrder: (order, history) => dispatch(editOrder(order, history))
   };
