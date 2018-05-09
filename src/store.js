@@ -191,8 +191,11 @@ const editOrder = (order, history) => {
 const createOrUpdateAddress = (address, id) => {
   return dispatch => {
     const putOrPost = !id ? 'post' : 'put';
-    axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
-      .then(res => res.data);
+    return axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
+      .then(res => res.data)
+      .then(() =>{
+        dispatch(authenticateUser)
+      })
   };
 };
 
