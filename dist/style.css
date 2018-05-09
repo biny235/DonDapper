@@ -68,7 +68,10 @@
     border-bottom: 1px solid lightgray;
     padding: 2rem;
 }
-
+.products-grid{
+    display: grid;
+    grid-template-rows: 1fr;
+}
 .category-products {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
