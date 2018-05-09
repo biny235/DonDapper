@@ -7,7 +7,7 @@ router.use('/lineItems', require('./lineItems'));
 router.use('/users', require('./users'));
 router.use('/addresses', require('./addresses'));
 // router.use('/email', require('./email'));
-// router.use('/google', require('./google'));
+router.use('/google', require('./google'));
 // router.use('/stripe', require('./stripe'));
 
 module.exports = router;
