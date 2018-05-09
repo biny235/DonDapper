@@ -17,6 +17,7 @@ import Dashboard from './Dashboard';
 import Checkout from './Checkout';
 import Autocomplete from './Autocomplete';
 import PasswordChange from './PasswordChange';
+import Footer from './Footer';
 
 class Main extends Component {
   componentDidMount() {
@@ -80,6 +81,7 @@ class Main extends Component {
               />
             </Switch>
           </Container>
+          <Footer/>
         </div>
       </Router>
     );

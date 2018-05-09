@@ -84,7 +84,6 @@
 .login-modal {
     position: absolute;
     right: 2rem;
-    width: 18rem;
 }
 
 .parallax {
@@ -104,14 +103,24 @@
     background-image: url('images/Gentlemans-Box.jpg');
     background-size: cover;
     width: 100%;
-    height: 100%;
-    color: lightblue;
-    margin: 0 auto;
-    text-align: center;
+    height: 85%;
+    display: grid;
+    grid-template-columns: 4fr 4fr 1fr;
+    grid-template-rows: repeat(3, 1fr)
+
 }
 
-.home h1 {
-    color: lightskyblue;
+.text {
+    background-color: rgba(77,45,46, .5);
+    text-align: center;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    color: white;
+    padding: 15px;
+}
+.btn-outline-secondary{
+    color: white!important;
+    border-color: white!important;
 }
 
 .products {
@@ -181,6 +190,7 @@ input:checked+.slider:before {
 .account-dropdown{
     border: none!important;
     background-color: rgba(0, 0, 0, 0);
+    min-width: 7.89rem!important;
 }
 .account .user{
     grid-column: 2 / 3;
@@ -217,4 +227,11 @@ input:checked+.slider:before {
 .account-login{
     position: absolute!important;
     left: 25.5rem;
+}
+.container{
+    min-height: 95%;
+}
+.footer{
+    height: 5rem;
+    background-color: lightgray;
 }
