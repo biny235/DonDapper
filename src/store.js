@@ -210,8 +210,8 @@ const createOrUpdateAddress = (address, cart) => {
       .then(res => res.data)
       .then(address => {
         dispatch(editOrder({ id: cart.id, addressId: address.id }));
+        dispatch(authenticateUser);
       })
-      .then(() => dispatch(authenticateUser));
   };
 };
 

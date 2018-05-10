@@ -21,8 +21,8 @@ const generateAddress = () => {
     city: faker.address.city(),
     state: faker.address.state(),
     zipCode: faker.address.zipCode(),
-    latitude: faker.address.latitude(),
-    longitude: faker.address.longitude()
+    lat: faker.address.latitude(),
+    lng: faker.address.longitude()
   };
 };
 
