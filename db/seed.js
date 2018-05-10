@@ -8,7 +8,7 @@ const generateAddress = () => {
     lineOne: faker.address.streetName(),
     lineTwo: faker.address.secondaryAddress(),
     city: faker.address.city(),
-    state: faker.address.state(),
+    state: 'NY',
     zipCode: faker.address.zipCode(),
     lat: faker.address.latitude(),
     lng: faker.address.longitude()

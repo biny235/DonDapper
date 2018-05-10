@@ -19,7 +19,7 @@ class AddressForm extends Component {
         zipCode: props.zipCode || ''
       },
       errors: '',
-      showForm: false
+      inputEdited: {}
     };
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -27,26 +27,27 @@ class AddressForm extends Component {
     this.clearErrors = this.clearErrors.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.address) {
-      const { lineOne, lineTwo, city, state, zipCode } = nextProps.address;
-      nextProps.address !== this.state.address &&
-        this.setState({
-          address: { lineOne, lineTwo, city, state, zipCode },
-          showForm: false
-        });
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.address) {
+  //     const { lineOne, lineTwo, city, state, zipCode } = nextProps.address;
+  //     nextProps.address !== this.state.address &&
+  //       this.setState({
+  //         address: { lineOne, lineTwo, city, state, zipCode },
+  //         showForm: false
+  //       });
+  //   }
+  // }
 
-  componentDidMount() {
-    const { lineOne, lineTwo, city, state, zipCode } = this.props.address;
-    this.props.address && this.setState({ address: { lineOne, lineTwo, city, state, zipCode } });
-  }
+  // componentDidMount() {
+  //   const { lineOne, lineTwo, city, state, zipCode } = this.props.address;
+  //   this.props.address && this.setState({ address: { lineOne, lineTwo, city, state, zipCode } });
+  // }
 
   onChange(ev) {
-    let { address } = this.state;
-
-    address = Object.assign({}, address, ev.target.value);
+    const { name, value } = ev.target;
+    const { inputEdited } = this.state;
+    const address = Object.assign({}, this.state.address, { [name]: value });
+    inputEdited[name] = true;
     this.setState({ address });
   }
 
@@ -56,7 +57,7 @@ class AddressForm extends Component {
     address.userId = user && user.id;
     address.id = this.props.addressId;
     this.props.createOrUpdateAddress(address, cart);
-    this.props.edit();
+    this.props.onEdit();
   }
 
   clearErrors() {
@@ -64,7 +65,7 @@ class AddressForm extends Component {
   }
 
   render() {
-    const { errors, address, showForm } = this.state;
+    const { errors, address } = this.state;
     const { lineOne, lineTwo, city, state, zipCode } = address;
     const { onChange, onClick } = this;
     return (
@@ -75,11 +76,11 @@ class AddressForm extends Component {
           </Alert>
         )}
         <form>
-          <input onChange={onChange} name='lineOne' value={lineOne || ''} placeholder="Line One" />
-          <input onChange={onChange} name='lineTwo' value={lineTwo || ''} placeholder="Line Two" />
-          <input onChange={onChange} name='city' value={city || ''} placeholder="City" />
-          <input onChange={onChange} name='state' value={state || ''} placeholder="State" />
-          <input onChange={onChange} name='zipCode' value={zipCode || ''} placeholder="Zip" />
+          <input onChange={onChange} name='lineOne' value={lineOne} placeholder="Line One" />
+          <input onChange={onChange} name='lineTwo' value={lineTwo} placeholder="Line Two" />
+          <input onChange={onChange} name='city' value={city} placeholder="City" />
+          <input onChange={onChange} name='state' value={state} placeholder="State" />
+          <input onChange={onChange} name='zipCode' value={zipCode} placeholder="Zip" />
         </form>
         <button type="submit" onClick={onClick}>
           Save Address

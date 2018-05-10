@@ -6,7 +6,6 @@ import axios from 'axios';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import Autocomplete from './Autocomplete';
-import Order from './Order';
 
 class Checkout extends React.Component {
   constructor() {
@@ -15,7 +14,7 @@ class Checkout extends React.Component {
       editing: false
     };
     this.onSubmit = this.onSubmit.bind(this);
-    this.edit = this.edit.bind(this);
+    this.onEdit = this.onEdit.bind(this);
   }
 
   onSubmit(token) {
@@ -31,13 +30,13 @@ class Checkout extends React.Component {
     axios.post(`/api/stripe/pay`, { stripeToken: token.id }).then(res => res.data);
   }
 
-  edit() {
+  onEdit() {
     const { editing } = this.state;
     this.setState({ editing: !editing });
   }
 
   render() {
-    const { onSubmit, edit } = this;
+    const { onSubmit, onEdit } = this;
     const { user, cart, address, total } = this.props;
     const { editing } = this.state;
     return (
@@ -53,14 +52,14 @@ class Checkout extends React.Component {
           )}
         {!cart.addressId ? <Autocomplete cart={cart} /> : (
           editing ?
-            <AddressForm cart={cart} edit={edit} />
+            <AddressForm cart={cart} onEdit={onEdit} />
             :
             <div>
               <div>{address.fullAddress}</div>
-              <button onClick={edit}>Edit</button>
+              <button onClick={onEdit}>Edit</button>
             </div>
         )}
-        {user.id &&
+        {/* {user.id &&
           <StripeCheckout
             name="Payment"
             description="Please review your order"
@@ -71,7 +70,7 @@ class Checkout extends React.Component {
             disabled={!cart.addressId}
             token={onSubmit}
             stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
-          />}
+          />} */}
       </div>
     );
   }
