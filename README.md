@@ -1,8 +1,8 @@
 # Grace Shopper
 This project is a collaborative effort by Ben Rosenbaum, Alon Adelson, and Marco Poetry Chen. Their GitHub profiles can be found below.
-  https://github.com/biny235
-  https://github.com/ajkatom
-  https://github.com/marcopchen
+    https://github.com/biny235
+    https://github.com/ajkatom
+    https://github.com/marcopchen
 
 ## Using Site
 You may browse through products and shop as you would on any other e-commerce website. You can add to cart, edit your cart, and remove items. You can update your user info and change password. Feel free to sign up with your e-mail address to receive an e-mail upon placing an order. To check out, you can use the test card number "4242 4242 4242 4242" with any CVC number and a valid expiration date.
