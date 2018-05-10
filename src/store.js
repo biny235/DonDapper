@@ -22,7 +22,8 @@ const GET_CATEGORIES = 'GET_CATEGORIES';
 
 // USER
 const GET_USER = 'GET_USER';
-
+// USERS
+const GET_USERS = 'GET_USERS';
 // CART
 const GET_CART = 'GET_CART';
 const EDIT_ORDER = 'EDIT_ORDER';
@@ -135,6 +136,18 @@ const createOrUpdateUser = (user, history) => {
       });
   };
 };
+//Users
+const showUsers = () => {
+  return dispatch => {
+    return axios
+      .get('/api/users/all')
+      .then(res => res.data)
+      .then(users => {
+        console.log(users);
+        dispatch({ type: GET_USERS, users });
+      });
+  };
+};
 
 // CART
 const fetchCart = userId => {
@@ -193,7 +206,7 @@ const createOrUpdateAddress = (address, cart) => {
     const { id } = address;
     const putOrPost = !id ? 'post' : 'put';
 
-   return axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
+    return axios[putOrPost](`api/addresses/${id ? id : ''}`, { address })
       .then(res => res.data)
       .then(address => {
         dispatch(editOrder({ id: cart.id, addressId: address.id }));
@@ -284,6 +297,13 @@ const userReducer = (state = {}, action) => {
   }
   return state;
 };
+const usersReducer = (state = [], action) => {
+  switch (action.type) {
+    case GET_USERS:
+      return action.users;
+  }
+  return state;
+};
 
 const cartReducer = (state = {}, action) => {
   switch (action.type) {
@@ -335,7 +355,8 @@ const reducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
   lineItems: lineItemsReducer,
-  orders: ordersReducer
+  orders: ordersReducer,
+  users: usersReducer
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
@@ -356,5 +377,6 @@ export {
   logout,
   authenticateUser,
   createOrUpdateAddress,
-  createOrUpdateProduct
+  createOrUpdateProduct,
+  showUsers
 };

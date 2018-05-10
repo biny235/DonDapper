@@ -12,7 +12,12 @@ router.get('/', (req, res, next) => {
 });
 router.get('/all', (req, res, next) => {
   User.exchangeToken(req.headers.token)
-    .then(user => {})
+    .then(user => {
+      if (!user.admin) next({ status: 401 });
+      User.findAll({ where: { id: { $ne: user.id } } }).then(users => {
+        res.send(users);
+      });
+    })
     .catch(next);
 });
 
@@ -23,6 +28,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/:id', auth, (req, res, next) => {
+  console.log(req.body.user.name);
   if (!req.user) next({ status: 401 });
   User.findById(req.params.id)
     .then(user => {
