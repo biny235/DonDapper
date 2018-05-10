@@ -59,7 +59,7 @@ class Checkout extends React.Component {
               <button onClick={onEdit}>Edit</button>
             </div>
         )}
-        {/* {user.id &&
+        {user.id &&
           <StripeCheckout
             name="Payment"
             description="Please review your order"
@@ -70,7 +70,7 @@ class Checkout extends React.Component {
             disabled={!cart.addressId}
             token={onSubmit}
             stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
-          />} */}
+          />}
       </div>
     );
   }

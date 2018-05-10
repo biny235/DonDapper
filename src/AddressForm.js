@@ -81,11 +81,11 @@ class AddressForm extends Component {
           </Alert>
         )}
         <form>
-          <input onChange={onChange} name='lineOne' value={lineOne} placeholder="Street Name" />
-          <input onChange={onChange} name='lineTwo' value={lineTwo} placeholder="Apt, Suite, Unit, etc." />
-          <input onChange={onChange} name='city' value={city} placeholder="City" />
-          <input onChange={onChange} name='state' value={state} placeholder="State" maxLength="2" />
-          <input onChange={onChange} name='zipCode' value={zipCode} placeholder="Zip Code" maxLength="5" />
+          <input onChange={onChange} name='lineOne' value={lineOne || ''} placeholder="Street Name" />
+          <input onChange={onChange} name='lineTwo' value={lineTwo || ''} placeholder="Apt, Suite, Unit, etc." />
+          <input onChange={onChange} name='city' value={city || ''} placeholder="City" />
+          <input onChange={onChange} name='state' value={state.toUpperCase() || ''} placeholder="State" maxLength="2" />
+          <input onChange={onChange} name='zipCode' value={zipCode || ''} placeholder="Zip Code" maxLength="5" />
         </form>
         <button type="submit" onClick={onClick} disabled={!edited}>
           Save Address
