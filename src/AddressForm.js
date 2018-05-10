@@ -23,25 +23,25 @@ class AddressForm extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.onCancel = this.onCancel.bind(this);
     this.setErrors = setErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.address) {
-  //     const { lineOne, lineTwo, city, state, zipCode } = nextProps.address;
-  //     nextProps.address !== this.state.address &&
-  //       this.setState({
-  //         address: { lineOne, lineTwo, city, state, zipCode },
-  //         showForm: false
-  //       });
-  //   }
-  // }
+  componentDidMount() {
+    const { lineOne, lineTwo, city, state, zipCode } = this.props.address;
+    this.props.address && this.setState({ address: { lineOne, lineTwo, city, state, zipCode } });
+  }
 
-  // componentDidMount() {
-  //   const { lineOne, lineTwo, city, state, zipCode } = this.props.address;
-  //   this.props.address && this.setState({ address: { lineOne, lineTwo, city, state, zipCode } });
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.address) {
+      const { lineOne, lineTwo, city, state, zipCode } = nextProps.address;
+      nextProps.address !== this.state.address &&
+        this.setState({
+          address: { lineOne, lineTwo, city, state, zipCode }
+        });
+    }
+  }
 
   onChange(ev) {
     const { name, value } = ev.target;
@@ -60,14 +60,19 @@ class AddressForm extends Component {
     this.props.onEdit();
   }
 
+  onCancel() {
+    this.props.onEdit();
+  }
+
   clearErrors() {
     this.setState({ errors: '' });
   }
 
   render() {
-    const { errors, address } = this.state;
+    const { errors, address, inputEdited } = this.state;
     const { lineOne, lineTwo, city, state, zipCode } = address;
-    const { onChange, onClick } = this;
+    const { onChange, onClick, onCancel } = this;
+    const edited = Object.keys(inputEdited).some(field => field);
     return (
       <div>
         {errors && (
@@ -76,14 +81,17 @@ class AddressForm extends Component {
           </Alert>
         )}
         <form>
-          <input onChange={onChange} name='lineOne' value={lineOne} placeholder="Line One" />
-          <input onChange={onChange} name='lineTwo' value={lineTwo} placeholder="Line Two" />
+          <input onChange={onChange} name='lineOne' value={lineOne} placeholder="Street Name" />
+          <input onChange={onChange} name='lineTwo' value={lineTwo} placeholder="Apt, Suite, Unit, etc." />
           <input onChange={onChange} name='city' value={city} placeholder="City" />
-          <input onChange={onChange} name='state' value={state} placeholder="State" />
-          <input onChange={onChange} name='zipCode' value={zipCode} placeholder="Zip" />
+          <input onChange={onChange} name='state' value={state} placeholder="State" maxLength="2" />
+          <input onChange={onChange} name='zipCode' value={zipCode} placeholder="Zip Code" maxLength="5" />
         </form>
-        <button type="submit" onClick={onClick}>
+        <button type="submit" onClick={onClick} disabled={!edited}>
           Save Address
+        </button>
+        <button type="submit" onClick={onCancel}>
+          Cancel
         </button>
       </div>
     );
