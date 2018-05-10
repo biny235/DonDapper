@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import UserForm from './UserForm';
 import OrderRow from './OrderRow';
-import LoginModal from './LoginModal';
 import Order from './Order';
 import PasswordChange from './PasswordChange';
 
@@ -41,16 +40,6 @@ class User extends Component {
     const { user, orders } = this.props;
     const { showOrder, orderId, password } = this.state;
     const { onClick, hide, passwordClick, onUpdate } = this;
-    // if (!user.id) {
-    //   return (
-    //     <div>
-    //       <h1>Please Sign In</h1>
-    //       <div className="account-login">
-    //         <LoginModal />
-    //       </div>
-    //     </div>
-    //   );
-    // }
     return (
       <div>
         {!user.id && <h1>Account</h1>}

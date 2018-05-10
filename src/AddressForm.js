@@ -3,7 +3,7 @@ import { Alert } from 'reactstrap';
 import { createOrUpdateAddress, editOrder } from './store';
 import { connect } from 'react-redux';
 
-let setErrors = function(err) {
+let setErrors = function (err) {
   this.setState({ errors: err });
 };
 
@@ -35,12 +35,12 @@ class AddressForm extends Component {
           address: { lineOne, lineTwo, city, state, zipCode },
           showForm: false
         });
-    } 
+    }
   }
 
   componentDidMount() {
     const { lineOne, lineTwo, city, state, zipCode } = this.props.address;
-    this.props.address ? this.setState({ address: { lineOne, lineTwo, city, state, zipCode }}) : null;
+    this.props.address && this.setState({ address: { lineOne, lineTwo, city, state, zipCode } });
   }
 
   onChange(ev) {
@@ -54,10 +54,9 @@ class AddressForm extends Component {
     const { address } = this.state;
     const { user, cart } = this.props;
     address.userId = user && user.id;
-    address.id = this.props.addressId
-    
+    address.id = this.props.addressId;
     this.props.createOrUpdateAddress(address, cart);
-    this.props.edit()
+    this.props.edit();
   }
 
   clearErrors() {
