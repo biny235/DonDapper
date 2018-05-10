@@ -38,7 +38,7 @@ You'll need an API key for Places from Google.
 You'll need an username and password from SendGrid.
 
 #### Stripe
-You'll need a publishable API key and a secret key from Stripe.
+You'll need a publishable API key and the corresponding secret key from Stripe.
 
 ### Testing
 Test specs can be ran with the following command.
