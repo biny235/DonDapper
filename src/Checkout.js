@@ -6,7 +6,6 @@ import axios from 'axios';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import Autocomplete from './Autocomplete';
-import Order from './Order';
 
 class Checkout extends React.Component {
   constructor() {
@@ -15,11 +14,11 @@ class Checkout extends React.Component {
       editing: false
     };
     this.onSubmit = this.onSubmit.bind(this);
-    this.edit = this.edit.bind(this);
+    this.onEdit = this.onEdit.bind(this);
   }
 
   onSubmit(token) {
-    const { cart, user, history } = this.props;
+    const { cart, user, total, history } = this.props;
     const email = {
       from: '"Grace Shopper" <grace@shopper.com>',
       to: user.email,
@@ -28,16 +27,23 @@ class Checkout extends React.Component {
     };
     // axios.post(`/api/email/send`, email).then(res => res.data);
     this.props.editOrder({ id: cart.id, status: 'order' }, history);
-    axios.post(`/api/stripe/pay`, { stripeToken: token.id }).then(res => res.data);
+    const charge = {
+      amount: total * 100,
+      currency: 'usd',
+      description: `order ID: ${cart.id}`,
+      source: token.id,
+      receipt_email: user.email
+    };
+    axios.post(`/api/stripe/pay`, charge).then(res => res.data);
   }
 
-  edit() {
+  onEdit() {
     const { editing } = this.state;
     this.setState({ editing: !editing });
   }
 
   render() {
-    const { onSubmit, edit } = this;
+    const { onSubmit, onEdit } = this;
     const { user, cart, address, total } = this.props;
     const { editing } = this.state;
     return (
@@ -53,18 +59,18 @@ class Checkout extends React.Component {
           )}
         {!cart.addressId ? <Autocomplete cart={cart} /> : (
           editing ?
-            <AddressForm cart={cart} edit={edit} />
+            <AddressForm cart={cart} onEdit={onEdit} />
             :
             <div>
               <div>{address.fullAddress}</div>
-              <button onClick={edit}>Edit</button>
+              <button onClick={onEdit}>Edit</button>
             </div>
         )}
         {user.id &&
           <StripeCheckout
             name="Payment"
             description="Please review your order"
-            panelLabel="Check Out - "
+            panelLabel="Place Order - "
             amount={total * 100}
             currency="USD"
             email={user.email}

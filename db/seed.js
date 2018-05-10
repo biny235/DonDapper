@@ -8,8 +8,8 @@ const generateAddress = () => {
     lineOne: faker.address.streetName(),
     lineTwo: faker.address.secondaryAddress(),
     city: faker.address.city(),
-    state: faker.address.state(),
-    zipCode: faker.address.zipCode(),
+    state: faker.address.stateAbbr(),
+    zipCode: faker.address.zipCode().slice(0, 5),
     lat: faker.address.latitude(),
     lng: faker.address.longitude()
   };
