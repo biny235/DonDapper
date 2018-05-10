@@ -48,11 +48,11 @@ const Address = conn.define(
         }
       }
     },
-    latitude: {
+    lat: {
       type: Sequelize.FLOAT,
       allowNull: true
     },
-    longitude: {
+    lng: {
       type: Sequelize.FLOAT,
       allowNull: true
     }
@@ -60,7 +60,7 @@ const Address = conn.define(
   {
     getterMethods: {
       fullAddress() {
-        return `${this.lineOne} ${this.lineTwo} ${this.city} ${this.state} ${this.zipCode}`;
+        return `${this.lineOne} ${this.lineTwo ? this.lineTwo : ''}, ${this.city}, ${this.state} ${this.zipCode}`;
       }
     }
   }

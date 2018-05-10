@@ -1,33 +1,48 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { createOrUpdateAddress } from './store';
 import axios from 'axios';
 
-export default class Autocomplete extends React.Component{
+class Autocomplete extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      predictions: []
+      predictions: [],
     }
-    this.onChange = this.onChange.bind(this)
+    this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
   onChange(ev){
-    ev.target.value.length === 0 ? 
+    ev.target.value.length < 4? 
       this.setState({predictions: []})
       :
       ev.target.value.length > 5 ?
-        axios.post('/api/google/getpredictions', {input: ev.target.value})
+        axios.post('/api/google/getpredictions', { input: ev.target.value })
         .then(res => res.data)
         .then(predictions => {
-          console.log(predictions)
-          this.setState({predictions})
+          this.setState({ predictions })
         })
         :
         null
   }
+
   onClick(placeId){
-    axios.post('/api/google/getplace', {query: placeId})
-      .then(res =>console.log(res.data))
+    const { user, cart } = this.props;
+    axios.post('/api/google/getplace', { query: placeId })
+      .then(res =>res.data)
+      .then((_address) => {
+        _address = _address[0]
+        // get the formatted address and split it up
+        let address = _address.formatted_address.split(', ')
+        // split up the state and zip
+        address[2] = address[2].split(' ')
+        const {lat, lng} = _address.geometry.location
+        address = { lineOne: address[0], city: address[1], state: address[2][0], zipCode: address[2][1], lat, lng }
+        address.userId = user && user.id;
+
+        this.props.createOrUpdateAddress(address, cart)
+      })
       .catch(err => console.log(err))
   }
 
@@ -48,3 +63,18 @@ export default class Autocomplete extends React.Component{
   }
 }
 
+const mapStateToProps = ({ user, cart})=>{
+  return{
+    user,
+    cart
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    createOrUpdateAddress: (address, cart) => dispatch(createOrUpdateAddress(address, cart))
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Autocomplete);
