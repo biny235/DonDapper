@@ -9,11 +9,11 @@ import Autocomplete from './Autocomplete';
 class Checkout extends React.Component {
   constructor() {
     super();
-    this.state= {
+    this.state = {
       editing: false
-    }
+    };
     this.onSubmit = this.onSubmit.bind(this);
-    this.edit = this.edit.bind(this)
+    this.edit = this.edit.bind(this);
   }
 
   onSubmit() {
@@ -28,39 +28,38 @@ class Checkout extends React.Component {
     cart.addressId
       ? this.props.editOrder({ id: cart.id, status: 'order' }, history)
       : this.props.editOrder(
-          { id: cart.id, status: 'order', addressId: user.addresses[0].id },
-          history
-        );
+        { id: cart.id, status: 'order', addressId: user.addresses[0].id },
+        history
+      );
   }
-  edit(){
-    const { editing } = this.state
-    this.setState({editing: !editing})
+  edit() {
+    const { editing } = this.state;
+    this.setState({ editing: !editing });
   }
 
   render() {
     const { onSubmit, edit } = this;
     const { user, cart, address } = this.props;
-    const { editing } = this.state
+    const { editing } = this.state;
     return (
       <div>
         <h1>Checkout</h1>
         {!user.id ? (
           <div>Please sign in.</div>
         ) : (
-          <div>
-            <AddressDropdown />
-          </div>
-        )}
-        {!cart.addressId ? <Autocomplete cart={cart}/> : (
+            <div>
+              <AddressDropdown />
+            </div>
+          )}
+        {!cart.addressId ? <Autocomplete cart={cart} /> : (
           editing ?
-          <AddressForm cart={cart} edit={edit}/>
-          :
-          <div>
-            <div>{address.fullAddress}</div>
-            <button onClick={edit}>Edit</button>
-          </div>
+            <AddressForm cart={cart} edit={edit} />
+            :
+            <div>
+              <div>{address.fullAddress}</div>
+              <button onClick={edit}>Edit</button>
+            </div>
         )}
-        
         {user.id && (
           <button type="submit" onClick={onSubmit} disabled={!cart.addressId}>
             Check Out
