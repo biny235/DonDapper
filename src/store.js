@@ -122,14 +122,15 @@ const authenticateUser = dispatch => {
     });
 };
 
-const createOrUpdateUser = (user, history) => {
+const createOrUpdateUser = (user, history, admin) => {
   const { id } = user;
   const putOrPost = id ? 'put' : 'post';
   return dispatch => {
     return axios[putOrPost](`/api/users/${id ? id : ''}`, { user })
       .then(res => res.data)
       .then(user => {
-        login(user, dispatch);
+        admin ? dispatch(showUsers()) : dispatch(login(user, dispatch));
+
         if (history) {
           history.push(`/user`);
         }
@@ -143,7 +144,6 @@ const showUsers = () => {
       .get('/api/users/all')
       .then(res => res.data)
       .then(users => {
-        console.log(users);
         dispatch({ type: GET_USERS, users });
       });
   };
@@ -211,7 +211,7 @@ const createOrUpdateAddress = (address, cart) => {
       .then(address => {
         dispatch(editOrder({ id: cart.id, addressId: address.id }));
         dispatch(authenticateUser);
-      })
+      });
   };
 };
 
