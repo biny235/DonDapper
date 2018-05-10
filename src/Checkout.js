@@ -1,14 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import AddressDropdown from './AddressDropdown';
 import { editOrder } from './store';
 import axios from 'axios';
+import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
+import Autocomplete from './Autocomplete';
 
 class Checkout extends React.Component {
   constructor() {
     super();
+    this.state= {
+      editing: false
+    }
     this.onSubmit = this.onSubmit.bind(this);
+    this.edit = this.edit.bind(this)
   }
 
   onSubmit() {
@@ -27,10 +32,15 @@ class Checkout extends React.Component {
           history
         );
   }
+  edit(){
+    const { editing } = this.state
+    this.setState({editing: !editing})
+  }
 
   render() {
-    const { onSubmit } = this;
-    const { user, cart } = this.props;
+    const { onSubmit, edit } = this;
+    const { user, cart, address } = this.props;
+    const { editing } = this.state
     return (
       <div>
         <h1>Checkout</h1>
@@ -41,7 +51,16 @@ class Checkout extends React.Component {
             <AddressDropdown />
           </div>
         )}
-        <AddressForm cart={cart} />
+        {!cart.addressId ? <Autocomplete cart={cart}/> : (
+          editing ?
+          <AddressForm cart={cart} edit={edit}/>
+          :
+          <div>
+            <div>{address.fullAddress}</div>
+            <button onClick={edit}>Edit</button>
+          </div>
+        )}
+        
         {user.id && (
           <button type="submit" onClick={onSubmit} disabled={!cart.addressId}>
             Check Out
@@ -53,9 +72,11 @@ class Checkout extends React.Component {
 }
 
 const mapStateToProps = ({ cart, user }) => {
+  const address = user.addresses && user.addresses.find(address => address.id === cart.addressId)
   return {
     cart,
-    user
+    user,
+    address
   };
 };
 
