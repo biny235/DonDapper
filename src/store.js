@@ -84,19 +84,21 @@ const fetchCategories = () => {
 // USER
 const fetchUser = user => {
   return dispatch => {
-    login(user, dispatch);
+    dispatch(login(user));
   };
 };
 
-const login = (user, dispatch) => {
-  return axios
-    .post(`/api/users/login`, { user })
-    .then(res => res.data)
-    .then(token => {
-      axios.defaults.headers.common.token = token;
-      window.localStorage.setItem('token', token);
-      dispatch(authenticateUser);
-    });
+const login = user => {
+  return dispatch => {
+    return axios
+      .post(`/api/users/login`, { user })
+      .then(res => res.data)
+      .then(token => {
+        axios.defaults.headers.common.token = token;
+        window.localStorage.setItem('token', token);
+        dispatch(authenticateUser);
+      });
+    }
 };
 
 const logout = (path, history, dispatch) => {
