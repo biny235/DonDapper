@@ -7,6 +7,7 @@ import {
   createOrUpdateUser,
   showUsers
 } from './store';
+import omit from 'object.omit';
 import ProductForm from './ProductForm';
 
 class Dashboard extends Component {
@@ -35,7 +36,9 @@ class Dashboard extends Component {
     this.props.editOrder(order);
   }
   makeAdmin(user) {
+    user = omit(user, 'name');
     user.admin = !user.admin;
+    console.log(user);
     this.props.createOrUpdateUser(user);
   }
   onClick(productId) {
@@ -63,18 +66,18 @@ class Dashboard extends Component {
       <div>
         <h1>Users</h1>
         {users &&
-          users.map(user => {
+          users.map(_user => {
             return (
-              <div key={user.id}>
-                <strong>{user.name}</strong>
-                {'  '} <Link to="#">{user.email}</Link>
+              <div key={_user.id}>
+                <strong>{_user.name}</strong>
+                {'  '} <Link to="#">{_user.email}</Link>
                 <div>
                   <label className="switch">
                     <input
-                      checked={user.admin}
+                      checked={_user.admin}
                       type="checkbox"
                       datatype="toggle"
-                      onChange={() => makeAdmin(user)}
+                      onChange={() => makeAdmin(_user)}
                     />
                     <span className="slider" />
                   </label>
@@ -155,7 +158,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(showUsers());
     },
     createOrUpdateUser: user => {
-      dispatch(createOrUpdateUser(user));
+      //console.log(user);
+      dispatch(createOrUpdateUser(user, null, true));
     }
   };
 };
