@@ -9,8 +9,7 @@ You may browse through products and shop as you would on any other e-commerce we
 
 ## Deployed Build
 This project has been deployed via Heroku and can be access through the following link.
-
-https://abmgs.herokuapp.com
+- https://abmgs.herokuapp.com
 
 ## Local Build
 To run this project locally, clone the repo and run the following commands in your terminal. This will ensure proper package installation and data seeding.
