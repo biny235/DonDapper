@@ -18,7 +18,7 @@ class Checkout extends React.Component {
   }
 
   onSubmit(token) {
-    const { cart, user, history } = this.props;
+    const { cart, user, total, history } = this.props;
     const email = {
       from: '"Grace Shopper" <grace@shopper.com>',
       to: user.email,
@@ -27,7 +27,14 @@ class Checkout extends React.Component {
     };
     // axios.post(`/api/email/send`, email).then(res => res.data);
     this.props.editOrder({ id: cart.id, status: 'order' }, history);
-    axios.post(`/api/stripe/pay`, { stripeToken: token.id }).then(res => res.data);
+    const charge = {
+      amount: total * 100,
+      currency: 'usd',
+      description: `order ID: ${cart.id}`,
+      source: token.id,
+      receipt_email: user.email
+    };
+    axios.post(`/api/stripe/pay`, charge).then(res => res.data);
   }
 
   onEdit() {
@@ -63,7 +70,7 @@ class Checkout extends React.Component {
           <StripeCheckout
             name="Payment"
             description="Please review your order"
-            panelLabel="Check Out - "
+            panelLabel="Place Order - "
             amount={total * 100}
             currency="USD"
             email={user.email}
