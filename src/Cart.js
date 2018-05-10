@@ -21,7 +21,7 @@ const Cart = ({ cart, lineItems, total }) => {
               <LineItem key={lineItem.id} line={lineItem} cart={true} />
             ))
           }
-          <Link to={'/checkout'} className="btn btn-success">Check Out</Link>
+          <Link to={'/checkout'} className="btn btn-success">Proceed to Checkout</Link>
           <div className="order-total">Total:</div>
           <div>$ {total}</div>
         </div>
