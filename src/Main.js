@@ -30,7 +30,11 @@ class Main extends Component {
     return (
       <Router>
         <div>
-          <Route render={({ history, location }) => <Navigation history={history} path={location.pathname} />} />
+          <Route
+            render={({ history, location }) => (
+              <Navigation history={history} path={location.pathname} />
+            )}
+          />
           <Container>
             <Route path="/" exact render={() => <Home />} />
             <Switch>
@@ -73,7 +77,11 @@ class Main extends Component {
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
               <Route path="/user" exact render={() => <User />} />
-              <Route path="/user/password" exact render={({ history }) => <PasswordChange history={history} />} />
+              <Route
+                path="/user/password"
+                exact
+                render={({ history }) => <PasswordChange history={history} />}
+              />
               <Route
                 path="/test/google"
                 exact

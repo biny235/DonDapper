@@ -68,10 +68,12 @@
     border-bottom: 1px solid lightgray;
     padding: 2rem;
 }
-.products-grid{
+
+.products-grid {
     display: grid;
     grid-template-rows: 1fr;
 }
+
 .category-products {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -110,20 +112,20 @@
     display: grid;
     grid-template-columns: 4fr 4fr 1fr;
     grid-template-rows: repeat(3, 1fr)
-
 }
 
 .text {
-    background-color: rgba(77,45,46, .5);
+    background-color: rgba(77, 45, 46, .5);
     text-align: center;
     grid-column: 2/3;
     grid-row: 2/3;
     color: white;
     padding: 15px;
 }
-.btn-outline-secondary{
-    color: white!important;
-    border-color: white!important;
+
+.btn-outline-secondary {
+    color: white !important;
+    border-color: white !important;
 }
 
 .products {
@@ -193,9 +195,9 @@ input:checked+.slider:before {
 }
 
 .account-dropdown {
-    border: none!important;
+    border: none !important;
     background-color: rgba(0, 0, 0, 0);
-    min-width: 7.89rem!important;
+    min-width: 7.89rem !important;
 }
 
 .account .user {
@@ -238,10 +240,9 @@ input:checked+.slider:before {
 }
 
 .account-login {
-    position: absolute!important;
+    position: absolute !important;
     left: 25.5rem;
 }
-
 
 .placeHolder {
     color: grey;
@@ -252,11 +253,12 @@ input:checked+.slider:before {
     padding: 3px;
 }
 
-.container{
+.container {
     min-height: 90%;
     padding-bottom: 35px;
 }
-.footer{
+
+.footer {
     background-color: #2196F3;
     position: fixed;
     height: 25px;
@@ -264,7 +266,8 @@ input:checked+.slider:before {
     z-index: 500;
     width: 100%
 }
-.clip{
+
+.clip {
     background-image: url('https://media1.mensxp.com/media/content/2015/Oct/genius-shaving-hacks-that-will-make-your-life-easier-and-face-smoother-980x457-1445863687_1100x513.jpg');
     background-attachment: fixed;
     -webkit-text-fill-color: transparent;
@@ -274,7 +277,7 @@ input:checked+.slider:before {
     text-align: center;
 }
 
-.small-clip{
+.small-clip {
     background-image: url('https://media1.mensxp.com/media/content/2015/Oct/genius-shaving-hacks-that-will-make-your-life-easier-and-face-smoother-980x457-1445863687_1100x513.jpg');
     background-attachment: fixed;
     -webkit-text-fill-color: transparent;
@@ -282,10 +285,9 @@ input:checked+.slider:before {
     font-size: 6vw;
     font-weight: bold;
     text-align: center;
-    
 }
 
-.checkout{
+.checkout {
     display: grid;
     grid-template-columns: 3fr 1fr;
 }
