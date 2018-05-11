@@ -16,7 +16,7 @@ const User = conn.define(
       validate: {
         notEmpty: {
           args: [true],
-          msg: 'you must enter a first name!'
+          msg: 'First Name cannot be empty'
         }
       }
     },
@@ -26,7 +26,7 @@ const User = conn.define(
       validate: {
         notEmpty: {
           args: [true],
-          msg: 'you must enter a last name!'
+          msg: 'Last Name cannot be empty'
         }
       }
     },
@@ -37,11 +37,11 @@ const User = conn.define(
       validate: {
         isEmail: {
           args: [true],
-          msg: 'you must enter a valid email'
+          msg: 'E-mail is invalid'
         },
         notEmpty: {
           args: [true],
-          msg: 'you must enter an email!'
+          msg: 'E-mail cannot be empty'
         }
       }
     },
@@ -51,7 +51,7 @@ const User = conn.define(
       validate: {
         notEmpty: {
           args: [true],
-          msg: 'must enter a password'
+          msg: 'Password cannot be empty'
         }
       }
     },

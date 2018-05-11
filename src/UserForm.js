@@ -38,7 +38,7 @@ class UserForm extends Component {
     let { user } = this.state;
     inputEdited[name] = true;
     user = Object.assign({}, user, { [name]: value });
-    this.setState({ user });
+    this.setState({ user, errors: '' });
   }
 
   onSubmit(id) {
@@ -47,6 +47,7 @@ class UserForm extends Component {
       .catch(err => {
         this.setErrors(err.response.data, user);
       });
+    this.setState({ inputEdited: {} });
   }
 
   setErrors(err, user) {
@@ -55,7 +56,7 @@ class UserForm extends Component {
   }
 
   clearErrors() {
-    this.setState({ errors: '' });
+    this.setState({ errors: '', inputEdited: {} });
   }
 
   render() {
@@ -64,16 +65,18 @@ class UserForm extends Component {
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
     const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
-    const emptyFields = Object.keys(fields).filter(field => this.state.user[field] && !this.state.user[field].length && inputEdited[field]);
+    const emptyFields = Object.keys(fields).filter(field => !this.state.user[field] && inputEdited[field]);
     return (
       <div>
-        {errors && (
-          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
+        {
+          !!errors &&
+          <Alert color="info" toggle={this.clearErrors}>
             {errors}
           </Alert>
-        )}
+        }
         {
-          !!emptyFields.length && <Alert color="info">
+          !!emptyFields.length &&
+          <Alert color="info" toggle={this.clearErrors}>
             {`${emptyFields.map(field => fields[field]).join(', ')} cannot be empty`}
           </Alert>
         }
