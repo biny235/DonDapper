@@ -52,23 +52,27 @@ class Checkout extends Component {
       <div className='checkout'>
         <div>
           <h1>Review Order</h1>
-          <Order cart={cart} cartLineItems={lineItems} />
+          <Order order={cart} lineItems={lineItems} />
         </div>
-        <div>
-          <AddressDropdown />
+        <div className='checkout-right'>
+          <h3>Shipping To:</h3>
           {!cart.addressId ? <Autocomplete cart={cart} /> : (
             editing ?
               <AddressForm cart={cart} onEdit={onEdit} />
               :
               <div>
-                <div>{address.fullAddress}</div>
-                <button onClick={onEdit}>Edit</button>
+                <div>
+                  <div>{address.fullAddress}</div>
+                  <button className="btn btn-warning" onClick={onEdit}>Edit</button>
+                </div>
               </div>
           )}
+          <AddressDropdown />
           <StripeCheckout
-            name='Payment'
-            description='Please review your order'
-            panelLabel='Place Order - '
+            className="btn btn-success"
+            name="Payment"
+            description="Please review your order"
+            panelLabel="Place Order - "
             amount={total * 100}
             currency='USD'
             email={user.email}
