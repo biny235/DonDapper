@@ -62,18 +62,6 @@ class UserForm extends Component {
     const emptyFields = Object.keys(fields).filter(field => inputEdited[field] && !this.state.user[field].length);
     return (
       <div>
-        {
-          !!errors &&
-          <Alert color="info">
-            {errors}
-          </Alert>
-        }
-        {
-          !!emptyFields.length &&
-          <Alert color="info">
-            {`${emptyFields.map(field => fields[field]).join(', ')} cannot be empty`}
-          </Alert>
-        }
         <div>
           <input
             className="form-control"
@@ -105,6 +93,18 @@ class UserForm extends Component {
             onChange={onChange}
           /> :
             null
+          }
+          {
+            !!errors &&
+            <Alert color="info">
+              {errors}
+            </Alert>
+          }
+          {
+            !!emptyFields.length &&
+            <Alert color="info">
+              {`${emptyFields.map(field => fields[field]).join(', ')} cannot be empty`}
+            </Alert>
           }
           <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={true && !emptyFields.length}>
             {user.id ? 'Update' : 'Create'}
