@@ -9,6 +9,6 @@ router.use('/addresses', require('./addresses'));
 // router.use('/email', require('./email'));
 router.use('/google', require('./google'));
 router.use('/stripe', require('./stripe'));
-router.use('/auth', require('./auth.js'))
+// router.use('/auth', require('./auth.js'))
 
 module.exports = router;
