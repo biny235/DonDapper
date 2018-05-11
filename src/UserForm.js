@@ -60,11 +60,11 @@ class UserForm extends Component {
 
   render() {
     const { user } = this.props;
-    const { errors } = this.state;
+    const { inputEdited, errors } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
     const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
-    const emptyFields = Object.keys(fields).filter(field => !this.state.user[field].length);
+    const emptyFields = Object.keys(fields).filter(field => this.state.user[field] && !this.state.user[field].length && inputEdited[field]);
     return (
       <div>
         {errors && (
@@ -74,7 +74,7 @@ class UserForm extends Component {
         )}
         {
           !!emptyFields.length && <Alert color="info">
-            {`${emptyFields.map(field => fields[field]).join(', ')} cannot be empty.`}
+            {`${emptyFields.map(field => fields[field]).join(', ')} cannot be empty`}
           </Alert>
         }
         <div>

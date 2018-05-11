@@ -33,7 +33,7 @@ const ADD_ORDER = 'ADD_ORDER';
 const GET_ORDERS = 'GET_ORDERS';
 
 // LINE ITEMS
-const GET_LINE_ITEMS = 'GET_LINE_ITEMS';
+const GET_CART_LINE_ITEMS = 'GET_CART_LINE_ITEMS';
 const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
 const DELETE_LINE_ITEM = 'DELETE_LINE_ITEM';
@@ -98,7 +98,7 @@ const login = user => {
         window.localStorage.setItem('token', token);
         dispatch(authenticateUser);
       });
-    }
+  }
 };
 
 const logout = (path, history, dispatch) => {
@@ -159,7 +159,7 @@ const fetchCart = userId => {
       .then(res => res.data)
       .then(cart => {
         dispatch({ type: GET_CART, cart });
-        dispatch({ type: GET_LINE_ITEMS, lineItems: cart.lineItems || [] });
+        dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: cart.lineItems || [] });
       })
       .catch(err => console.log(err));
   };
@@ -234,11 +234,7 @@ const editLineItem = (lineItem, lineItemId, history) => {
       .put(`/api/lineItems/${lineItemId}`, lineItem)
       .then(res => res.data)
       .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
-      .then(() => {
-        if (history) {
-          history.push(`/cart`);
-        }
-      })
+      .then(() => history && history.push(`/cart`))
       .catch(err => console.log(err));
   };
 };
@@ -334,8 +330,8 @@ const ordersReducer = (state = [], action) => {
 
 const lineItemsReducer = (state = [], action) => {
   switch (action.type) {
-    case GET_LINE_ITEMS:
-      return action.lineItems;
+    case GET_CART_LINE_ITEMS:
+      return action.cartLineItems;
     case CREATE_LINE_ITEM:
       return [...state, action.lineItem];
     case UPDATE_LINE_ITEM:
