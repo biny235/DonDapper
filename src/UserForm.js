@@ -13,7 +13,6 @@ class UserForm extends Component {
         email: props.user.email || '',
         password: props.user.password || '',
       },
-      edited: {},
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -33,9 +32,7 @@ class UserForm extends Component {
 
   onChange(ev) {
     const { name, value } = ev.target;
-    const { edited } = this.state;
     let { user } = this.state;
-    edited[name] = true;
     user = Object.assign({}, user, { [name]: value });
     this.setState({ user, errors: '' });
   }
@@ -46,7 +43,6 @@ class UserForm extends Component {
       .catch(err => {
         this.setErrors(err.response.data);
       });
-    this.setState({ edited: {} });
   }
 
   setErrors(errors) {
@@ -55,12 +51,11 @@ class UserForm extends Component {
 
   render() {
     const { user } = this.props;
-    const { edited, errors } = this.state;
+    const { errors } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
     const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
     const empty = Object.keys(fields).filter(field => !this.state.user[field]);
-    const dirtyEmpty = empty.filter(field => edited[field]);
     return (
       <div>
         <div>
@@ -100,13 +95,7 @@ class UserForm extends Component {
             <Alert color="info">
               {errors}
             </Alert>
-          }
-          {
-            !!dirtyEmpty.length &&
-            <Alert color="info">
-              {`${dirtyEmpty.map(field => fields[field]).join(', ')} cannot be empty`}
-            </Alert>
-          }
+          }Î
           <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={empty.length}>
             {user.id ? 'Update' : 'Create'}
           </button>
