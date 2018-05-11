@@ -60,7 +60,10 @@ const User = conn.define(
     admin: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
-    }
+    },
+    githubId:{
+      type: Sequelize.STRING
+    },
   },
   {
     getterMethods: {
@@ -87,6 +90,10 @@ User.findOrCreateCart = function (userId) {
     include: [{ model: conn.models.lineItem }]
   });
 };
+
+User.prototype.generateToken = function(){
+  return jwt.encode({ id: this.id }, secret);
+}
 
 User.authenticate = function (user) {
   console.log(conn)
