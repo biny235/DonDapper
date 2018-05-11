@@ -18,7 +18,6 @@ class UserForm extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.setErrors = this.setErrors.bind(this);
-    this.clearErrors = this.clearErrors.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -54,10 +53,6 @@ class UserForm extends Component {
     this.setState({ errors });
   }
 
-  clearErrors() {
-    this.setState({ errors: '', inputEdited: {} });
-  }
-
   render() {
     const { user } = this.props;
     const { inputEdited, errors } = this.state;
@@ -69,13 +64,13 @@ class UserForm extends Component {
       <div>
         {
           !!errors &&
-          <Alert color="info" toggle={this.clearErrors}>
+          <Alert color="info">
             {errors}
           </Alert>
         }
         {
           !!emptyFields.length &&
-          <Alert color="info" toggle={this.clearErrors}>
+          <Alert color="info">
             {`${emptyFields.map(field => fields[field]).join(', ')} cannot be empty`}
           </Alert>
         }
@@ -111,7 +106,7 @@ class UserForm extends Component {
           /> :
             null
           }
-          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={emptyFields.length}>
+          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={true && !emptyFields.length}>
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>

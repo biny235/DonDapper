@@ -32,7 +32,10 @@ const User = conn.define(
     },
     email: {
       type: Sequelize.STRING,
-      unique: true,
+      unique: {
+        args: [true],
+        msg: 'E-mail is taken'
+      },
       allowNull: false,
       validate: {
         isEmail: {

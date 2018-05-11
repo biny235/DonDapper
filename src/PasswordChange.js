@@ -3,11 +3,6 @@ import { Alert } from 'reactstrap';
 import { createOrUpdateUser } from './store';
 import { connect } from 'react-redux';
 
-let setErrors = function (err, user) {
-  if (!user.id) this.setState({ user: {} });
-  this.setState({ errors: err });
-};
-
 class UserForm extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +15,7 @@ class UserForm extends Component {
     this.onChange = this.onChange.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    setErrors = setErrors.bind(this);
+    this.setErrors = this.setErrors.bind(this);
   }
 
   onChange(ev) {
@@ -34,7 +29,11 @@ class UserForm extends Component {
     const { newPassword } = this.state;
     const user = Object.assign({}, { id }, { password: newPassword });
     this.props.createOrUpdateUser(user);
-    this.props.onUpdate()
+    this.props.onUpdate();
+  }
+
+  setErrors(errors) {
+    this.setState({ errors });
   }
 
   clearErrors() {
