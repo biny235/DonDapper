@@ -3,7 +3,7 @@ import { Alert } from 'reactstrap';
 import { createOrUpdateProduct } from './store';
 import { connect } from 'react-redux';
 import { RIEInput, RIETextArea, RIENumber } from 'riek';
-import Categories from './Categories';
+import Category from './Category';
 
 let setErrors = function (err) {
   this.setState({ errors: err });
@@ -19,7 +19,8 @@ class ProductForm extends Component {
         imageUrl: props.imageUrl || '',
         description: props.description || '',
         price: props.price || null,
-        quantity: props.quantity || null
+        quantity: props.quantity || null,
+        categoryId: props.categoryId || null
       },
       errors: ''
     };
@@ -27,17 +28,29 @@ class ProductForm extends Component {
     this.onClick = this.onClick.bind(this);
     this.setErrors = setErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
+    this.categoryAssign = this.categoryAssign.bind(this);
   }
+
   onChange(value) {
     let { product } = this.state;
     product = Object.assign({}, product, value);
     this.setState({ product });
   }
+
+  categoryAssign(ev) {
+    let value = ev.target.value;
+    let key = ev.target.name;
+    let { product } = this.state;
+    product = Object.assign({}, product, { [key]: value });
+    this.setState({ product });
+  }
+
   onClick() {
     const { product } = this.state;
     this.props.createOrUpdateProduct(product);
     this.props.hide();
   }
+
   clearErrors() {
     this.setState({ errors: '' });
   }
@@ -50,10 +63,19 @@ class ProductForm extends Component {
         imageUrl,
         description,
         price,
-        quantity
+        quantity,
+        categoryId
       } = nextProps.product;
       this.setState({
-        product: { id, name, imageUrl, description, price, quantity }
+        product: {
+          id,
+          name,
+          imageUrl,
+          description,
+          price,
+          quantity,
+          categoryId
+        }
       });
     } else {
       this.setState({
@@ -63,11 +85,13 @@ class ProductForm extends Component {
           imageUrl: '',
           description: '',
           price: null,
-          quantity: null
+          quantity: null,
+          CategoryId: null
         }
       });
     }
   }
+
   componentDidMount() {
     if (this.props.product) {
       const {
@@ -76,10 +100,19 @@ class ProductForm extends Component {
         imageUrl,
         description,
         price,
-        quantity
+        quantity,
+        categoryId
       } = this.props.product;
       this.setState({
-        product: { id, name, imageUrl, description, price, quantity }
+        product: {
+          id,
+          name,
+          imageUrl,
+          description,
+          price,
+          quantity,
+          categoryId
+        }
       });
     } else {
       this.setState({
@@ -89,11 +122,13 @@ class ProductForm extends Component {
           imageUrl: '',
           description: '',
           price: null,
-          quantity: null
+          quantity: null,
+          CategoryId: null
         }
       });
     }
   }
+
   render() {
     const {
       name,
@@ -101,10 +136,11 @@ class ProductForm extends Component {
       description,
       price,
       quantity,
-      errors
+      errors,
+      categoryId
     } = this.state.product;
     const { onChange, onClick } = this;
-    const { createOrUpdateProduct, hide, categories } = this.props;
+    const { createOrUpdateProduct, hide, categories, product } = this.props;
     return (
       <div>
         {errors ? (
@@ -173,6 +209,18 @@ class ProductForm extends Component {
               propName="quantity"
             />
           </div>
+          <select
+            name="categoryId"
+            value={categoryId || '-1'}
+            onChange={this.categoryAssign}
+          >
+            {categories &&
+              categories.map(category => (
+                <option key={category.id} name="categoryId" value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+          </select>
         </form>
         <button type="submit" onClick={onClick}>
           Save
@@ -181,11 +229,12 @@ class ProductForm extends Component {
     );
   }
 }
+
 const mapStateToProps = ({ products, categories }, { productId }) => {
   let product = products && products.find(product => product.id === productId);
   return {
     product,
-    Categories
+    categories
   };
 };
 
