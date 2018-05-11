@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import AddToCart from './AddToCart';
-import { Container, Row, Col } from 'reactstrap';
+import { Container } from 'reactstrap';
 
 const Product = ({ product, history }) => {
   return product ? (

@@ -1,5 +1,7 @@
 const conn = require('./conn');
 const { Sequelize } = conn;
+const jwt = require('jwt-simple');
+const secret = process.env.SECRET;
 
 const User = conn.define(
   'user',
@@ -16,7 +18,7 @@ const User = conn.define(
       validate: {
         notEmpty: {
           args: [true],
-          msg: 'you must enter a first name!'
+          msg: 'First Name cannot be empty'
         }
       }
     },
@@ -26,22 +28,25 @@ const User = conn.define(
       validate: {
         notEmpty: {
           args: [true],
-          msg: 'you must enter a last name!'
+          msg: 'Last Name cannot be empty'
         }
       }
     },
     email: {
       type: Sequelize.STRING,
-      unique: true,
+      unique: {
+        args: [true],
+        msg: 'E-mail is taken'
+      },
       allowNull: false,
       validate: {
         isEmail: {
           args: [true],
-          msg: 'you must enter a valid email'
+          msg: 'E-mail is invalid'
         },
         notEmpty: {
           args: [true],
-          msg: 'you must enter an email!'
+          msg: 'E-mail cannot be empty'
         }
       }
     },
@@ -51,14 +56,17 @@ const User = conn.define(
       validate: {
         notEmpty: {
           args: [true],
-          msg: 'must enter a password'
+          msg: 'Password cannot be empty'
         }
       }
     },
     admin: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
-    }
+    },
+    githubId:{
+      type: Sequelize.STRING
+    },
   },
   {
     getterMethods: {
@@ -75,5 +83,49 @@ const User = conn.define(
     }
   }
 );
+
+
+
+User.findOrCreateCart = function (userId) {
+  return conn.models.order.findOrCreate({
+    where: { status: 'cart', userId },
+    defaults: { status: 'cart', userId },
+    include: [{ model: conn.models.lineItem }]
+  });
+};
+
+User.prototype.generateToken = function(){
+  return jwt.encode({ id: this.id }, secret);
+}
+
+User.authenticate = function (user) {
+  console.log(conn)
+  const { email, password } = user;
+  return User.find({
+    where: { email, password },
+    attributes: ['id', 'firstName', 'lastName', 'email']
+  }).then(user => {
+    if (!user) {
+      throw { status: 401 };
+    }
+    return jwt.encode({ id: user.id }, secret);
+  });
+};
+
+User.exchangeToken = function (token) {
+  try {
+    const id = jwt.decode(token, secret).id;
+    return User.findById(id, {
+      include: [{ model: conn.models.address }]
+    }).then(user => {
+      if (user) {
+        return user;
+      }
+      throw { status: 401 };
+    });
+  } catch (err) {
+    return Promise.reject({ status: 401 });
+  }
+};
 
 module.exports = User;

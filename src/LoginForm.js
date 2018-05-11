@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUser, logout } from './store';
 
-class LoginForm extends React.Component {
-  constructor(props) {
-    super(props);
+class LoginForm extends Component {
+  constructor() {
+    super();
     this.state = {
       email: '',
       password: ''

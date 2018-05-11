@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addLineItem, editLineItem } from './store';
 
-class AddToCart extends React.Component {
+class AddToCart extends Component {
   constructor() {
     super();
     this.state = {

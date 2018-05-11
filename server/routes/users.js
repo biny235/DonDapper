@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/all', auth, (req, res, next) => {
-  if(!req.user || !req.user.admin) throw{ status: 401 }
+  if (!req.user || !req.user.admin) throw { status: 401 }
   User.findAll({
     where: { id: { $ne: req.user.id } },
     order: ['firstName']
@@ -33,18 +33,13 @@ router.put('/:id', auth, (req, res, next) => {
   if (!req.user) next({ status: 401 });
   User.findById(req.params.id)
     .then(user => {
-      console.log(req.body.user.admin, user.admin);
       Object.assign(user, req.body.user);
       return user.save();
     })
     .then(user => {
-      console.log(user.admin);
       res.send(user);
     })
-    .catch(next => {
-      console.log(next);
-      res.send(next);
-    });
+    .catch(next);
 });
 
 router.post('/login', (req, res, next) => {

@@ -3,3 +3,4 @@ dist/bundle.js.map
 dist/bundle.js
 .vscode
 secret.js
+.DS_store

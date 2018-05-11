@@ -1,70 +1,69 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createOrUpdateAddress } from './store';
 import axios from 'axios';
 
-class Autocomplete extends React.Component{
-  constructor(props){
-    super(props)
+class Autocomplete extends Component {
+  constructor() {
+    super();
     this.state = {
       predictions: [],
-    }
+    };
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
   }
 
-  onChange(ev){
-    ev.target.value.length < 4? 
-      this.setState({predictions: []})
+  onChange(ev) {
+    ev.target.value.length < 4 ?
+      this.setState({ predictions: [] })
       :
       ev.target.value.length > 5 ?
         axios.post('/api/google/getpredictions', { input: ev.target.value })
-        .then(res => res.data)
-        .then(predictions => {
-          this.setState({ predictions })
-        })
+          .then(res => res.data)
+          .then(predictions => {
+            this.setState({ predictions })
+          })
         :
         null
   }
 
-  onClick(placeId){
+  onClick(placeId) {
     const { user, cart } = this.props;
     axios.post('/api/google/getplace', { query: placeId })
-      .then(res =>res.data)
+      .then(res => res.data)
       .then((_address) => {
         _address = _address[0]
         // get the formatted address and split it up
-        let address = _address.formatted_address.split(', ')
+        let address = _address.formatted_address.split(', ');
         // split up the state and zip
-        address[2] = address[2].split(' ')
-        const {lat, lng} = _address.geometry.location
+        address[2] = address[2].split(' ');
+        const { lat, lng } = _address.geometry.location;
         address = { lineOne: address[0], city: address[1], state: address[2][0], zipCode: address[2][1], lat, lng }
         address.userId = user && user.id;
-
-        this.props.createOrUpdateAddress(address, cart)
+        this.props.createOrUpdateAddress(address, cart);
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
   }
 
-  render(){
+  render() {
     const { predictions } = this.state;
     const { onChange, onClick } = this;
-    return(
+    return (
       <div>
-        <input onChange={onChange}/>
+        <input onChange={onChange} />
         <img src="/images/powered_by_google_on_white.png" />
         <ul>
-          {predictions.length ? predictions.map(pred =>(
-            <li key={pred.place_id} onClick={()=>onClick(pred.place_id)}>{pred.description}</li>
+          {predictions.length ? predictions.map(pred => (
+            <li key={pred.place_id} onClick={() => onClick(pred.place_id)}>{pred.description}</li>
           )) : null}
-        </ul>  
+        </ul>
       </div>
     )
   }
 }
 
-const mapStateToProps = ({ user, cart})=>{
-  return{
+const mapStateToProps = ({ user, cart }) => {
+  return {
     user,
     cart
   }
