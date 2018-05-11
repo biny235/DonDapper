@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { RIEInput, RIETextArea, RIENumber } from 'riek';
 import Categories from './Categories';
 
-let setErrors = function(err) {
+let setErrors = function (err) {
   this.setState({ errors: err });
 };
 

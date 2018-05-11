@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import { editOrder } from './store';
@@ -8,7 +8,7 @@ import AddressForm from './AddressForm';
 import Autocomplete from './Autocomplete';
 import Order from './Order';
 
-class Checkout extends React.Component {
+class Checkout extends Component {
   constructor() {
     super();
     this.state = {
