@@ -1,5 +1,7 @@
 const conn = require('./conn');
 const { Sequelize } = conn;
+const jwt = require('jwt-simple');
+const secret = process.env.SECRET;
 
 const User = conn.define(
   'user',
@@ -75,5 +77,45 @@ const User = conn.define(
     }
   }
 );
+
+
+
+User.findOrCreateCart = function (userId) {
+  return conn.models.order.findOrCreate({
+    where: { status: 'cart', userId },
+    defaults: { status: 'cart', userId },
+    include: [{ model: conn.models.lineItem }]
+  });
+};
+
+User.authenticate = function (user) {
+  console.log(conn)
+  const { email, password } = user;
+  return User.find({
+    where: { email, password },
+    attributes: ['id', 'firstName', 'lastName', 'email']
+  }).then(user => {
+    if (!user) {
+      throw { status: 401 };
+    }
+    return jwt.encode({ id: user.id }, secret);
+  });
+};
+
+User.exchangeToken = function (token) {
+  try {
+    const id = jwt.decode(token, secret).id;
+    return User.findById(id, {
+      include: [{ model: conn.models.address }]
+    }).then(user => {
+      if (user) {
+        return user;
+      }
+      throw { status: 401 };
+    });
+  } catch (err) {
+    return Promise.reject({ status: 401 });
+  }
+};
 
 module.exports = User;
