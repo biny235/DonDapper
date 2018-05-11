@@ -11,16 +11,14 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/all', (req, res, next) => {
-  User.exchangeToken(req.headers.token)
-    .then(user => {
-      if (!user.admin) next({ status: 401 });
-      User.findAll({
-        where: { id: { $ne: user.id } },
-        order: ['firstName']
-      }).then(users => {
-        res.send(users);
-      });
+router.get('/all', auth, (req, res, next) => {
+  if(!req.user || !req.user.admin) throw{ status: 401 }
+  User.findAll({
+    where: { id: { $ne: req.user.id } },
+    order: ['firstName']
+  })
+    .then(users => {
+      res.send(users);
     })
     .catch(next);
 });

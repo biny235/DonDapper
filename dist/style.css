@@ -254,6 +254,7 @@ input:checked+.slider:before {
 
 .container{
     min-height: 90%;
+    padding-bottom: 35px;
 }
 .footer{
     background-color: #2196F3;
@@ -268,7 +269,7 @@ input:checked+.slider:before {
     background-attachment: fixed;
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
-    font-size: 12rem;
+    font-size: 12vw;
     font-weight: bold;
     text-align: center;
 }
@@ -278,8 +279,13 @@ input:checked+.slider:before {
     background-attachment: fixed;
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
-    font-size: 4rem;
+    font-size: 6vw;
     font-weight: bold;
     text-align: center;
     
+}
+
+.checkout{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
 }
