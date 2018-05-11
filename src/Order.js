@@ -22,9 +22,9 @@ const Order = ({ order, lineItems, total }) => {
   );
 };
 
-const mapStateToProps = ({ user, orders, products }, { id, cart, cartLineItems }) => {
-  const order = cart || orders && id && orders.find(order => order.id === id);
-  const lineItems = cartLineItems || order && order.lineItems;
+const mapStateToProps = ({ user, orders, products }, { id, order, lineItems }) => {
+  order = order || orders && id && orders.find(order => order.id === id);
+  lineItems = lineItems || order && order.lineItems;
   const total =
     lineItems &&
     lineItems.reduce((amounts, line) => {

@@ -52,7 +52,7 @@ class Checkout extends Component {
       <div className='checkout'>
         <div>
           <h1>Review Order</h1>
-          <Order cart={cart} cartLineItems={lineItems} />
+          <Order order={cart} lineItems={lineItems} />
         </div>
         <div className='checkout-right'>
           <h3>Shipping To:</h3>
@@ -69,16 +69,10 @@ class Checkout extends Component {
           )}
           <AddressDropdown />
           <StripeCheckout
-<<<<<<< HEAD
             className="btn btn-success"
             name="Payment"
             description="Please review your order"
             panelLabel="Place Order - "
-=======
-            name='Payment'
-            description='Please review your order'
-            panelLabel='Place Order - '
->>>>>>> master
             amount={total * 100}
             currency='USD'
             email={user.email}
