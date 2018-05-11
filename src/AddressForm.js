@@ -46,8 +46,9 @@ class AddressForm extends Component {
   onChange(ev) {
     const { name, value } = ev.target;
     const { inputEdited } = this.state;
-    const address = Object.assign({}, this.state.address, { [name]: value });
+    let { address } = this.state;
     inputEdited[name] = true;
+    address = Object.assign({}, address, { [name]: value });
     this.setState({ address });
   }
 
@@ -82,7 +83,7 @@ class AddressForm extends Component {
         )}
         <form>
           <input onChange={onChange} name='lineOne' value={lineOne || ''} placeholder="Street Name" />
-          <input onChange={onChange} name='lineTwo' value={lineTwo || ''} placeholder="Apt, Suite, Unit, etc." />
+          <input onChange={onChange} name='lineTwo' value={lineTwo || ''} placeholder="Apt., Suite, Unit, etc." />
           <input onChange={onChange} name='city' value={city || ''} placeholder="City" />
           <input onChange={onChange} name='state' value={state.toUpperCase() || ''} placeholder="State" maxLength="2" />
           <input onChange={onChange} name='zipCode' value={zipCode || ''} placeholder="Zip Code" maxLength="5" />

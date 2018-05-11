@@ -75,7 +75,9 @@ class Checkout extends React.Component {
             disabled={!cart.addressId}
             token={onSubmit}
             stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
-          />
+            >
+            <button type="submit" className="btn btn-success">Check Out</button>
+          </StripeCheckout>
         </div>
       </div>
     );
