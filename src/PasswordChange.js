@@ -3,57 +3,58 @@ import { Alert } from 'reactstrap';
 import { createOrUpdateUser } from './store';
 import { connect } from 'react-redux';
 
-let setErrors = function (err, user) {
-  if (!user.id) this.setState({ user: {} });
-  this.setState({ errors: err });
-};
-
-class UserForm extends Component {
+class PasswordChange extends Component {
   constructor(props) {
     super(props);
     this.state = {
       oldPassword: '',
       newPassword: '',
-      inputEdited: {},
-      errors: ''
+      edited: {},
+      errors: {}
+    };
+    this.validators = {
+      oldPassword: value => {
+        if (value !== props.user.password) {
+          return `Old Password is incorrect`;
+        }
+      }
     };
     this.onChange = this.onChange.bind(this);
-    this.clearErrors = this.clearErrors.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    setErrors = setErrors.bind(this);
   }
 
   onChange(ev) {
     const { name, value } = ev.target;
-    const { inputEdited } = this.state;
-    inputEdited[name] = true;
-    this.setState({ [name]: value, inputEdited });
+    const { edited } = this.state;
+    edited[name] = true;
+    this.setState({ [name]: value, edited, errors: {} });
   }
 
   onSubmit(id) {
     const { newPassword } = this.state;
     const user = Object.assign({}, { id }, { password: newPassword });
-    this.props.createOrUpdateUser(user);
-    this.props.onUpdate()
-  }
-
-  clearErrors() {
-    this.setState({ errors: '' });
+    const errors = Object.keys(this.validators).reduce((map, field) => {
+      const validator = this.validators[field];
+      const value = this.state[field];
+      const error = validator(value);
+      if (error) {
+        map[field] = error;
+      }
+      return map;
+    }, {});
+    if (!errors.oldPassword) {
+      this.props.createOrUpdateUser(user);
+      this.props.onUpdate();
+    }
+    this.setState({ errors, edited: {}, newPassword: '' });
   }
 
   render() {
     const { user } = this.props;
-    const { errors } = this.state;
-    const { oldPassword, newPassword, inputEdited } = this.state;
+    const { oldPassword, newPassword, errors } = this.state;
     const { onChange, onSubmit } = this;
-    const passwordCorrect = oldPassword === user.password;
     return (
       <div>
-        {errors && (
-          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
-            {errors}
-          </Alert>
-        )}
         <div>
           <input
             className="form-control"
@@ -61,6 +62,7 @@ class UserForm extends Component {
             name="oldPassword"
             placeholder="Old Password"
             onChange={onChange}
+            value={oldPassword}
           />
           <input
             className="form-control"
@@ -68,12 +70,14 @@ class UserForm extends Component {
             name="newPassword"
             placeholder="New Password"
             onChange={onChange}
+            value={newPassword}
           />
-          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={!passwordCorrect || !newPassword.length}>
+          {errors.oldPassword && <Alert color="info">
+            {errors.oldPassword}
+          </Alert>}
+          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={!oldPassword.length || !newPassword.length}>
             Change
           </button>
-          {!passwordCorrect && inputEdited.oldPassword && <Alert color="info">Old Password is incorrect.</Alert>}
-          {passwordCorrect && inputEdited.newPassword && !newPassword.length && <Alert color="info">New Password must be valid.</Alert>}
         </div>
       </div>
     );
@@ -88,11 +92,9 @@ const mapStateToProps = ({ user }) => {
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
     createOrUpdateUser: user => {
-      dispatch(createOrUpdateUser(user, history)).catch(err => {
-        setErrors(err.response.data, user);
-      });
+      dispatch(createOrUpdateUser(user, history));
     }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordChange);

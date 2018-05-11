@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import LoginModal from './LoginModal';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 
-export default class AccountDropdown extends React.Component {
+export default class AccountDropdown extends Component {
   constructor() {
     super();
     this.toggle = this.toggle.bind(this);

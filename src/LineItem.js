@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { deleteLineItem, editLineItem } from './store';
 import { connect } from 'react-redux';
 
-//
-
-class LineItem extends React.Component {
+class LineItem extends Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
@@ -37,18 +35,18 @@ class LineItem extends React.Component {
         {!cart ? (
           <div>{line.quantity}</div>
         ) : (
-          <form>
-            <input
-              className="order-qty"
-              onChange={ev => onChange(ev, line.id)}
-              name="quantity"
-              value={line.quantity}
-              type="number"
-              step="1"
-              min="1"
-            />
-          </form>
-        )}
+            <form>
+              <input
+                className="order-qty"
+                onChange={ev => onChange(ev, line.id)}
+                name="quantity"
+                value={line.quantity}
+                type="number"
+                step="1"
+                min="1"
+              />
+            </form>
+          )}
         <div>$ {line.quantity * product.price}</div>
         {cart && (
           <button
@@ -64,7 +62,7 @@ class LineItem extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, { history }) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     deleteLineItem: id => dispatch(deleteLineItem(id)),
     editLineItem: (lineItem, id) => dispatch(editLineItem(lineItem, id))
