@@ -19,6 +19,7 @@ class UserForm extends Component {
         email: props.user.email || '',
         password: props.user.password || '',
       },
+      inputEdited: {},
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -39,10 +40,13 @@ class UserForm extends Component {
 
   onChange(ev) {
     const { name, value } = ev.target;
+    const { inputEdited } = this.state;
     let { user } = this.state;
+    inputEdited[name] = true;
     user = Object.assign({}, user, { [name]: value });
     this.setState({ user });
   }
+
   onSubmit(id) {
     const user = Object.assign({}, { id }, this.state.user);
     this.props.createOrUpdateUser(user);
@@ -57,8 +61,8 @@ class UserForm extends Component {
     const { errors } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
-    const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail' };
-    const inputEmpty = Object.keys(fields).some(field => !this.state.user[field].length);
+    const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
+    const emptyFields = Object.keys(fields).filter(field => !this.state.user[field].length);
     return (
       <div>
         {errors && (
@@ -95,20 +99,17 @@ class UserForm extends Component {
             placeholder="Password"
             value={password || ''}
             onChange={onChange}
-          /> : 
-          null
+          /> :
+            null
           }
-          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={inputEmpty}>
+          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={emptyFields.length}>
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>
         {
-          Object.keys(fields).map(field => {
-            return user.id && !this.state.user[field].length &&
-              <Alert key={field} color="info">
-                {`${fields[field]} cannot be empty.`}
-              </Alert>;
-          })
+          !!emptyFields.length && <Alert color="info">
+            {`${emptyFields.map(field => fields[field]).join(', ')} cannot be empty.`}
+          </Alert>
         }
       </div>
     );
