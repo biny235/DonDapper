@@ -81,16 +81,16 @@ class AddressForm extends Component {
           </Alert>
         )}
         <form>
-          <input onChange={onChange} name='lineOne' value={lineOne || ''} placeholder="Street Name" />
-          <input onChange={onChange} name='lineTwo' value={lineTwo || ''} placeholder="Apt, Suite, Unit, etc." />
-          <input onChange={onChange} name='city' value={city || ''} placeholder="City" />
-          <input onChange={onChange} name='state' value={state.toUpperCase() || ''} placeholder="State" maxLength="2" />
-          <input onChange={onChange} name='zipCode' value={zipCode || ''} placeholder="Zip Code" maxLength="5" />
+          <input className="form-control" onChange={onChange} name='lineOne' value={lineOne || ''} placeholder="Street Name" />
+          <input className="form-control" onChange={onChange} name='lineTwo' value={lineTwo || ''} placeholder="Apt, Suite, Unit, etc." />
+          <input className="form-control" onChange={onChange} name='city' value={city || ''} placeholder="City" />
+          <input className="form-control" onChange={onChange} name='state' value={state.toUpperCase() || ''} placeholder="State" maxLength="2" />
+          <input className="form-control" onChange={onChange} name='zipCode' value={zipCode || ''} placeholder="Zip Code" maxLength="5" />
         </form>
-        <button type="submit" onClick={onClick} disabled={!edited}>
+        <button className="btn btn-success" type="submit" onClick={onClick} disabled={!edited}>
           Save Address
         </button>
-        <button type="submit" onClick={onCancel}>
+        <button className="btn btn-danger" type="submit" onClick={onCancel}>
           Cancel
         </button>
       </div>
