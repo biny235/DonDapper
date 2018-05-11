@@ -129,7 +129,7 @@ class Dashboard extends Component {
         })}
         <br />
         {showForm && <strong onClick={hide}>hide</strong>}
-        {showForm && <ProductForm productId={productId} />}
+        {showForm && <ProductForm productId={productId} hide={hide} />}
         <br />
         <div>
           <button onClick={() => onClick(null)}>Add New Product</button>

@@ -46,8 +46,9 @@ class AddressForm extends Component {
   onChange(ev) {
     const { name, value } = ev.target;
     const { inputEdited } = this.state;
-    const address = Object.assign({}, this.state.address, { [name]: value });
+    let { address } = this.state;
     inputEdited[name] = true;
+    address = Object.assign({}, address, { [name]: value });
     this.setState({ address });
   }
 
