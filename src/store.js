@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
 
-//Setting axios headers
+// Setting axios headers
 let token = window.localStorage.getItem('token');
 axios.defaults.headers.common.token = token;
 
@@ -22,8 +22,8 @@ const GET_CATEGORIES = 'GET_CATEGORIES';
 
 // USER
 const GET_USER = 'GET_USER';
-// USERS
 const GET_USERS = 'GET_USERS';
+
 // CART
 const GET_CART = 'GET_CART';
 const EDIT_ORDER = 'EDIT_ORDER';
@@ -81,7 +81,7 @@ const fetchCategories = () => {
   };
 };
 
-// USER
+// USERS
 const fetchUser = user => {
   return dispatch => {
     dispatch(login(user));
@@ -98,7 +98,7 @@ const login = user => {
         window.localStorage.setItem('token', token);
         dispatch(authenticateUser);
       });
-  }
+  };
 };
 
 const logout = (path, history, dispatch) => {
@@ -132,14 +132,13 @@ const createOrUpdateUser = (user, history, admin) => {
       .then(res => res.data)
       .then(user => {
         admin ? dispatch(showUsers()) : dispatch(login(user, dispatch));
-
         if (history) {
           history.push(`/user`);
         }
       });
   };
 };
-//Users
+
 const showUsers = () => {
   return dispatch => {
     return axios
@@ -202,7 +201,7 @@ const editOrder = (order, history) => {
   };
 };
 
-//ADDRESS
+// ADDRESS
 const createOrUpdateAddress = (address, cart) => {
   return dispatch => {
     const { id } = address;

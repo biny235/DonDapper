@@ -13,7 +13,8 @@ class UserForm extends Component {
         email: props.user.email || '',
         password: props.user.password || '',
       },
-      errors: ''
+      edited: false,
+      error: ''
     };
     this.onChange = this.onChange.bind(this);
     this.setErrors = this.setErrors.bind(this);
@@ -34,7 +35,7 @@ class UserForm extends Component {
     const { name, value } = ev.target;
     let { user } = this.state;
     user = Object.assign({}, user, { [name]: value });
-    this.setState({ user, errors: '' });
+    this.setState({ user, error: '', edited: true });
   }
 
   onSubmit(id) {
@@ -43,15 +44,16 @@ class UserForm extends Component {
       .catch(err => {
         this.setErrors(err.response.data);
       });
+    this.setState({ user, error: '', edited: false });
   }
 
-  setErrors(errors) {
-    this.setState({ errors });
+  setErrors(error) {
+    this.setState({ error });
   }
 
   render() {
     const { user } = this.props;
-    const { errors } = this.state;
+    const { error, edited } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
     const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
@@ -80,23 +82,18 @@ class UserForm extends Component {
             value={email || ''}
             onChange={onChange}
           />
-          {!user.id ? <input
-            className="form-control"
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={password || ''}
-            onChange={onChange}
-          /> :
-            null
-          }
           {
-            !!errors &&
-            <Alert color="info">
-              {errors}
-            </Alert>
-          }Î
-          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={empty.length}>
+            !user.id && <input
+              className="form-control"
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password || ''}
+              onChange={onChange}
+            />
+          }
+          {!!error && <Alert color="info">{error}</Alert>}
+          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={!edited || empty.length}>
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>
