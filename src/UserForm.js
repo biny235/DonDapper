@@ -45,14 +45,13 @@ class UserForm extends Component {
     const user = Object.assign({}, { id }, this.state.user);
     this.props.createOrUpdateUser(user)
       .catch(err => {
-        this.setErrors(err.response.data, user);
+        this.setErrors(err.response.data);
       });
     this.setState({ inputEdited: {} });
   }
 
-  setErrors(err, user) {
-    if (!user.id) this.setState({ user: {} });
-    this.setState({ errors: err });
+  setErrors(errors) {
+    this.setState({ errors });
   }
 
   clearErrors() {
@@ -65,7 +64,7 @@ class UserForm extends Component {
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
     const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
-    const emptyFields = Object.keys(fields).filter(field => !this.state.user[field] && inputEdited[field]);
+    const emptyFields = Object.keys(fields).filter(field => inputEdited[field] && !this.state.user[field].length);
     return (
       <div>
         {
