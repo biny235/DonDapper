@@ -6,7 +6,7 @@ const auth = (req, res, next) => {
     next();
   }
   User.exchangeToken(req.headers.token).then(user => {
-    req.user = user;
+    req.user = user.dataValues;
     next();
   });
 };
