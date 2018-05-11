@@ -13,7 +13,7 @@ class UserForm extends Component {
         email: props.user.email || '',
         password: props.user.password || '',
       },
-      inputEdited: {},
+      edited: {},
       errors: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -33,9 +33,9 @@ class UserForm extends Component {
 
   onChange(ev) {
     const { name, value } = ev.target;
-    const { inputEdited } = this.state;
+    const { edited } = this.state;
     let { user } = this.state;
-    inputEdited[name] = true;
+    edited[name] = true;
     user = Object.assign({}, user, { [name]: value });
     this.setState({ user, errors: '' });
   }
@@ -46,7 +46,7 @@ class UserForm extends Component {
       .catch(err => {
         this.setErrors(err.response.data);
       });
-    this.setState({ inputEdited: {} });
+    this.setState({ edited: {} });
   }
 
   setErrors(errors) {
@@ -55,11 +55,12 @@ class UserForm extends Component {
 
   render() {
     const { user } = this.props;
-    const { inputEdited, errors } = this.state;
+    const { edited, errors } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
     const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
-    const emptyFields = Object.keys(fields).filter(field => inputEdited[field] && !this.state.user[field].length);
+    const empty = Object.keys(fields).filter(field => !this.state.user[field]);
+    const dirtyEmpty = empty.filter(field => edited[field]);
     return (
       <div>
         <div>
@@ -101,12 +102,12 @@ class UserForm extends Component {
             </Alert>
           }
           {
-            !!emptyFields.length &&
+            !!dirtyEmpty.length &&
             <Alert color="info">
-              {`${emptyFields.map(field => fields[field]).join(', ')} cannot be empty`}
+              {`${dirtyEmpty.map(field => fields[field]).join(', ')} cannot be empty`}
             </Alert>
           }
-          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={true && !emptyFields.length}>
+          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={empty.length}>
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>
