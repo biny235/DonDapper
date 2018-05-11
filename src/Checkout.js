@@ -6,6 +6,7 @@ import axios from 'axios';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import Autocomplete from './Autocomplete';
+import Order from './Order';
 
 class Checkout extends React.Component {
   constructor() {
@@ -46,27 +47,24 @@ class Checkout extends React.Component {
     const { onSubmit, onEdit } = this;
     const { user, cart, address, total } = this.props;
     const { editing } = this.state;
+    if(!user.id) return(null)
     return (
-      <div>
-        <h1>Review Order</h1>
-        {!user.id ? (
-          <div>Please sign in.</div>
-        ) : (
-            <div>
-              ~ ORDER INFO GOES HERE ~
-              <AddressDropdown />
-            </div>
+      <div className="checkout">
+        <div>
+          <h1>Review Order</h1>
+          <Order order={cart}/>
+        </div>
+        <div>
+          <AddressDropdown />
+          {!cart.addressId ? <Autocomplete cart={cart} /> : (
+            editing ?
+              <AddressForm cart={cart} onEdit={onEdit} />
+              :
+              <div>
+                <div>{address.fullAddress}</div>
+                <button onClick={onEdit}>Edit</button>
+              </div>
           )}
-        {!cart.addressId ? <Autocomplete cart={cart} /> : (
-          editing ?
-            <AddressForm cart={cart} onEdit={onEdit} />
-            :
-            <div>
-              <div>{address.fullAddress}</div>
-              <button onClick={onEdit}>Edit</button>
-            </div>
-        )}
-        {user.id &&
           <StripeCheckout
             name="Payment"
             description="Please review your order"
@@ -77,7 +75,10 @@ class Checkout extends React.Component {
             disabled={!cart.addressId}
             token={onSubmit}
             stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
-          />}
+            >
+            <button type="submit" className="btn btn-success">Check Out</button>
+          </StripeCheckout>
+        </div>
       </div>
     );
   }

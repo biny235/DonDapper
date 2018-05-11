@@ -3,6 +3,7 @@ import { Alert } from 'reactstrap';
 import { createOrUpdateProduct } from './store';
 import { connect } from 'react-redux';
 import { RIEInput, RIETextArea, RIENumber } from 'riek';
+import Categories from './Categories';
 
 let setErrors = function(err) {
   this.setState({ errors: err });
@@ -35,6 +36,7 @@ class ProductForm extends Component {
   onClick() {
     const { product } = this.state;
     this.props.createOrUpdateProduct(product);
+    this.props.hide();
   }
   clearErrors() {
     this.setState({ errors: '' });
@@ -102,7 +104,7 @@ class ProductForm extends Component {
       errors
     } = this.state.product;
     const { onChange, onClick } = this;
-    const { createOrUpdateProduct } = this.props;
+    const { createOrUpdateProduct, hide, categories } = this.props;
     return (
       <div>
         {errors ? (
@@ -179,10 +181,11 @@ class ProductForm extends Component {
     );
   }
 }
-const mapStateToProps = ({ products }, { productId }) => {
+const mapStateToProps = ({ products, categories }, { productId }) => {
   let product = products && products.find(product => product.id === productId);
   return {
-    product
+    product,
+    Categories
   };
 };
 
