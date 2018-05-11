@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editOrder } from './store';
-import AddressForm from './AddressForm';
 import {
   Dropdown,
   DropdownToggle,
@@ -33,7 +32,7 @@ class AddressDropdown extends Component {
 
   render() {
     const { addresses } = this.props;
-    const { dropdownOpen, addressId } = this.state;
+    const { dropdownOpen } = this.state;
     const { toggle, onClick } = this;
     return (
       <div>

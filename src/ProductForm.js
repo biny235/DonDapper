@@ -4,7 +4,8 @@ import { createOrUpdateProduct } from './store';
 import { connect } from 'react-redux';
 import { RIEInput, RIETextArea, RIENumber } from 'riek';
 import Category from './Category';
-let setErrors = function(err) {
+
+let setErrors = function (err) {
   this.setState({ errors: err });
 };
 
@@ -29,11 +30,13 @@ class ProductForm extends Component {
     this.clearErrors = this.clearErrors.bind(this);
     this.categoryAssign = this.categoryAssign.bind(this);
   }
+
   onChange(value) {
     let { product } = this.state;
     product = Object.assign({}, product, value);
     this.setState({ product });
   }
+
   categoryAssign(ev) {
     let value = ev.target.value;
     let key = ev.target.name;
@@ -47,6 +50,7 @@ class ProductForm extends Component {
     this.props.createOrUpdateProduct(product);
     this.props.hide();
   }
+
   clearErrors() {
     this.setState({ errors: '' });
   }
@@ -87,6 +91,7 @@ class ProductForm extends Component {
       });
     }
   }
+
   componentDidMount() {
     if (this.props.product) {
       const {
@@ -123,6 +128,7 @@ class ProductForm extends Component {
       });
     }
   }
+
   render() {
     const {
       name,
@@ -223,6 +229,7 @@ class ProductForm extends Component {
     );
   }
 }
+
 const mapStateToProps = ({ products, categories }, { productId }) => {
   let product = products && products.find(product => product.id === productId);
   return {

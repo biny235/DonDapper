@@ -13,12 +13,11 @@ class UserForm extends Component {
         email: props.user.email || '',
         password: props.user.password || '',
       },
-      inputEdited: {},
-      errors: ''
+      edited: false,
+      error: ''
     };
     this.onChange = this.onChange.bind(this);
     this.setErrors = this.setErrors.bind(this);
-    this.clearErrors = this.clearErrors.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -34,49 +33,33 @@ class UserForm extends Component {
 
   onChange(ev) {
     const { name, value } = ev.target;
-    const { inputEdited } = this.state;
     let { user } = this.state;
-    inputEdited[name] = true;
     user = Object.assign({}, user, { [name]: value });
-    this.setState({ user });
+    this.setState({ user, error: '', edited: true });
   }
 
   onSubmit(id) {
     const user = Object.assign({}, { id }, this.state.user);
     this.props.createOrUpdateUser(user)
       .catch(err => {
-        this.setErrors(err.response.data, user);
+        this.setErrors(err.response.data);
       });
+    this.setState({ user, error: '', edited: false });
   }
 
-  setErrors(err, user) {
-    if (!user.id) this.setState({ user: {} });
-    this.setState({ errors: err });
-  }
-
-  clearErrors() {
-    this.setState({ errors: '' });
+  setErrors(error) {
+    this.setState({ error });
   }
 
   render() {
     const { user } = this.props;
-    const { errors } = this.state;
+    const { error, edited } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
     const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
-    const emptyFields = Object.keys(fields).filter(field => !this.state.user[field].length);
+    const empty = Object.keys(fields).filter(field => !this.state.user[field]);
     return (
       <div>
-        {errors && (
-          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
-            {errors}
-          </Alert>
-        )}
-        {
-          !!emptyFields.length && <Alert color="info">
-            {`${emptyFields.map(field => fields[field]).join(', ')} cannot be empty.`}
-          </Alert>
-        }
         <div>
           <input
             className="form-control"
@@ -99,17 +82,18 @@ class UserForm extends Component {
             value={email || ''}
             onChange={onChange}
           />
-          {!user.id ? <input
-            className="form-control"
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={password || ''}
-            onChange={onChange}
-          /> :
-            null
+          {
+            !user.id && <input
+              className="form-control"
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password || ''}
+              onChange={onChange}
+            />
           }
-          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={emptyFields.length}>
+          {!!error && <Alert color="info">{error}</Alert>}
+          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={!edited || empty.length}>
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>

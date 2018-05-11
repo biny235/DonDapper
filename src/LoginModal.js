@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LoginForm from './LoginForm';
 import UserForm from './UserForm';
 import { Link } from 'react-router-dom';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-class LoginModal extends React.Component {
+class LoginModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
