@@ -100,6 +100,7 @@ const mapStateToProps = ({ cart, user, lineItems, products }) => {
   return {
     cart,
     user,
+    lineItems,
     address,
     total
   };
