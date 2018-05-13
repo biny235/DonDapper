@@ -11,7 +11,7 @@ class UserForm extends Component {
         firstName: props.user.firstName || '',
         lastName: props.user.lastName || '',
         email: props.user.email || '',
-        password: props.user.password || '',
+        password: props.user.password || ''
       },
       edited: false,
       error: '',
@@ -34,6 +34,9 @@ class UserForm extends Component {
 
   onChange(ev) {
     const { name, value } = ev.target;
+    if (name === 'lastName' || name === 'firstName')
+      window.localStorage.setItem(name, value);
+
     let { user } = this.state;
     user = Object.assign({}, user, { [name]: value });
     this.setState({ user, error: '', edited: true });
@@ -44,10 +47,9 @@ class UserForm extends Component {
 
   onSubmit(id) {
     const user = Object.assign({}, { id }, this.state.user);
-    this.props.createOrUpdateUser(user)
-      .catch(err => {
-        this.setErrors(err.response.data);
-      });
+    this.props.createOrUpdateUser(user).catch(err => {
+      this.setErrors(err.response.data);
+    });
     this.setState({ user, error: '', edited: false });
   }
 
@@ -57,16 +59,18 @@ class UserForm extends Component {
 
   testPassword() {
     const { newPassword } = this.state;
-    const mediumStrength = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    const highStrength = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    const mediumStrength = new RegExp(
+      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
+    );
+    const highStrength = new RegExp(
+      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+    );
     let strength;
     if (!mediumStrength.test(newPassword)) {
       strength = `Password is very weak`;
-    }
-    else if (!highStrength.test(newPassword)) {
+    } else if (!highStrength.test(newPassword)) {
       strength = `Password could be stronger`;
-    }
-    else {
+    } else {
       strength = '';
     }
     this.setState({ strength });
@@ -77,7 +81,12 @@ class UserForm extends Component {
     const { error, edited, strength } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
-    const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
+    const fields = {
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      email: 'E-mail',
+      password: 'Password'
+    };
     const empty = Object.keys(fields).filter(field => !this.state.user[field]);
     return (
       <div>
@@ -103,8 +112,8 @@ class UserForm extends Component {
             value={email || ''}
             onChange={onChange}
           />
-          {
-            !user.id && <input
+          {!user.id && (
+            <input
               className="form-control"
               type="password"
               name="password"
@@ -112,12 +121,17 @@ class UserForm extends Component {
               value={password || ''}
               onChange={onChange}
             />
-          }
+          )}
           {!!error && <Alert color="info">{error}</Alert>}
-          {strength && !!password.length && <Alert color="info">
-            {strength}
-          </Alert>}
-          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={!edited || empty.length}>
+          {strength &&
+            !!password.length && <Alert color="info">{strength}</Alert>}
+          <button
+            type="submit"
+            className="btn btn-success"
+            style={{ width: '100%' }}
+            onClick={() => onSubmit(user.id)}
+            disabled={!edited || empty.length}
+          >
             {user.id ? 'Update' : 'Create'}
           </button>
         </div>

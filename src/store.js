@@ -115,7 +115,7 @@ const authenticateUser = dispatch => {
     .then(res => res.data)
     .then(user => {
       dispatch({ type: GET_USER, user });
-      dispatch(fetchCart(user.id));
+      dispatch(fetchCart(user));
       dispatch(fetchOrders(user));
     })
     .catch(err => {
@@ -199,46 +199,12 @@ const createOrUpdateAddress = (address, cart) => {
       });
   };
 };
-
-// CART
-const fetchCart = userId => {
-  return dispatch => {
-    const lineItems = JSON.parse(window.localStorage.getItem('lineItems')) || [];
-    if (!userId) {
-      dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: lineItems });
-    } else {
-      axios
-        .get(`/api/users/${userId}/cart`)
-        .then(res => res.data)
-        .then(cart => {
-          // const products = {};
-          // const cartLineItems = lineItems.map(lineItem => {
-          //   lineItem.orderId = cart.id;
-          //   return lineItem;
-          // })
-          //   .concat(cart.lineItems);
-          // cartLineItems.forEach(lineItem => {
-          //   if (!products[lineItem.productId]) {
-          //     products[lineItems.productId] = lineItem.quantity;
-          //   }
-          //   else {
-          //     products[lineItems.productId] += lineItem.quantity;
-          //   }
-          // });
-          dispatch({ type: GET_CART, cart });
-          dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: cart.lineItems || [] });
-        })
-        .then(() => window.localStorage.removeItem('lineItems'))
-        .catch(err => console.log(err));
-    }
-  };
-};
-
 // LINE ITEMS
 const addLineItem = (lineItem, user, history) => {
   return dispatch => {
     if (!user.id) {
-      const lineItems = JSON.parse(window.localStorage.getItem('lineItems')) || [];
+      const lineItems =
+        JSON.parse(window.localStorage.getItem('lineItems')) || [];
       const cartLineItems = [...lineItems, lineItem];
       window.localStorage.setItem('lineItems', JSON.stringify(cartLineItems));
       dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems });
@@ -290,15 +256,80 @@ const deleteLineItem = lineItem => {
       const lineItems = JSON.parse(window.localStorage.getItem('lineItems'));
       const cartLineItems =
         lineItems &&
-        lineItems.filter(_lineItem => _lineItem.productId !== lineItem.productId);
+        lineItems.filter(
+          _lineItem => _lineItem.productId !== lineItem.productId
+        );
       window.localStorage.setItem('lineItems', JSON.stringify(cartLineItems));
       dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems });
-    }
-    else {
+    } else {
       axios
         .delete(`/api/lineItems/${lineItem.id}`)
         .then(res => res.data)
         .then(() => dispatch({ type: DELETE_LINE_ITEM, lineItem }))
+        .catch(err => console.log(err));
+    }
+  };
+};
+
+// CART
+const fetchCart = user => {
+  return dispatch => {
+    const lineItems =
+      JSON.parse(window.localStorage.getItem('lineItems')) || [];
+    if (!user) {
+      dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: lineItems });
+    } else {
+      const userId = user.id;
+      axios
+        .get(`/api/users/${userId}/cart`)
+        .then(res => res.data)
+        .then(cart => {
+          if (
+            window.localStorage.getItem('firstName') === user.firstName &&
+            window.localStorage.getItem('lastName') === user.lastName
+          ) {
+            const _lineItems = JSON.parse(
+              window.localStorage.getItem('lineItems')
+            );
+            _lineItems
+              ? _lineItems.map(lineItem => {
+                  lineItem.orderId = cart.id;
+                  axios
+                    .post(`/api/lineItems`, lineItem)
+                    .then(res => res.data)
+                    .then(lineItem => {
+                      if (history) {
+                        dispatch({ type: CREATE_LINE_ITEM, lineItem });
+                        history.push(`/cart`);
+                      }
+                    })
+                    .catch(err => console.log(err));
+                })
+              : null;
+          }
+          // const products = {};
+          // const cartLineItems = lineItems.map(lineItem => {
+          //   lineItem.orderId = cart.id;
+          //   return lineItem;
+          // })
+          //   .concat(cart.lineItems);
+          // cartLineItems.forEach(lineItem => {
+          //   if (!products[lineItem.productId]) {
+          //     products[lineItems.productId] = lineItem.quantity;
+          //   }
+          //   else {
+          //     products[lineItems.productId] += lineItem.quantity;
+          //   }
+          // });
+          dispatch({ type: GET_CART, cart });
+          dispatch({
+            type: GET_CART_LINE_ITEMS,
+            cartLineItems: cart.lineItems || []
+          });
+        })
+        .then(() => window.localStorage.removeItem('lineItems'))
+        .then(() => window.localStorage.removeItem('lastName'))
+        .then(() => window.localStorage.removeItem('firstName'))
         .catch(err => console.log(err));
     }
   };
@@ -386,7 +417,9 @@ const lineItemsReducer = (state = [], action) => {
           : lineItem;
       });
     case DELETE_LINE_ITEM:
-      return state.filter(lineItem => lineItem.productId !== action.lineItem.productId);
+      return state.filter(
+        lineItem => lineItem.productId !== action.lineItem.productId
+      );
     case RESET_STATE:
       return [];
   }

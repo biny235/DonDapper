@@ -6,6 +6,7 @@ import axios from 'axios';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import Autocomplete from './Autocomplete';
+import AccountDropdown from './AccountDropdown';
 import Order from './Order';
 
 class Checkout extends Component {
@@ -47,46 +48,55 @@ class Checkout extends Component {
     const { onSubmit, onEdit } = this;
     const { user, cart, address, lineItems, total } = this.props;
     const { editing } = this.state;
-    if (!user.id) return null;
-    return (
-      <div className="checkout">
-        <div>
-          <h1>Review Order</h1>
-          <Order order={cart} lineItems={lineItems} />
-        </div>
-        <div className="checkout-right">
-          <h3>Shipping To:</h3>
-          {!cart.addressId ? (
-            <Autocomplete cart={cart} />
-          ) : editing ? (
-            <AddressForm cart={cart} onEdit={onEdit} />
-          ) : (
+    if (!user.id) {
+      return <AccountDropdown />;
+    } else {
+      return (
+        <div className="checkout">
+          <div>
+            <h1>Review Order</h1>
+            <Order order={cart} lineItems={lineItems} />
+          </div>
+          <div className="checkout-right">
+            <h3>Shipping To:</h3>
+            {!cart.addressId ? (
+              <Autocomplete cart={cart} />
+            ) : editing ? (
+              <AddressForm cart={cart} onEdit={onEdit} />
+            ) : (
+              <div>
                 <div>
-                  <div>
-                    <div>{address.fullAddress}</div>
-                    <button className="btn btn-warning" onClick={onEdit}>
-                      Edit Address
-                    </button>
-                  </div>
+                  <div>{address.fullAddress}</div>
+                  <button className="btn btn-warning" onClick={onEdit}>
+                    Edit Address
+                  </button>
                 </div>
-              )}
-          <AddressDropdown />
-          <StripeCheckout
-            className="btn btn-success"
-            name="Payment"
-            description="Please review your order"
-            panelLabel="Place Order - "
-            amount={total * 100}
-            currency="USD"
-            email={user.email}
-            token={onSubmit}
-            stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
-          >
-            <button disabled={!cart.addressId} type='submit' className='btn btn-success'>Check Out</button>
-          </StripeCheckout>
+              </div>
+            )}
+            <AddressDropdown />
+            <StripeCheckout
+              className="btn btn-success"
+              name="Payment"
+              description="Please review your order"
+              panelLabel="Place Order - "
+              amount={total * 100}
+              currency="USD"
+              email={user.email}
+              token={onSubmit}
+              stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
+            >
+              <button
+                disabled={!cart.addressId}
+                type="submit"
+                className="btn btn-success"
+              >
+                Check Out
+              </button>
+            </StripeCheckout>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
