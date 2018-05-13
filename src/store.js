@@ -280,15 +280,10 @@ const fetchCart = userId => {
         JSON.parse(window.localStorage.getItem('lineItems')) || [];
       dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: lineItems });
     } else {
-      // const userId = user.id;
       axios
         .get(`/api/users/${userId}/cart`)
         .then(res => res.data)
         .then(cart => {
-          // if (
-          //   window.localStorage.getItem('firstName') === user.firstName &&
-          //   window.localStorage.getItem('lastName') === user.lastName
-          // ) {}
           dispatch({ type: GET_CART, cart });
           dispatch({
             type: GET_CART_LINE_ITEMS,
@@ -301,12 +296,10 @@ const fetchCart = userId => {
             const cartLineItem = cart.lineItems.find(cartLineItem => cartLineItem.productId === lineItem.productId);
             if (cartLineItem) {
               const quantity = cartLineItem.quantity + lineItem.quantity;
-              // editLineItem({ quantity }, cartLineItem.id);
               axios
                 .put(`/api/lineItems/${cartLineItem.id}`, { quantity })
                 .then(res => res.data)
                 .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
-                .then(() => history && history.push(`/cart`))
                 .catch(err => console.log(err));
             }
             else {
@@ -314,16 +307,12 @@ const fetchCart = userId => {
               axios
                 .post(`/api/lineItems`, lineItem)
                 .then(res => res.data)
-                .then(lineItem => {
-                  dispatch({ type: CREATE_LINE_ITEM, lineItem });
-                })
+                .then(lineItem => dispatch({ type: CREATE_LINE_ITEM, lineItem }))
                 .catch(err => console.log(err));
             }
           });
         })
         .then(() => window.localStorage.removeItem('lineItems'))
-        // .then(() => window.localStorage.removeItem('lastName'))
-        // .then(() => window.localStorage.removeItem('firstName'))
         .catch(err => console.log(err));
     }
   };
