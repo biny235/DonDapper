@@ -182,7 +182,6 @@ const editOrder = (order, history) => {
           history.push(`/user`);
         }
       })
-
       .catch(err => console.log(err));
   };
 };
@@ -212,7 +211,6 @@ const fetchCart = userId => {
         .get(`/api/users/${userId}/cart`)
         .then(res => res.data)
         .then(cart => {
-          const cartLineItems = cart.lineItems;
           // const products = {};
           // const cartLineItems = lineItems.map(lineItem => {
           //   lineItem.orderId = cart.id;
@@ -228,7 +226,7 @@ const fetchCart = userId => {
           //   }
           // });
           dispatch({ type: GET_CART, cart });
-          dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems });
+          dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: cart.lineItems || [] });
         })
         .then(() => window.localStorage.removeItem('lineItems'))
         .catch(err => console.log(err));

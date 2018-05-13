@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
 
-const Cart = ({ user, cart, lineItems, total }) => {
+const Cart = ({ cart, lineItems, total }) => {
   return (
     <div>
       <h1>Cart</h1>
@@ -42,7 +42,6 @@ const mapStateToProps = ({ cart, lineItems, products }) => {
       }
       return quantity;
     }, 0);
-
   return { cart, lineItems, total };
 };
 
