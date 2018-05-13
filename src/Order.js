@@ -5,7 +5,7 @@ import LineItem from './LineItem';
 const Order = ({ order, lineItems, total }) => {
   return (
     <div>
-      {order.status !== 'cart' && <h3>`Order ID: ${order && order.id}`</h3>}
+      {order.status === 'order' && <h3>{`Order ID: ${order && order.id}`}</h3>}
       <div className="order">
         <div>Item</div>
         <div>Price</div>
@@ -13,7 +13,7 @@ const Order = ({ order, lineItems, total }) => {
         <div>Total</div>
         {lineItems &&
           lineItems.map(lineItem => (
-            <LineItem key={lineItem.id} line={lineItem} />
+            <LineItem key={lineItem.id} lineItem={lineItem} />
           ))}
         <div className="order-total">Order Total</div>
         <div>$ {total}</div>
@@ -22,14 +22,17 @@ const Order = ({ order, lineItems, total }) => {
   );
 };
 
-const mapStateToProps = ({ user, orders, products }, { id, order, lineItems }) => {
-  order = order || orders && id && orders.find(order => order.id === id);
-  lineItems = lineItems || order && order.lineItems;
+const mapStateToProps = (
+  { user, orders, products },
+  { id, order, lineItems }
+) => {
+  order = order || (orders && id && orders.find(order => order.id === id));
+  lineItems = lineItems || (order && order.lineItems);
   const total =
     lineItems &&
-    lineItems.reduce((amounts, line) => {
-      const product = products.find(_product => _product.id === line.productId);
-      amounts += product.price * line.quantity;
+    lineItems.reduce((amounts, lineItem) => {
+      const product = products.find(_product => _product.id === lineItem.productId);
+      amounts += product.price * lineItem.quantity;
       return amounts;
     }, 0);
   return { user, order, products, lineItems, total };

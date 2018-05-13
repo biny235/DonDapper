@@ -47,26 +47,29 @@ class Checkout extends Component {
     const { onSubmit, onEdit } = this;
     const { user, cart, address, lineItems, total } = this.props;
     const { editing } = this.state;
-    if (!user.id) return (null);
+    if (!user.id) return null;
     return (
-      <div className='checkout'>
+      <div className="checkout">
         <div>
           <h1>Review Order</h1>
           <Order order={cart} lineItems={lineItems} />
         </div>
-        <div className='checkout-right'>
+        <div className="checkout-right">
           <h3>Shipping To:</h3>
-          {!cart.addressId ? <Autocomplete cart={cart} /> : (
-            editing ?
-              <AddressForm cart={cart} onEdit={onEdit} />
-              :
-              <div>
+          {!cart.addressId ? (
+            <Autocomplete cart={cart} />
+          ) : editing ? (
+            <AddressForm cart={cart} onEdit={onEdit} />
+          ) : (
                 <div>
-                  <div>{address.fullAddress}</div>
-                  <button className="btn btn-warning" onClick={onEdit}>Edit</button>
+                  <div>
+                    <div>{address.fullAddress}</div>
+                    <button className="btn btn-warning" onClick={onEdit}>
+                      Edit Address
+                    </button>
+                  </div>
                 </div>
-              </div>
-          )}
+              )}
           <AddressDropdown />
           <StripeCheckout
             className="btn btn-success"
@@ -74,10 +77,10 @@ class Checkout extends Component {
             description="Please review your order"
             panelLabel="Place Order - "
             amount={total * 100}
-            currency='USD'
+            currency="USD"
             email={user.email}
             token={onSubmit}
-            stripeKey='pk_test_t4Gsi41KZkmzWDyxcwcFMHhp'
+            stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
           >
             <button disabled={!cart.addressId} type='submit' className='btn btn-success'>Check Out</button>
           </StripeCheckout>
@@ -88,7 +91,9 @@ class Checkout extends Component {
 }
 
 const mapStateToProps = ({ cart, user, lineItems, products }) => {
-  const address = user.addresses && user.addresses.find(address => address.id === cart.addressId);
+  const address =
+    user.addresses &&
+    user.addresses.find(address => address.id === cart.addressId);
   const total =
     lineItems &&
     lineItems.reduce((quantity, line) => {
@@ -96,13 +101,7 @@ const mapStateToProps = ({ cart, user, lineItems, products }) => {
       quantity += product.price * line.quantity;
       return quantity;
     }, 0);
-  return {
-    cart,
-    user,
-    lineItems,
-    address,
-    total
-  };
+  return { cart, user, address, lineItems, total };
 };
 
 const mapDispatchToProps = dispatch => {
