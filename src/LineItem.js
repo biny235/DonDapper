@@ -10,18 +10,20 @@ class LineItem extends Component {
   }
 
   onChange(ev, id) {
-    const change = {};
-    change[ev.target.name] = ev.target.value;
-    this.props.editLineItem(change, id);
+    const { line } = this.props;
+    line[ev.target.name] = ev.target.value;
+    this.props.editLineItem(line, id);
   }
 
   onDelete(ev, id) {
     ev.preventDefault();
     this.props.deleteLineItem(id);
   }
+
   render() {
     const { line, product, cart } = this.props;
     const { onChange, onDelete } = this;
+    const { quantity } = line;
     if (!line || !product) {
       return null;
     }
@@ -35,18 +37,18 @@ class LineItem extends Component {
         {!cart ? (
           <div>{line.quantity}</div>
         ) : (
-            <form>
-              <input
-                className="order-qty"
-                onChange={ev => onChange(ev, line.id)}
-                name="quantity"
-                value={line.quantity}
-                type="number"
-                step="1"
-                min="1"
-              />
-            </form>
-          )}
+          <form>
+            <input
+              className="order-qty"
+              onChange={ev => onChange(ev, line.id)}
+              name="quantity"
+              value={quantity}
+              type="number"
+              step="1"
+              min="1"
+            />
+          </form>
+        )}
         <div>$ {line.quantity * product.price}</div>
         {cart && (
           <button
@@ -62,7 +64,7 @@ class LineItem extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     deleteLineItem: id => dispatch(deleteLineItem(id)),
     editLineItem: (lineItem, id) => dispatch(editLineItem(lineItem, id))

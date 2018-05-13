@@ -7,21 +7,21 @@ const Cart = ({ cart, lineItems, total }) => {
   return (
     <div>
       <h1>Cart</h1>
-      {!cart.id && <div>Please sign in.</div>}
-      {cart.id && !lineItems.length && <div>Your have no items in your cart.</div>}
-      {cart.id && !!lineItems.length && (
+      {cart.id &&
+        !lineItems.length && <div>Your have no items in your cart.</div>}
+      {!!lineItems.length && (
         <div className="order order-container">
           <div>Item</div>
           <div>Price</div>
           <div>Quantity</div>
           <div>Total</div>
           <div>Remove</div>
-          {
-            lineItems.map(lineItem => (
-              <LineItem key={lineItem.id} line={lineItem} cart={true} />
-            ))
-          }
-          <Link to={'/checkout'} className="btn btn-success">Proceed to Checkout</Link>
+          {lineItems.map((lineItem, index) => (
+            <LineItem key={lineItem.id || index} line={lineItem} cart={true} />
+          ))}
+          <Link to={'/checkout'} className="btn btn-success">
+            Proceed to Checkout
+          </Link>
           <div className="order-total">Total:</div>
           <div>$ {total}</div>
         </div>
@@ -34,10 +34,13 @@ const mapStateToProps = ({ cart, lineItems, products }) => {
   const total =
     lineItems &&
     lineItems.reduce((quantity, line) => {
-      const product = products.find(_product => _product.id === line.productId);
+      const product =
+        products.length &&
+        products.find(_product => _product.id === line.productId);
       quantity += product.price * line.quantity;
       return quantity;
     }, 0);
+
   return {
     cart,
     lineItems,

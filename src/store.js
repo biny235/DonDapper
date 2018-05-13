@@ -153,14 +153,26 @@ const showUsers = () => {
 // CART
 const fetchCart = userId => {
   return dispatch => {
-    axios
-      .get(`/api/users/${userId}/cart`)
-      .then(res => res.data)
-      .then(cart => {
-        dispatch({ type: GET_CART, cart });
-        dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: cart.lineItems || [] });
-      })
-      .catch(err => console.log(err));
+    if (!userId) {
+      let lineItems =
+        JSON.parse(window.localStorage.getItem('lineItems')) || [];
+      dispatch({
+        type: GET_CART_LINE_ITEMS,
+        cartLineItems: lineItems
+      });
+    } else {
+      axios
+        .get(`/api/users/${userId}/cart`)
+        .then(res => res.data)
+        .then(cart => {
+          dispatch({ type: GET_CART, cart });
+          dispatch({
+            type: GET_CART_LINE_ITEMS,
+            cartLineItems: cart.lineItems || []
+          });
+        })
+        .catch(err => console.log(err));
+    }
   };
 };
 
@@ -216,25 +228,56 @@ const createOrUpdateAddress = (address, cart) => {
 };
 
 // LINE ITEMS
-const addLineItem = (lineItem, history) => {
+const addLineItem = (lineItem, user, history) => {
+  console.log(user);
   return dispatch => {
-    axios
-      .post(`/api/lineItems`, lineItem, history)
-      .then(res => res.data)
-      .then(lineItem => dispatch({ type: CREATE_LINE_ITEM, lineItem }))
-      .then(() => history && history.push(`/cart`))
-      .catch(err => console.log(err));
+    if (!user.id) {
+      let lineItems =
+        JSON.parse(window.localStorage.getItem('lineItems')) || [];
+
+      window.localStorage.setItem(
+        'lineItems',
+        JSON.stringify([...lineItems, lineItem])
+      );
+      dispatch({ type: CREATE_LINE_ITEM, lineItem });
+      history && history.push(`/cart`);
+    } else {
+      axios
+        .post(`/api/lineItems`, lineItem, history)
+        .then(res => res.data)
+        .then(lineItem => {
+          console.log(lineItem);
+          dispatch({ type: CREATE_LINE_ITEM, lineItem });
+        })
+        .then(() => history && history.push(`/cart`))
+        .catch(err => console.log(err));
+    }
   };
 };
 
 const editLineItem = (lineItem, lineItemId, history) => {
   return dispatch => {
-    axios
-      .put(`/api/lineItems/${lineItemId}`, lineItem)
-      .then(res => res.data)
-      .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
-      .then(() => history && history.push(`/cart`))
-      .catch(err => console.log(err));
+    if (!lineItemId) {
+      let lineItems = JSON.parse(window.localStorage.getItem('lineItems'));
+      const cartLineItems =
+        lineItems &&
+        lineItems.map(_lineItem => {
+          if (lineItem.productId === _lineItem.productId) {
+            _lineItem = lineItem;
+          }
+          return _lineItem;
+        });
+      window.localStorage.setItem('lineItems', JSON.stringify(cartLineItems));
+      dispatch({ type: UPDATE_LINE_ITEM, lineItem });
+      history && history.push(`/cart`);
+    } else {
+      axios
+        .put(`/api/lineItems/${lineItemId}`, lineItem)
+        .then(res => res.data)
+        .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
+        .then(() => history && history.push(`/cart`))
+        .catch(err => console.log(err));
+    }
   };
 };
 
@@ -335,8 +378,11 @@ const lineItemsReducer = (state = [], action) => {
       return [...state, action.lineItem];
     case UPDATE_LINE_ITEM:
       return state.map(lineItem => {
-        return lineItem.id === action.lineItem.id ? action.lineItem : lineItem;
+        return lineItem.productId === action.lineItem.productId
+          ? action.lineItem
+          : lineItem;
       });
+    // });
     case DELETE_LINE_ITEM:
       return state.filter(lineItem => lineItem.id !== action.lineItem.id);
     case RESET_STATE:
