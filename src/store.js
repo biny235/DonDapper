@@ -388,12 +388,6 @@ const lineItemsReducer = (state = [], action) => {
           ? action.lineItem
           : lineItem;
       });
-<<<<<<< HEAD
-    case SET_LINE_ITEMS:
-      return action.lineItems
-    // });
-=======
->>>>>>> master
     case DELETE_LINE_ITEM:
       return state.filter(lineItem => lineItem.productId !== action.lineItem.productId);
     case RESET_STATE:
