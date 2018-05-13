@@ -40,17 +40,18 @@ class UserForm extends Component {
     let { user } = this.state;
     user = Object.assign({}, user, { [name]: value });
     this.setState({ user, error: '', edited: true });
-    // if (name === 'password') {
-    //   this.testPassword();
-    // }
+    if (name === 'password') {
+      this.testPassword();
+    }
   }
 
   onSubmit(id) {
     const user = Object.assign({}, { id }, this.state.user);
-    this.props.createOrUpdateUser(user).catch(err => {
-      this.setErrors(err.response.data);
-    });
-    this.setState({ user, error: '', edited: false });
+    this.props.createOrUpdateUser(user)
+      .catch(err => {
+        this.setErrors(err.response.data);
+      });
+    this.setState({ user, error: '', edited: false, strength: '' });
   }
 
   setErrors(error) {
@@ -58,17 +59,14 @@ class UserForm extends Component {
   }
 
   testPassword() {
-    const { newPassword } = this.state;
-    const mediumStrength = new RegExp(
-      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
-    );
-    const highStrength = new RegExp(
-      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
-    );
+    const { password } = this.state.user;
+    const mediumStrength = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+    const highStrength = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
     let strength;
-    if (!mediumStrength.test(newPassword)) {
+    if (!mediumStrength.test(password)) {
       strength = `Password is very weak`;
-    } else if (!highStrength.test(newPassword)) {
+    }
+    else if (!highStrength.test(password)) {
       strength = `Password could be stronger`;
     } else {
       strength = '';

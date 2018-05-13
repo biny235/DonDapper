@@ -116,7 +116,7 @@ const authenticateUser = dispatch => {
     .then(res => res.data)
     .then(user => {
       dispatch({ type: GET_USER, user });
-      dispatch(fetchCart(user));
+      dispatch(fetchCart(user.id));
       dispatch(fetchOrders(user));
     })
     .catch(err => {
@@ -180,6 +180,7 @@ const editOrder = (order, history) => {
         dispatch(fetchCart(order.userId));
         if (history) {
           dispatch({ type: ADD_ORDER, order });
+          dispatch(fetchCart(order.userId));
           history.push(`/user`);
         }
       })
@@ -301,64 +302,57 @@ const deleteLineItem = lineItem => {
 };
 
 // CART
-const fetchCart = user => {
+const fetchCart = userId => {
   return dispatch => {
-    const lineItems =
-      JSON.parse(window.localStorage.getItem('lineItems')) || [];
-    if (!user) {
+    if (!userId) {
+      const lineItems =
+        JSON.parse(window.localStorage.getItem('lineItems')) || [];
       dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: lineItems });
     } else {
-      const userId = user.id;
+      // const userId = user.id;
       axios
         .get(`/api/users/${userId}/cart`)
         .then(res => res.data)
         .then(cart => {
-          if (
-            window.localStorage.getItem('firstName') === user.firstName &&
-            window.localStorage.getItem('lastName') === user.lastName
-          ) {
-            const _lineItems = JSON.parse(
-              window.localStorage.getItem('lineItems')
-            );
-            _lineItems
-              ? _lineItems.map(lineItem => {
-                  lineItem.orderId = cart.id;
-                  axios
-                    .post(`/api/lineItems`, lineItem)
-                    .then(res => res.data)
-                    .then(lineItem => {
-                      if (history) {
-                        dispatch({ type: CREATE_LINE_ITEM, lineItem });
-                        history.push(`/cart`);
-                      }
-                    })
-                    .catch(err => console.log(err));
-                })
-              : null;
-          }
-          // const products = {};
-          // const cartLineItems = lineItems.map(lineItem => {
-          //   lineItem.orderId = cart.id;
-          //   return lineItem;
-          // })
-          //   .concat(cart.lineItems);
-          // cartLineItems.forEach(lineItem => {
-          //   if (!products[lineItem.productId]) {
-          //     products[lineItems.productId] = lineItem.quantity;
-          //   }
-          //   else {
-          //     products[lineItems.productId] += lineItem.quantity;
-          //   }
-          // });
+          // if (
+          //   window.localStorage.getItem('firstName') === user.firstName &&
+          //   window.localStorage.getItem('lastName') === user.lastName
+          // ) {}
           dispatch({ type: GET_CART, cart });
           dispatch({
             type: GET_CART_LINE_ITEMS,
             cartLineItems: cart.lineItems || []
           });
+          const cartLineItems = JSON.parse(
+            window.localStorage.getItem('lineItems')
+          );
+          !!cartLineItems && cartLineItems.forEach(lineItem => {
+            const cartLineItem = cart.lineItems.find(cartLineItem => cartLineItem.productId === lineItem.productId);
+            if (cartLineItem) {
+              const quantity = cartLineItem.quantity + lineItem.quantity;
+              // editLineItem({ quantity }, cartLineItem.id);
+              axios
+                .put(`/api/lineItems/${cartLineItem.id}`, { quantity })
+                .then(res => res.data)
+                .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
+                .then(() => history && history.push(`/cart`))
+                .catch(err => console.log(err));
+            }
+            else {
+              lineItem.orderId = cart.id;
+              axios
+                .post(`/api/lineItems`, lineItem)
+                .then(res => res.data)
+                .then(lineItem => {
+                  dispatch({ type: CREATE_LINE_ITEM, lineItem });
+                })
+                .catch(err => console.log(err));
+            }
+          });
         })
         .then(() => window.localStorage.removeItem('lineItems'))
-        .then(() => window.localStorage.removeItem('lastName'))
-        .then(() => window.localStorage.removeItem('firstName'))
+        // .then(() => window.localStorage.removeItem('lastName'))
+        // .then(() => window.localStorage.removeItem('firstName'))
         .catch(err => console.log(err));
     }
   };

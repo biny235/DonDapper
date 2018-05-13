@@ -12,7 +12,7 @@ class AddressDropdown extends Component {
   constructor() {
     super();
     this.state = {
-      dropdownOpen: false,
+      dropdownOpen: false
     };
     this.toggle = this.toggle.bind(this);
     this.onClick = this.onClick.bind(this);
