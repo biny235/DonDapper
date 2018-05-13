@@ -5,14 +5,17 @@ import { connect } from 'react-redux';
 class LineItem extends Component {
   constructor(props) {
     super(props);
+    this.state =  {
+      quantity: this.props.line.quantity || 1
+    }
     this.onChange = this.onChange.bind(this);
     this.onDelete = this.onDelete.bind(this);
   }
-
   onChange(ev, id) {
     const { line } = this.props;
-    line[ev.target.name] = ev.target.value;
+    line[ev.target.name] = ev.target.value * 1;
     this.props.editLineItem(line, id);
+    this.setState({quantity: ev.target.value * 1})
   }
 
   onDelete(ev, id) {
