@@ -11,7 +11,7 @@ class LineItem extends Component {
 
   onChange(ev, id) {
     const { lineItem } = this.props;
-    lineItem[ev.target.name] = ev.target.value;
+    lineItem.quantity = ev.target.value * 1;
     this.props.editLineItem(lineItem, id);
   }
 

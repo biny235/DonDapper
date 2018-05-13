@@ -61,15 +61,15 @@ class Checkout extends Component {
           ) : editing ? (
             <AddressForm cart={cart} onEdit={onEdit} />
           ) : (
-            <div>
-              <div>
-                <div>{address.fullAddress}</div>
-                <button className="btn btn-warning" onClick={onEdit}>
-                  Edit
-                </button>
-              </div>
-            </div>
-          )}
+                <div>
+                  <div>
+                    <div>{address.fullAddress}</div>
+                    <button className="btn btn-warning" onClick={onEdit}>
+                      Edit Address
+                    </button>
+                  </div>
+                </div>
+              )}
           <AddressDropdown />
           <StripeCheckout
             className="btn btn-success"
@@ -104,12 +104,7 @@ const mapStateToProps = ({ cart, user, lineItems, products }) => {
       quantity += product.price * line.quantity;
       return quantity;
     }, 0);
-  return {
-    cart,
-    user,
-    address,
-    total
-  };
+  return { cart, user, address, total };
 };
 
 const mapDispatchToProps = dispatch => {
