@@ -204,7 +204,7 @@ const createOrUpdateAddress = (address, cart) => {
 // CART
 const fetchCart = userId => {
   return dispatch => {
-    const lineItems = JSON.parse(window.localStorage.getItem('lineItems')) || [];
+    let lineItems = JSON.parse(window.localStorage.getItem('lineItems')) || [];
     if (!userId) {
       dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: lineItems });
     } else {
@@ -212,22 +212,12 @@ const fetchCart = userId => {
         .get(`/api/users/${userId}/cart`)
         .then(res => res.data)
         .then(cart => {
-          // const products = {};
-          // const cartLineItems = lineItems.map(lineItem => {
-          //   lineItem.orderId = cart.id;
-          //   return lineItem;
-          // })
-          //   .concat(cart.lineItems);
-          // cartLineItems.forEach(lineItem => {
-          //   if (!products[lineItem.productId]) {
-          //     products[lineItems.productId] = lineItem.quantity;
-          //   }
-          //   else {
-          //     products[lineItems.productId] += lineItem.quantity;
-          //   }
-          // });
+          lineItems ? 
+            lineItems = lineItems.concat(cart.lineItems)
+            :
+            lineItems = cart.lineItems;
           dispatch({ type: GET_CART, cart });
-          dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: cart.lineItems || [] });
+          dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: lineItems});
         })
         .then(() => window.localStorage.removeItem('lineItems'))
         .catch(err => console.log(err));

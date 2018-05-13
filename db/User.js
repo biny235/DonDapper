@@ -99,7 +99,6 @@ User.prototype.generateToken = function(){
 }
 
 User.authenticate = function (user) {
-  console.log(conn)
   const { email, password } = user;
   return User.find({
     where: { email, password },
