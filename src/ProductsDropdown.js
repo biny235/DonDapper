@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-
 import { connect } from 'react-redux';
 
 class ProductsDropdown extends Component {
@@ -35,19 +34,23 @@ class ProductsDropdown extends Component {
         </DropdownToggle>
         <DropdownMenu>
           {categories.map(category => {
-            return (
-              <DropdownItem key={category.id} onClick={() => this.onClick(category.id)}>
-                {location.hash === '#/products' ?
-                  (<div> {category.name} </div>) :
-                  (<Link className="remove-all" to={{ pathname: '/products', state: { id: category.id } }} >
+            if (location.hash === '#/products') {
+              return (
+                <DropdownItem key={category.id} onClick={() => this.onClick(category.id)}>
+                  {category.name}
+                </DropdownItem>);
+            }
+            else {
+              return (
+                <Link key={category.id} className="remove-all" to={{ pathname: '/products', state: { id: category.id } }} >
+                  <DropdownItem onClick={() => this.onClick(category.id)}>
                     {category.name}
-                  </Link>)}
-              </DropdownItem>
-            );
+                  </DropdownItem>
+                </Link>
+              );
+            }
           })}
-          <DropdownItem>
-            <Link className="remove-all" to={'/products'}>All</Link>
-          </DropdownItem>
+          <Link className="remove-all" to={'/products'}><DropdownItem>All</DropdownItem></Link>
         </DropdownMenu>
       </Dropdown>
     );

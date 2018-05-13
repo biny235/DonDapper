@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/all', auth, (req, res, next) => {
-  if (!req.user || !req.user.admin) throw { status: 401 }
+  if (!req.user || !req.user.admin) throw { status: 401 };
   User.findAll({
     where: { id: { $ne: req.user.id } },
     order: ['firstName']
@@ -62,8 +62,7 @@ router.get('/:id/orders', auth, (req, res, next) => {
       user.getOrders({
         where: { status: 'order' },
         include: [{ model: LineItem }]
-      })
-    )
+      }))
     .then(orders => res.send(orders))
     .catch(next);
 });
@@ -73,8 +72,7 @@ router.get('/:id/addresses', auth, (req, res, next) => {
     .then(user =>
       user.getAddresses({
         where: { userId: user.id }
-      })
-    )
+      }))
     .then(addresses => {
       res.send(addresses);
     })
