@@ -269,7 +269,7 @@ input:checked+.slider:before {
 }
 
 .clip {
-    background-image: url('https://media1.mensxp.com/media/content/2015/Oct/genius-shaving-hacks-that-will-make-your-life-easier-and-face-smoother-980x457-1445863687_1100x513.jpg');
+    background-image: url('/dist/images/products.jpg');
     background-attachment: fixed;
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
@@ -279,7 +279,7 @@ input:checked+.slider:before {
 }
 
 .small-clip {
-    background-image: url('https://media1.mensxp.com/media/content/2015/Oct/genius-shaving-hacks-that-will-make-your-life-easier-and-face-smoother-980x457-1445863687_1100x513.jpg');
+    background-image: url('/dist/images/products.jpg');
     background-attachment: fixed;
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
