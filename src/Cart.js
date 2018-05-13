@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
 
-const Cart = ({ cart, lineItems, total }) => {
+const Cart = ({ user, cart, lineItems, total }) => {
   return (
     <div>
       <h1>Cart</h1>
@@ -19,7 +19,7 @@ const Cart = ({ cart, lineItems, total }) => {
           {lineItems.map((lineItem, index) => (
             <LineItem key={lineItem.id || index} lineItem={lineItem} quantity={lineItem.quantity} cart={true} />
           ))}
-          <Link to={'/checkout'} className="btn btn-success">
+          <Link to={'/checkout'} disabled={!user.id} className="btn btn-success">
             Proceed to Checkout
           </Link>
           <div className="order-total">Total:</div>
@@ -41,11 +41,7 @@ const mapStateToProps = ({ cart, lineItems, products }) => {
       return quantity;
     }, 0);
 
-  return {
-    cart,
-    lineItems,
-    total
-  };
+  return { cart, lineItems, total };
 };
 
 export default connect(mapStateToProps)(Cart);
