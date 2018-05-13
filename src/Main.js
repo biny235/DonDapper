@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchCategories, authenticateUser } from './store';
+import {
+  fetchProducts,
+  fetchCategories,
+  authenticateUser,
+  fetchCart
+} from './store';
 import { Container } from 'reactstrap';
 
 import Navigation from './Navigation';
@@ -24,13 +29,18 @@ class Main extends Component {
     window.localStorage.getItem('token') && this.props.authenticateUser();
     this.props.fetchProducts();
     this.props.fetchCategories();
+    this.props.fetchCart();
   }
 
   render() {
     return (
       <Router>
         <div>
-          <Route render={({ history, location }) => <Navigation history={history} path={location.pathname} />} />
+          <Route
+            render={({ history, location }) => (
+              <Navigation history={history} path={location.pathname} />
+            )}
+          />
           <Container>
             <Route path="/" exact render={() => <Home />} />
             <Switch>
@@ -73,7 +83,11 @@ class Main extends Component {
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
               <Route path="/user" exact render={() => <User />} />
-              <Route path="/user/password" exact render={({ history }) => <PasswordChange history={history} />} />
+              <Route
+                path="/user/password"
+                exact
+                render={({ history }) => <PasswordChange history={history} />}
+              />
               <Route
                 path="/test/google"
                 exact
@@ -92,7 +106,8 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProducts()),
     fetchCategories: () => dispatch(fetchCategories()),
-    authenticateUser: () => dispatch(authenticateUser)
+    authenticateUser: () => dispatch(authenticateUser),
+    fetchCart: () => dispatch(fetchCart())
   };
 };
 
