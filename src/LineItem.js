@@ -20,9 +20,8 @@ class LineItem extends Component {
   }
 
   render() {
-    const { lineItem, product, cart } = this.props;
+    const { lineItem, product, cart, quantity } = this.props;
     const { onChange, onDelete } = this;
-    const { quantity } = lineItem;
     if (!lineItem || !product) {
       return null;
     }
@@ -72,7 +71,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = ({ products }, { lineItem }) => {
   const product =
-    products && products.find(product => lineItem.productId === product.id);
+    products && lineItem && products.find(product => lineItem.productId === product.id);
   return {
     product
   };

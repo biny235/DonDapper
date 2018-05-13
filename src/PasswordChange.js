@@ -10,7 +10,8 @@ class PasswordChange extends Component {
       oldPassword: '',
       newPassword: '',
       edited: {},
-      errors: {}
+      errors: {},
+      strength: ''
     };
     this.validators = {
       oldPassword: value => {
@@ -28,6 +29,9 @@ class PasswordChange extends Component {
     const { edited } = this.state;
     edited[name] = true;
     this.setState({ [name]: value, edited, errors: {} });
+    if (name === 'newPassword') {
+      this.testPassword();
+    }
   }
 
   onSubmit(id) {
@@ -49,9 +53,26 @@ class PasswordChange extends Component {
     this.setState({ errors, edited: {}, newPassword: '' });
   }
 
+  testPassword() {
+    const { newPassword } = this.state;
+    const mediumStrength = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+    const highStrength = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    let strength;
+    if (!mediumStrength.test(newPassword)) {
+      strength = `New Password is very weak`;
+    }
+    else if (!highStrength.test(newPassword)) {
+      strength = `New Password could be stronger`;
+    }
+    else {
+      strength = '';
+    }
+    this.setState({ strength });
+  }
+
   render() {
     const { user } = this.props;
-    const { oldPassword, newPassword, errors } = this.state;
+    const { oldPassword, newPassword, errors, strength } = this.state;
     const { onChange, onSubmit } = this;
     return (
       <div>
@@ -74,6 +95,9 @@ class PasswordChange extends Component {
           />
           {errors.oldPassword && <Alert color="info">
             {errors.oldPassword}
+          </Alert>}
+          {strength && !!newPassword.length && <Alert color="info">
+            {strength}
           </Alert>}
           <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={!oldPassword.length || !newPassword.length}>
             Change

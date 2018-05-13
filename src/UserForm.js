@@ -14,7 +14,8 @@ class UserForm extends Component {
         password: props.user.password || '',
       },
       edited: false,
-      error: ''
+      error: '',
+      strength: ''
     };
     this.onChange = this.onChange.bind(this);
     this.setErrors = this.setErrors.bind(this);
@@ -36,6 +37,9 @@ class UserForm extends Component {
     let { user } = this.state;
     user = Object.assign({}, user, { [name]: value });
     this.setState({ user, error: '', edited: true });
+    // if (name === 'password') {
+    //   this.testPassword();
+    // }
   }
 
   onSubmit(id) {
@@ -51,9 +55,26 @@ class UserForm extends Component {
     this.setState({ error });
   }
 
+  testPassword() {
+    const { newPassword } = this.state;
+    const mediumStrength = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+    const highStrength = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    let strength;
+    if (!mediumStrength.test(newPassword)) {
+      strength = `Password is very weak`;
+    }
+    else if (!highStrength.test(newPassword)) {
+      strength = `Password could be stronger`;
+    }
+    else {
+      strength = '';
+    }
+    this.setState({ strength });
+  }
+
   render() {
     const { user } = this.props;
-    const { error, edited } = this.state;
+    const { error, edited, strength } = this.state;
     const { firstName, lastName, email, password } = this.state.user;
     const { onChange, onSubmit } = this;
     const fields = { firstName: 'First Name', lastName: 'Last Name', email: 'E-mail', password: 'Password' };
@@ -93,6 +114,9 @@ class UserForm extends Component {
             />
           }
           {!!error && <Alert color="info">{error}</Alert>}
+          {strength && !!password.length && <Alert color="info">
+            {strength}
+          </Alert>}
           <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={!edited || empty.length}>
             {user.id ? 'Update' : 'Create'}
           </button>

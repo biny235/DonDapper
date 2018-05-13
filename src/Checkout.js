@@ -79,13 +79,10 @@ class Checkout extends Component {
             amount={total * 100}
             currency="USD"
             email={user.email}
-            disabled={!cart.addressId}
             token={onSubmit}
             stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
           >
-            <button type="submit" className="btn btn-success">
-              Check Out
-            </button>
+            <button disabled={!cart.addressId} type='submit' className='btn btn-success'>Check Out</button>
           </StripeCheckout>
         </div>
       </div>
@@ -104,7 +101,7 @@ const mapStateToProps = ({ cart, user, lineItems, products }) => {
       quantity += product.price * line.quantity;
       return quantity;
     }, 0);
-  return { cart, user, address, total };
+  return { cart, user, address, lineItems, total };
 };
 
 const mapDispatchToProps = dispatch => {

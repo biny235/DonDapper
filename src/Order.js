@@ -13,7 +13,7 @@ const Order = ({ order, lineItems, total }) => {
         <div>Total</div>
         {lineItems &&
           lineItems.map(lineItem => (
-            <LineItem key={lineItem.id} line={lineItem} />
+            <LineItem key={lineItem.id} lineItem={lineItem} />
           ))}
         <div className="order-total">Order Total</div>
         <div>$ {total}</div>
@@ -30,9 +30,9 @@ const mapStateToProps = (
   lineItems = lineItems || (order && order.lineItems);
   const total =
     lineItems &&
-    lineItems.reduce((amounts, line) => {
-      const product = products.find(_product => _product.id === line.productId);
-      amounts += product.price * line.quantity;
+    lineItems.reduce((amounts, lineItem) => {
+      const product = products.find(_product => _product.id === lineItem.productId);
+      amounts += product.price * lineItem.quantity;
       return amounts;
     }, 0);
   return { user, order, products, lineItems, total };
