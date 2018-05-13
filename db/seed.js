@@ -32,12 +32,12 @@ const generateOrder = (orderId) => {
     }),
     LineItem.create({
       quantity: Math.floor(Math.random() * 4) + 1,
-      productId: 4,
+      productId: 2,
       orderId
     }),
     LineItem.create({
       quantity: Math.floor(Math.random() * 5) + 1,
-      productId: 7,
+      productId: 3,
       orderId
     })
   ]);

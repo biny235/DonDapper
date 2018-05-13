@@ -275,9 +275,9 @@ const deleteLineItem = lineItem => {
 // CART
 const fetchCart = userId => {
   return dispatch => {
-    const lineItems =
-      JSON.parse(window.localStorage.getItem('lineItems')) || [];
     if (!userId) {
+      const lineItems =
+        JSON.parse(window.localStorage.getItem('lineItems')) || [];
       dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: lineItems });
     } else {
       // const userId = user.id;
@@ -288,44 +288,37 @@ const fetchCart = userId => {
           // if (
           //   window.localStorage.getItem('firstName') === user.firstName &&
           //   window.localStorage.getItem('lastName') === user.lastName
-          // ) {
-          const _lineItems = JSON.parse(
-            window.localStorage.getItem('lineItems')
-          );
-          _lineItems
-            ? _lineItems.map(lineItem => {
-                lineItem.orderId = cart.id;
-                axios
-                  .post(`/api/lineItems`, lineItem)
-                  .then(res => res.data)
-                  .then(lineItem => {
-                    if (history) {
-                      dispatch({ type: CREATE_LINE_ITEM, lineItem });
-                      history.push(`/cart`);
-                    }
-                  })
-                  .catch(err => console.log(err));
-              })
-            : null;
-          //}
-          // const products = {};
-          // const cartLineItems = lineItems.map(lineItem => {
-          //   lineItem.orderId = cart.id;
-          //   return lineItem;
-          // })
-          //   .concat(cart.lineItems);
-          // cartLineItems.forEach(lineItem => {
-          //   if (!products[lineItem.productId]) {
-          //     products[lineItems.productId] = lineItem.quantity;
-          //   }
-          //   else {
-          //     products[lineItems.productId] += lineItem.quantity;
-          //   }
-          // });
+          // ) {}
           dispatch({ type: GET_CART, cart });
           dispatch({
             type: GET_CART_LINE_ITEMS,
             cartLineItems: cart.lineItems || []
+          });
+          const cartLineItems = JSON.parse(
+            window.localStorage.getItem('lineItems')
+          );
+          !!cartLineItems && cartLineItems.forEach(lineItem => {
+            const cartLineItem = cart.lineItems.find(cartLineItem => cartLineItem.productId === lineItem.productId);
+            if (cartLineItem) {
+              const quantity = cartLineItem.quantity + lineItem.quantity;
+              // editLineItem({ quantity }, cartLineItem.id);
+              axios
+                .put(`/api/lineItems/${cartLineItem.id}`, { quantity })
+                .then(res => res.data)
+                .then(lineItem => dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
+                .then(() => history && history.push(`/cart`))
+                .catch(err => console.log(err));
+            }
+            else {
+              lineItem.orderId = cart.id;
+              axios
+                .post(`/api/lineItems`, lineItem)
+                .then(res => res.data)
+                .then(lineItem => {
+                  dispatch({ type: CREATE_LINE_ITEM, lineItem });
+                })
+                .catch(err => console.log(err));
+            }
           });
         })
         .then(() => window.localStorage.removeItem('lineItems'))

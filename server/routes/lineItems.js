@@ -9,7 +9,6 @@ router.get('', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  console.log('******************');
   LineItem.create(req.body)
     .then(lineItem => res.send(lineItem))
     .catch(next);
