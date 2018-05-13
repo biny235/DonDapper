@@ -44,7 +44,6 @@ class AddToCart extends Component {
   render() {
     const { onChange, onSubmit } = this;
     const { quantity } = this.state;
-    const { cart } = this.props;
     return (
       <div>
         <form>
@@ -54,6 +53,7 @@ class AddToCart extends Component {
             value={quantity}
             type="number"
             step="1"
+            min="1"
           />
           <button type="submit" onClick={onSubmit}>
             Add to Cart
@@ -64,7 +64,7 @@ class AddToCart extends Component {
   }
 }
 
-const mapStateToProps = ({ cart, user, lineItems, history }, { product }) => {
+const mapStateToProps = ({ cart, user, lineItems }, { product }) => {
   const lineItem =
     lineItems && lineItems.find(lineItem => lineItem.productId === product.id);
   user = user || {};
