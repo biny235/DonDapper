@@ -64,75 +64,80 @@ class Dashboard extends Component {
 
     return !user.admin ? null : (
       <div>
-        <h1>Users</h1>
-        {users &&
-          users.map(_user => {
-            return (
-              <div key={_user.id}>
-                <strong>{_user.name}</strong>
-                {'  '} <Link to="#">{_user.email}</Link>
+        <div>
+          <h1>Users</h1>
+          {users &&
+            users.map(_user => {
+              return (
+                <div key={_user.id}>
+                  <strong>{_user.name}</strong>
+                  {'  '} <Link to="#">{_user.email}</Link>
+                  <div>
+                    <label className="switch">
+                      <input
+                        checked={_user.admin}
+                        type="checkbox"
+                        datatype="toggle"
+                        onChange={() => makeAdmin(_user)}
+                      />
+                      <span className="slider" />
+                    </label>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+        <div>
+          <h1>All Orders</h1>
+          <div>
+            <h3>Order ID</h3>
+          </div>
+          {orders.length &&
+            orders.map(order => (
+              <div key={order.id}>
+                <Link to={`/orders/${order.id}`}> {order.id}</Link>
                 <div>
                   <label className="switch">
                     <input
-                      checked={_user.admin}
+                      checked={order.shipped}
                       type="checkbox"
                       datatype="toggle"
-                      onChange={() => makeAdmin(_user)}
+                      onChange={() => onChange(order)}
                     />
                     <span className="slider" />
                   </label>
                 </div>
               </div>
+            ))}
+        </div>
+        <div>
+          <h1>Products By Category</h1>
+          {categories.map(category => {
+            return (
+              <div key={category.id}>
+                <h2>{category.name}</h2>
+                {products.map(product => {
+                  if (product.categoryId === category.id) {
+                    return (
+                      <button
+                        key={product.id}
+                        onClick={() => onClick(product.id)}
+                      >
+                        {product.name}
+                      </button>
+                    );
+                  }
+                })}
+              </div>
             );
           })}
-
-        <h1>All Orders</h1>
-        <div>
-          <h3>Order ID</h3>
-        </div>
-        {orders.length &&
-          orders.map(order => (
-            <div key={order.id}>
-              <Link to={`/orders/${order.id}`}> {order.id}</Link>
-              <div>
-                <label className="switch">
-                  <input
-                    checked={order.shipped}
-                    type="checkbox"
-                    datatype="toggle"
-                    onChange={() => onChange(order)}
-                  />
-                  <span className="slider" />
-                </label>
-              </div>
-            </div>
-          ))}
-        <h1>Products By Category</h1>
-        {categories.map(category => {
-          return (
-            <div key={category.id}>
-              <h2>{category.name}</h2>
-              {products.map(product => {
-                if (product.categoryId === category.id) {
-                  return (
-                    <button
-                      key={product.id}
-                      onClick={() => onClick(product.id)}
-                    >
-                      {product.name}
-                    </button>
-                  );
-                }
-              })}
-            </div>
-          );
-        })}
-        <br />
-        {showForm && <strong onClick={hide}>hide</strong>}
-        {showForm && <ProductForm productId={productId} hide={hide} />}
-        <br />
-        <div>
-          <button onClick={() => onClick(null)}>Add New Product</button>
+          <br />
+          {showForm && <strong onClick={hide}>hide</strong>}
+          {showForm && <ProductForm productId={productId} hide={hide} />}
+          <br />
+          <div>
+            <button onClick={() => onClick(null)}>Add New Product</button>
+          </div>
         </div>
       </div>
     );
