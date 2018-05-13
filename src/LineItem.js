@@ -10,9 +10,9 @@ class LineItem extends Component {
   }
 
   onChange(ev, id) {
-    const { line } = this.props;
-    line[ev.target.name] = ev.target.value;
-    this.props.editLineItem(line, id);
+    const { lineItem } = this.props;
+    lineItem[ev.target.name] = ev.target.value;
+    this.props.editLineItem(lineItem, id);
   }
 
   onDelete(ev, id) {
@@ -21,10 +21,10 @@ class LineItem extends Component {
   }
 
   render() {
-    const { line, product, cart } = this.props;
+    const { lineItem, product, cart } = this.props;
     const { onChange, onDelete } = this;
-    const { quantity } = line;
-    if (!line || !product) {
+    const { quantity } = lineItem;
+    if (!lineItem || !product) {
       return null;
     }
     return (
@@ -35,26 +35,26 @@ class LineItem extends Component {
         </div>
         <div>$ {product.price}</div>
         {!cart ? (
-          <div>{line.quantity}</div>
+          <div>{lineItem.quantity}</div>
         ) : (
-          <form>
-            <input
-              className="order-qty"
-              onChange={ev => onChange(ev, line.id)}
-              name="quantity"
-              value={quantity}
-              type="number"
-              step="1"
-              min="1"
-            />
-          </form>
-        )}
-        <div>$ {line.quantity * product.price}</div>
+            <form>
+              <input
+                className="order-qty"
+                onChange={ev => onChange(ev, lineItem.id)}
+                name="quantity"
+                value={quantity}
+                type="number"
+                step="1"
+                min="1"
+              />
+            </form>
+          )}
+        <div>$ {lineItem.quantity * product.price}</div>
         {cart && (
           <button
             className="btn btn-link"
             type="submit"
-            onClick={ev => onDelete(ev, line)}
+            onClick={ev => onDelete(ev, lineItem)}
           >
             &#10060;
           </button>
@@ -71,12 +71,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const mapStateToProps = ({ products }, { line, cart }) => {
+const mapStateToProps = ({ products }, { lineItem }) => {
   const product =
-    products && products.find(product => line.productId === product.id);
+    products && products.find(product => lineItem.productId === product.id);
   return {
-    product,
-    cart
+    product
   };
 };
 
