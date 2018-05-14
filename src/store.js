@@ -1,10 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
 import axios from 'axios';
 
-// Setting axios headers
+/*
+HEADERS
+*/
+
 let token = window.localStorage.getItem('token');
 axios.defaults.headers.common.token = token;
 
@@ -200,6 +202,7 @@ const createOrUpdateAddress = (address, cart) => {
       });
   };
 };
+
 // LINE ITEMS
 const addLineItem = (lineItem, user, history) => {
   return dispatch => {

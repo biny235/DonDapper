@@ -10,7 +10,7 @@ const Address = conn.define(
       validate: {
         notEmpty: {
           args: [true],
-          msg: 'you must enter a street address!'
+          msg: 'Street cannot be empty'
         }
       }
     },
@@ -24,7 +24,7 @@ const Address = conn.define(
       validate: {
         notEmpty: {
           args: [true],
-          msg: 'you must enter a city!'
+          msg: 'City cannot be empty'
         }
       }
     },
@@ -32,9 +32,17 @@ const Address = conn.define(
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
+        is: {
+          args: ['^[a-z]+$', 'i'],
+          msg: 'State is invalid'
+        },
+        isLength: {
+          args: { min: 2, max: 2 },
+          msg: 'State is invalid'
+        },
         notEmpty: {
           args: [true],
-          msg: 'you must enter a state!'
+          msg: 'State cannot be empty'
         }
       }
     },
@@ -44,7 +52,15 @@ const Address = conn.define(
       validate: {
         notEmpty: {
           args: [true],
-          msg: 'you must enter a zip!'
+          msg: 'Zip Code cannot be empty'
+        },
+        isLength: {
+          args: { min: 5, max: 5 },
+          msg: 'Zip Code is invalid'
+        },
+        isInt: {
+          args: [true],
+          msg: 'Zip Code is invalid'
         }
       }
     },
