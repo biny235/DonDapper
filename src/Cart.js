@@ -3,13 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
 
-const Cart = ({ cart, lineItems, total }) => {
+const Cart = ({ lineItems, total }) => {
   return (
     <div>
       <h1>Cart</h1>
-      {cart.id &&
-        !lineItems.length && <div>Your have no items in your cart.</div>}
-      {!!lineItems.length && (
+      {!lineItems.length ? <div>Your have no items in your cart.</div> : (
         <div className="order order-container">
           <div>Item</div>
           <div>Price</div>
