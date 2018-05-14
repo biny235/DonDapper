@@ -45,9 +45,10 @@ class AddToCart extends Component {
     const { onChange, onSubmit } = this;
     const { quantity } = this.state;
     return (
-      <div>
-        <form>
+      <div style={{'width': '50%'}}>
+        <form className="input-group">
           <input
+            className="form-control"
             onChange={onChange}
             name="quantity"
             value={quantity}
@@ -55,9 +56,13 @@ class AddToCart extends Component {
             step="1"
             min="1"
           />
-          <button type="submit" onClick={onSubmit}>
-            Add to Cart
-          </button>
+          <div className="input-group-append">
+            <button type="submit" 
+            className="btn btn-outline-success"
+            onClick={onSubmit}>
+              Add to Cart
+            </button>
+          </div>
         </form>
       </div>
     );
