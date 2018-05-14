@@ -78,7 +78,7 @@ class Checkout extends Component {
                   </div>
                 )}
             <AddressDropdown />
-            <StripeCheckout
+            {/* <StripeCheckout
               name="Payment"
               description="Please review your order"
               panelLabel="Place Order - "
@@ -87,7 +87,7 @@ class Checkout extends Component {
               email={user.email}
               token={onSubmit}
               stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
-            >
+            > */}
             <button
               disabled={!cart.addressId}
               type="submit"
@@ -95,7 +95,7 @@ class Checkout extends Component {
             >
               Check Out
               </button>
-            </StripeCheckout>
+            {/* </StripeCheckout> */}
           </div>
         </div>
       );

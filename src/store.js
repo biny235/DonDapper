@@ -305,8 +305,8 @@ const fetchCart = userId => {
           const cartLineItems = JSON.parse(
             window.localStorage.getItem('lineItems')
           );
-          !!cartLineItems && cartLineItems.forEach(lineItem => {
-            const cartLineItem = cart.lineItems.find(cartLineItem => cartLineItem.productId === lineItem.productId);
+          cartLineItems && cartLineItems.forEach(lineItem => {
+            const cartLineItem = cart.lineItems && cart.lineItems.find(cartLineItem => cartLineItem.productId === lineItem.productId);
             if (cartLineItem) {
               const quantity = cartLineItem.quantity + lineItem.quantity;
               axios

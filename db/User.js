@@ -36,7 +36,7 @@ const User = conn.define(
       type: Sequelize.STRING,
       unique: {
         args: [true],
-        msg: 'E-mail is taken'
+        msg: 'E-mail is already taken'
       },
       allowNull: false,
       validate: {
@@ -84,7 +84,7 @@ const User = conn.define(
   }
 );
 
-User.findOrCreateCart = function(userId) {
+User.findOrCreateCart = function (userId) {
   return conn.models.order.findOrCreate({
     where: { status: 'cart', userId },
     defaults: { status: 'cart', userId },
@@ -92,11 +92,11 @@ User.findOrCreateCart = function(userId) {
   });
 };
 
-User.prototype.generateToken = function() {
+User.prototype.generateToken = function () {
   return jwt.encode({ id: this.id }, secret);
 };
 
-User.authenticate = function(user) {
+User.authenticate = function (user) {
   const { email, password } = user;
   return User.find({
     where: { email, password },
@@ -109,7 +109,7 @@ User.authenticate = function(user) {
   });
 };
 
-User.exchangeToken = function(token) {
+User.exchangeToken = function (token) {
   try {
     const id = jwt.decode(token, secret).id;
     return User.findById(id, {
