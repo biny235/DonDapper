@@ -17,7 +17,7 @@ const Cart = ({ lineItems, total }) => {
           {lineItems.map((lineItem, index) => (
             <LineItem key={lineItem.id || index} lineItem={lineItem} quantity={lineItem.quantity} cart={true} />
           ))}
-          <Link to={'/checkout'} className="btn btn-success">
+          <Link to="/checkout" className="btn btn-success">
             Proceed to Checkout
           </Link>
           <div className="order-total">Total:</div>
@@ -34,7 +34,7 @@ const mapStateToProps = ({ cart, lineItems, products }) => {
     lineItems.reduce((quantity, lineItem) => {
       const product =
         products.length &&
-        products.find(_product => _product.id === lineItem.productId);
+        products.find(product => product.id === lineItem.productId);
       if (product) {
         quantity += product.price * lineItem.quantity;
       }

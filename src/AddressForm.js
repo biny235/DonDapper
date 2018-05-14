@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import { createOrUpdateAddress, editOrder } from './store';
+import { createOrUpdateAddress, editOrder, deleteAddress } from './store';
 import { connect } from 'react-redux';
 
 class AddressForm extends Component {
@@ -19,6 +19,7 @@ class AddressForm extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onDelete = this.onDelete.bind(this);
     this.onCancel = this.onCancel.bind(this);
     this.setError = this.setError.bind(this);
   }
@@ -46,18 +47,24 @@ class AddressForm extends Component {
   }
 
   onSubmit() {
-    const { address, error } = this.state;
+    const { address } = this.state;
     const { user, cart } = this.props;
     address.userId = user && user.id;
     address.id = this.props.addressId;
+    this.setState({ edited: false });
     this.props.createOrUpdateAddress(address, cart)
+      .then(() => {
+        this.props.onEdit();
+      })
       .catch(err => {
         this.setError(err.response.data);
       });
-    this.setState({ edited: false });
-    if (error) {
-      this.props.onEdit();
-    }
+  }
+
+  onDelete() {
+    const { address } = this.props;
+    this.props.deleteAddress(address);
+    this.props.onEdit();
   }
 
   onCancel() {
@@ -71,7 +78,7 @@ class AddressForm extends Component {
   render() {
     const { error, address, edited } = this.state;
     const { lineOne, lineTwo, city, state, zipCode } = address;
-    const { onChange, onSubmit, onCancel } = this;
+    const { onChange, onSubmit, onDelete, onCancel } = this;
     const fields = {
       lineOne: 'Street',
       city: 'City',
@@ -93,10 +100,13 @@ class AddressForm extends Component {
             {error}
           </Alert>
         }
-        <button className="btn btn-success" type="submit" onClick={onSubmit} disabled={!edited || empty.length}>
+        <button className="btn btn-primary" type="submit" onClick={onSubmit} disabled={!edited || empty.length}>
           Save Address
         </button>
-        <button className="btn btn-danger" type="submit" onClick={onCancel}>
+        <button className="btn btn-danger" type="submit" onClick={onDelete}>
+          Delete Address
+        </button>
+        <button className="btn btn-warning" type="submit" onClick={onCancel}>
           Cancel
         </button>
       </div>
@@ -115,6 +125,7 @@ const mapStateToProps = ({ user }, { cart }) => {
 const mapDispatchToProps = dispatch => {
   return {
     editOrder: order => dispatch(editOrder(order)),
+    deleteAddress: address => dispatch(deleteAddress(address)),
     createOrUpdateAddress: (address, id) =>
       dispatch(createOrUpdateAddress(address, id))
   };

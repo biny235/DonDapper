@@ -203,6 +203,17 @@ const createOrUpdateAddress = (address, cart) => {
   };
 };
 
+const deleteAddress = (address) => {
+  return dispatch => {
+    return axios.delete(`/api/addresses/${address.id}`)
+      .then(res => res.data)
+      .then(() => {
+        // dispatch(editOrder({ id: cart.id, addressId: address.id }));
+        dispatch(authenticateUser);
+      });
+  };
+};
+
 // LINE ITEMS
 const addLineItem = (lineItem, user, history) => {
   return dispatch => {
@@ -356,6 +367,7 @@ const userReducer = (state = {}, action) => {
   }
   return state;
 };
+
 const usersReducer = (state = [], action) => {
   switch (action.type) {
     case GET_USERS:
@@ -437,6 +449,7 @@ export {
   editLineItem,
   deleteLineItem,
   createOrUpdateUser,
+  deleteAddress,
   logout,
   authenticateUser,
   createOrUpdateAddress,

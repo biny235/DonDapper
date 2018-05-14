@@ -64,12 +64,12 @@ class User extends Component {
               {password ? (
                 <div>
                   <PasswordChange onUpdate={onUpdate} />
-                  <button className="btn btn-danger" style={{ "width": "100%" }} onClick={passwordClick}> Cancel </button>
+                  <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Cancel </button>
                 </div>
               ) : (
                   <div>
                     <UserForm />
-                    <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Change Password </button>
+                    <button className="btn btn-primary" style={{ "width": "100%" }} onClick={passwordClick}> Change Password </button>
                   </div>
                 )}
             </div>
