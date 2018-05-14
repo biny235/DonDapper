@@ -6,7 +6,6 @@ import axios from 'axios';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import Autocomplete from './Autocomplete';
-import LoginModal from './LoginModal';
 import Order from './Order';
 
 class Checkout extends Component {
@@ -49,7 +48,12 @@ class Checkout extends Component {
     const { user, cart, address, lineItems, total } = this.props;
     const { editing } = this.state;
     if (!user.id) {
-      return <LoginModal />;
+      return (
+        <div>
+          <h1>Review Order</h1>
+          <div>Please log in or sign up to check out.</div>
+        </div>
+      );
     } else {
       return (
         <div className="checkout">
@@ -64,18 +68,17 @@ class Checkout extends Component {
             ) : editing ? (
               <AddressForm cart={cart} onEdit={onEdit} />
             ) : (
-              <div>
-                <div>
-                  <div>{address.fullAddress}</div>
-                  <button className="btn btn-warning" onClick={onEdit}>
-                    Edit Address
+                  <div>
+                    <div>
+                      <div>{address && address.fullAddress}</div>
+                      <button className="btn btn-warning" onClick={onEdit}>
+                        Edit Address
                   </button>
-                </div>
-              </div>
-            )}
+                    </div>
+                  </div>
+                )}
             <AddressDropdown />
             <StripeCheckout
-              className="btn btn-success"
               name="Payment"
               description="Please review your order"
               panelLabel="Place Order - "
@@ -105,11 +108,13 @@ const mapStateToProps = ({ cart, user, lineItems, products }) => {
     user.addresses &&
     user.addresses.find(address => address.id === cart.addressId);
   const total =
-    user.id && 
+    user.id &&
     lineItems &&
-    lineItems.reduce((quantity, line) => {
-      const product = products.find(product => product.id === line.productId);
-      quantity += product.price * line.quantity;
+    lineItems.reduce((quantity, lineItem) => {
+      const product = products.find(product => product.id === lineItem.productId);
+      if (product) {
+        quantity += product.price * lineItem.quantity;
+      }
       return quantity;
     }, 0);
   return { cart, user, address, lineItems, total };

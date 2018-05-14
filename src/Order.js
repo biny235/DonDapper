@@ -12,8 +12,8 @@ const Order = ({ order, lineItems, total }) => {
         <div>Qty</div>
         <div>Total</div>
         {lineItems &&
-          lineItems.map(lineItem => (
-            <LineItem key={lineItem.id} lineItem={lineItem} />
+          lineItems.map((lineItem, index) => (
+            <LineItem key={lineItem.id || index} lineItem={lineItem} />
           ))}
         <div className="order-total">Order Total</div>
         <div>$ {total}</div>
