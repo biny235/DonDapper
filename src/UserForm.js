@@ -18,7 +18,7 @@ class UserForm extends Component {
       strength: ''
     };
     this.onChange = this.onChange.bind(this);
-    this.setErrors = this.setErrors.bind(this);
+    this.setError = this.setError.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -34,9 +34,6 @@ class UserForm extends Component {
 
   onChange(ev) {
     const { name, value } = ev.target;
-    if (name === 'lastName' || name === 'firstName')
-      window.localStorage.setItem(name, value);
-
     let { user } = this.state;
     user = Object.assign({}, user, { [name]: value });
     this.setState({ user, error: '', edited: true });
@@ -49,12 +46,12 @@ class UserForm extends Component {
     const user = Object.assign({}, { id }, this.state.user);
     this.props.createOrUpdateUser(user)
       .catch(err => {
-        this.setErrors(err.response.data);
+        this.setError(err.response.data);
       });
-    this.setState({ user, error: '', edited: false, strength: '' });
+    this.setState({ user, edited: false, strength: '' });
   }
 
-  setErrors(error) {
+  setError(error) {
     this.setState({ error });
   }
 
