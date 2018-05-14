@@ -78,8 +78,7 @@ class Checkout extends Component {
                   </div>
                 )}
             <AddressDropdown />
-            {/* <StripeCheckout
-              className="btn btn-success"
+            <StripeCheckout
               name="Payment"
               description="Please review your order"
               panelLabel="Place Order - "
@@ -88,7 +87,7 @@ class Checkout extends Component {
               email={user.email}
               token={onSubmit}
               stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
-            > */}
+            >
             <button
               disabled={!cart.addressId}
               type="submit"
@@ -96,7 +95,7 @@ class Checkout extends Component {
             >
               Check Out
               </button>
-            {/* </StripeCheckout> */}
+            </StripeCheckout>
           </div>
         </div>
       );
@@ -109,6 +108,7 @@ const mapStateToProps = ({ cart, user, lineItems, products }) => {
     user.addresses &&
     user.addresses.find(address => address.id === cart.addressId);
   const total =
+    user.id &&
     lineItems &&
     lineItems.reduce((quantity, lineItem) => {
       const product = products.find(product => product.id === lineItem.productId);

@@ -8,7 +8,6 @@ class LineItem extends Component {
     this.onChange = this.onChange.bind(this);
     this.onDelete = this.onDelete.bind(this);
   }
-
   onChange(ev, id) {
     const { lineItem } = this.props;
     lineItem.quantity = ev.target.value * 1;

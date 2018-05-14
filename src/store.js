@@ -208,7 +208,6 @@ const deleteAddress = (address) => {
     return axios.delete(`/api/addresses/${address.id}`)
       .then(res => res.data)
       .then(() => {
-        // dispatch(editOrder({ id: cart.id, addressId: address.id }));
         dispatch(authenticateUser);
       });
   };
