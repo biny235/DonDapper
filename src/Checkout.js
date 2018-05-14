@@ -6,7 +6,7 @@ import axios from 'axios';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import Autocomplete from './Autocomplete';
-import AccountDropdown from './AccountDropdown';
+import LoginModal from './LoginModal';
 import Order from './Order';
 
 class Checkout extends Component {
@@ -49,7 +49,7 @@ class Checkout extends Component {
     const { user, cart, address, lineItems, total } = this.props;
     const { editing } = this.state;
     if (!user.id) {
-      return <AccountDropdown />;
+      return <LoginModal />;
     } else {
       return (
         <div className="checkout">
@@ -105,6 +105,7 @@ const mapStateToProps = ({ cart, user, lineItems, products }) => {
     user.addresses &&
     user.addresses.find(address => address.id === cart.addressId);
   const total =
+    user.id && 
     lineItems &&
     lineItems.reduce((quantity, line) => {
       const product = products.find(product => product.id === line.productId);
