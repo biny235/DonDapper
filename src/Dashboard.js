@@ -163,7 +163,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(showUsers());
     },
     createOrUpdateUser: user => {
-      //console.log(user);
       dispatch(createOrUpdateUser(user, null, true));
     }
   };

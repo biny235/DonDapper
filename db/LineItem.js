@@ -4,14 +4,11 @@ const { Sequelize } = conn;
 const LineItem = conn.define('lineItem', {
   quantity: {
     type: Sequelize.INTEGER,
-    allowNull: {
-      args: false,
-      msg: 'quantity muse be at least 1'
-    },
+    allowNull: false,
     validate: {
       min: {
         args: 1,
-        msg: 'quantity muse be at least 1'
+        msg: 'Quantity must be at least 1'
       }
     }
   }

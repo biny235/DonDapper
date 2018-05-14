@@ -3,10 +3,6 @@ import { Alert } from 'reactstrap';
 import { createOrUpdateAddress, editOrder } from './store';
 import { connect } from 'react-redux';
 
-let setErrors = function (err) {
-  this.setState({ errors: err });
-};
-
 class AddressForm extends Component {
   constructor(props) {
     super(props);
@@ -18,14 +14,13 @@ class AddressForm extends Component {
         state: props.state || '',
         zipCode: props.zipCode || ''
       },
-      errors: '',
-      inputEdited: {}
+      error: '',
+      edited: false
     };
     this.onChange = this.onChange.bind(this);
-    this.onClick = this.onClick.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
-    this.setErrors = setErrors.bind(this);
-    this.clearErrors = this.clearErrors.bind(this);
+    this.setError = this.setError.bind(this);
   }
 
   componentDidMount() {
@@ -45,50 +40,60 @@ class AddressForm extends Component {
 
   onChange(ev) {
     const { name, value } = ev.target;
-    const { inputEdited } = this.state;
     let { address } = this.state;
-    inputEdited[name] = true;
     address = Object.assign({}, address, { [name]: value });
-    this.setState({ address });
+    this.setState({ address, error: '', edited: true });
   }
 
-  onClick() {
-    const { address } = this.state;
+  onSubmit() {
+    const { address, error } = this.state;
     const { user, cart } = this.props;
     address.userId = user && user.id;
     address.id = this.props.addressId;
-    this.props.createOrUpdateAddress(address, cart);
-    this.props.onEdit();
+    this.props.createOrUpdateAddress(address, cart)
+      .catch(err => {
+        this.setError(err.response.data);
+      });
+    this.setState({ edited: false });
+    if (error) {
+      this.props.onEdit();
+    }
   }
 
   onCancel() {
     this.props.onEdit();
   }
 
-  clearErrors() {
-    this.setState({ errors: '' });
+  setError(error) {
+    this.setState({ error });
   }
 
   render() {
-    const { errors, address, inputEdited } = this.state;
+    const { error, address, edited } = this.state;
     const { lineOne, lineTwo, city, state, zipCode } = address;
-    const { onChange, onClick, onCancel } = this;
-    const edited = Object.keys(inputEdited).some(field => field);
+    const { onChange, onSubmit, onCancel } = this;
+    const fields = {
+      lineOne: 'Street',
+      city: 'City',
+      state: 'State',
+      zipCode: 'Zip COde'
+    };
+    const empty = Object.keys(fields).filter(field => !this.state.address[field]);
     return (
       <div>
-        {errors && (
-          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
-            {errors}
-          </Alert>
-        )}
         <form>
-          <input className="form-control" onChange={onChange} name='lineOne' value={lineOne || ''} placeholder="Street Name" />
+          <input className="form-control" onChange={onChange} name='lineOne' value={lineOne || ''} placeholder="Street" />
           <input className="form-control" onChange={onChange} name='lineTwo' value={lineTwo || ''} placeholder="Apt, Suite, Unit, etc." />
           <input className="form-control" onChange={onChange} name='city' value={city || ''} placeholder="City" />
           <input className="form-control" onChange={onChange} name='state' value={state.toUpperCase() || ''} placeholder="State" maxLength="2" />
           <input className="form-control" onChange={onChange} name='zipCode' value={zipCode || ''} placeholder="Zip Code" maxLength="5" />
         </form>
-        <button className="btn btn-success" type="submit" onClick={onClick} disabled={!edited}>
+        {error &&
+          <Alert color="info">
+            {error}
+          </Alert>
+        }
+        <button className="btn btn-success" type="submit" onClick={onSubmit} disabled={!edited || empty.length}>
           Save Address
         </button>
         <button className="btn btn-danger" type="submit" onClick={onCancel}>
