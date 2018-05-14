@@ -201,34 +201,6 @@ const createOrUpdateAddress = (address, cart) => {
       });
   };
 };
-<<<<<<< HEAD
-
-// CART
-const fetchCart = userId => {
-  return dispatch => {
-    let lineItems = JSON.parse(window.localStorage.getItem('lineItems')) || [];
-    if (!userId) {
-      dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: lineItems });
-    } else {
-      axios
-        .get(`/api/users/${userId}/cart`)
-        .then(res => res.data)
-        .then(cart => {
-          lineItems ? 
-            lineItems = lineItems.concat(cart.lineItems)
-            :
-            lineItems = cart.lineItems;
-          dispatch({ type: GET_CART, cart });
-          dispatch({ type: GET_CART_LINE_ITEMS, cartLineItems: lineItems});
-        })
-        .then(() => window.localStorage.removeItem('lineItems'))
-        .catch(err => console.log(err));
-    }
-  };
-};
-
-=======
->>>>>>> aj
 // LINE ITEMS
 const addLineItem = (lineItem, user, history) => {
   return dispatch => {

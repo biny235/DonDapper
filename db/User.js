@@ -96,11 +96,7 @@ User.prototype.generateToken = function() {
   return jwt.encode({ id: this.id }, secret);
 };
 
-<<<<<<< HEAD
-User.authenticate = function (user) {
-=======
 User.authenticate = function(user) {
->>>>>>> aj
   const { email, password } = user;
   return User.find({
     where: { email, password },
