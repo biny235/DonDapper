@@ -39,7 +39,6 @@ const GET_CART_LINE_ITEMS = 'GET_CART_LINE_ITEMS';
 const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
 const DELETE_LINE_ITEM = 'DELETE_LINE_ITEM';
-const SET_LINE_ITEMS = 'SET_LINE_ITEMS';
 
 // LOGOUT
 const RESET_STATE = 'RESET_STATE';
@@ -204,6 +203,16 @@ const createOrUpdateAddress = (address, cart) => {
   };
 };
 
+const deleteAddress = (address) => {
+  return dispatch => {
+    return axios.delete(`/api/addresses/${address.id}`)
+      .then(res => res.data)
+      .then(() => {
+        dispatch(authenticateUser);
+      });
+  };
+};
+
 // LINE ITEMS
 const addLineItem = (lineItem, user, history) => {
   return dispatch => {
@@ -357,6 +366,7 @@ const userReducer = (state = {}, action) => {
   }
   return state;
 };
+
 const usersReducer = (state = [], action) => {
   switch (action.type) {
     case GET_USERS:
@@ -438,6 +448,7 @@ export {
   editLineItem,
   deleteLineItem,
   createOrUpdateUser,
+  deleteAddress,
   logout,
   authenticateUser,
   createOrUpdateAddress,

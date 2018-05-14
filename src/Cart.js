@@ -3,13 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LineItem from './LineItem';
 
-const Cart = ({ cart, lineItems, total }) => {
+const Cart = ({ lineItems, total }) => {
   return (
     <div>
       <h1>Cart</h1>
-      {cart.id &&
-        !lineItems.length && <div>Your have no items in your cart.</div>}
-      {!!lineItems.length && (
+      {!lineItems.length ? <div>Your have no items in your cart.</div> : (
         <div className="order order-container">
           <div>Item</div>
           <div>Price</div>
@@ -19,7 +17,7 @@ const Cart = ({ cart, lineItems, total }) => {
           {lineItems.map((lineItem, index) => (
             <LineItem key={lineItem.id || index} lineItem={lineItem} quantity={lineItem.quantity} cart={true} />
           ))}
-          <Link to={'/checkout'} className="btn btn-success">
+          <Link to="/checkout" className="btn btn-success">
             Proceed to Checkout
           </Link>
           <div className="order-total">Total:</div>
@@ -36,7 +34,7 @@ const mapStateToProps = ({ cart, lineItems, products }) => {
     lineItems.reduce((quantity, lineItem) => {
       const product =
         products.length &&
-        products.find(_product => _product.id === lineItem.productId);
+        products.find(product => product.id === lineItem.productId);
       if (product) {
         quantity += product.price * lineItem.quantity;
       }
