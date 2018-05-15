@@ -86,7 +86,7 @@ class UserForm extends Component {
     };
     const empty = Object.keys(fields).filter(field => !this.state.user[field]);
     return (
-      <div>
+      <div className="form-inline">
         <div>
           <input
             className="form-control"
