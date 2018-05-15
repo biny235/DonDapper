@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editOrder } from './store';
+import { editOrder } from './redux/orders';
 import {
   Dropdown,
   DropdownToggle,

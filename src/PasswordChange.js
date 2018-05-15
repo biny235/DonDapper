@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import { createOrUpdateUser } from './store';
+import { createOrUpdateUser } from './redux/user';
 import { connect } from 'react-redux';
 
 class PasswordChange extends Component {
@@ -55,16 +55,18 @@ class PasswordChange extends Component {
 
   testPassword() {
     const { newPassword } = this.state;
-    const mediumStrength = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    const highStrength = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    const mediumStrength = new RegExp(
+      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
+    );
+    const highStrength = new RegExp(
+      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+    );
     let strength;
     if (!mediumStrength.test(newPassword)) {
       strength = `New Password is very weak`;
-    }
-    else if (!highStrength.test(newPassword)) {
+    } else if (!highStrength.test(newPassword)) {
       strength = `New Password could be stronger`;
-    }
-    else {
+    } else {
       strength = '';
     }
     this.setState({ strength });
@@ -93,13 +95,18 @@ class PasswordChange extends Component {
             onChange={onChange}
             value={newPassword}
           />
-          {errors.oldPassword && <Alert color="info">
-            {errors.oldPassword}
-          </Alert>}
-          {strength && !!newPassword.length && <Alert color="info">
-            {strength}
-          </Alert>}
-          <button type="submit" className="btn btn-success" style={{ "width": "100%" }} onClick={() => onSubmit(user.id)} disabled={!oldPassword.length || !newPassword.length}>
+          {errors.oldPassword && (
+            <Alert color="info">{errors.oldPassword}</Alert>
+          )}
+          {strength &&
+            !!newPassword.length && <Alert color="info">{strength}</Alert>}
+          <button
+            type="submit"
+            className="btn btn-success"
+            style={{ width: '100%' }}
+            onClick={() => onSubmit(user.id)}
+            disabled={!oldPassword.length || !newPassword.length}
+          >
             Change
           </button>
         </div>

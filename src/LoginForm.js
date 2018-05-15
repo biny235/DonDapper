@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchUser, logout } from './store';
+import { fetchUser, logout } from './redux/user';
 
 class LoginForm extends Component {
   constructor() {
@@ -43,8 +43,18 @@ class LoginForm extends Component {
     }
     return (
       <div className="form-inline">
-        <input className="form-control" onChange={onChange} name="email" type="email" />
-        <input className="form-control" onChange={onChange} name="password" type="password" />
+        <input
+          className="form-control"
+          onChange={onChange}
+          name="email"
+          type="email"
+        />
+        <input
+          className="form-control"
+          onChange={onChange}
+          name="password"
+          type="password"
+        />
         <button className="btn btn-success" type="submit" onClick={onSubmit}>
           Sign In
         </button>
@@ -59,7 +69,7 @@ const mapStateToProps = ({ user }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     fetchUser: user => {
       dispatch(fetchUser(user));
