@@ -53,7 +53,7 @@ class User extends Component {
               <h3>Orders</h3>
               <div className="header-row">
                 <div>ID</div>
-                <div>Shipped</div>
+                <div>Status</div>
                 <div>Total</div>
               </div>
               {orders.map(order => (
