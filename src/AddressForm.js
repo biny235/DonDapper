@@ -79,7 +79,7 @@ class AddressForm extends Component {
     const { error, address, edited } = this.state;
     const { lineOne, lineTwo, city, state, zipCode } = address;
     const { onChange, onSubmit, onDelete, onCancel } = this;
-    const fields = { lineOne: 'Street', city: 'City', state: 'State' };
+    const fields = { lineOne: 'Street', city: 'City', state: 'State', zipCode: 'Zip Code' };
     const empty = Object.keys(fields).filter(field => !this.state.address[field]);
     return (
       <div>

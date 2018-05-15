@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
-import { editOrder } from './store';
 import axios from 'axios';
+import { editOrder } from './store';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import Autocomplete from './Autocomplete';
@@ -19,14 +19,7 @@ class Checkout extends Component {
   }
 
   onSubmit(token) {
-    const { cart, user, total, history } = this.props;
-    const email = {
-      from: '"Grace Shopper" <grace@shopper.com>',
-      to: user.email,
-      subject: 'Order Confirmed',
-      text: `Hi, ${user.firstName}. Your order ID is ${cart.id}.`
-    };
-    // axios.post(`/api/email/send`, email).then(res => res.data);
+    const { cart, user, total, address, history } = this.props;
     const charge = {
       amount: total * 100,
       currency: 'usd',
@@ -34,9 +27,35 @@ class Checkout extends Component {
       source: token.id,
       receipt_email: user.email
     };
+    const email = {
+      from: '"Don Dapper" <donald@don-dapper.com>',
+      to: user.email,
+      subject: 'Order Confirmed',
+      html: `<div>
+        Hi, ${user.firstName}.
+        <br />
+        <br />
+        Here are your order details.
+        <br />
+        <br />
+        Order ID: ${cart.id}
+        <br />
+        Total: $${total}
+        <br />
+        Address:
+        <br />
+        ${address && address.fullAddress}
+        <br />
+        <br />
+        Thank you for your purchase.
+      </div>`
+    };
     axios.post(`/api/stripe/pay`, charge)
       .then(res => res.data)
-      .then(() => this.props.editOrder({ id: cart.id, status: 'order' }, history))
+      .then(() => {
+        this.props.editOrder({ id: cart.id, status: 'order' }, history);
+        axios.post(`/api/email/send`, email).then(res => res.data);
+      })
       .catch(err => console.log(err));
   }
 
@@ -79,13 +98,15 @@ class Checkout extends Component {
                     </div>
                   </div>
                 )}
-            <AddressDropdown />
+            <AddressDropdown onEdit={onEdit} />
             <StripeCheckout
               name="Payment"
               description="Please review your order"
+              image="/images/favicon.png"
               panelLabel="Place Order - "
               amount={total * 100}
               currency="USD"
+              allowRememberMe={false}
               email={user.email}
               token={onSubmit}
               stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"

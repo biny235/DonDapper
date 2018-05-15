@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const db = require('../../db');
-const auth = require('../auth')
-const { Category } = db.models
+const auth = require('../auth');
+const { Category } = db.models;
 
 router.get('', auth, (req, res, next) => {
   Category.findAll()
