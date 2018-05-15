@@ -5,13 +5,12 @@ import { showUsers } from './users';
 
 let token = window.localStorage.getItem('token');
 axios.defaults.headers.common.token = token;
-/* ------------     CONSTANTS      ------------------ */
 
+/* ------------     CONSTANTS      ------------------ */
 const GET_USER = 'GET_USER';
 export const RESET_STATE = 'RESET_STATE';
 
 /* ------------          REDUCER         ------------------ */
-
 export default function reducer(user = {}, action) {
   switch (action.type) {
     case GET_USER:
@@ -41,6 +40,7 @@ export const login = user => {
       });
   };
 };
+
 export const logout = (path, history, dispatch) => {
   window.localStorage.removeItem('token');
   if (path === '/checkout' || path === '/user') {

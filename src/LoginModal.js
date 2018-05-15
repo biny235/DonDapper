@@ -12,6 +12,7 @@ class LoginModal extends Component {
     };
     this.onChange = this.onChange.bind(this);
   }
+
   onChange(slideIndex) {
     this.setState({ slideIndex });
   }
@@ -29,15 +30,10 @@ class LoginModal extends Component {
           </div>
           )}
         <div className="card-body">
-          {
-            slideIndex === 0 ?
-              <div>
-                <LoginForm path={path} history={history} />
-                {user.id && <Link to={'/user'}>Account</Link>}
-              </div>
-              :
-              !user.id && <UserForm />
-          }
+          <div>
+            {slideIndex === 1 && !user.id ? <UserForm /> : <LoginForm path={path} history={history} />}
+            {user.id && <Link to={'/user'}>Account</Link>}
+          </div>
         </div>
       </div>
     );
