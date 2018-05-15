@@ -30,7 +30,7 @@ router.post('/', (req, res, next) => {
     .catch(next);
 });
 
-router.put('/:id', auth, (req, res, next) => {
+router.put('/:userId', auth, (req, res, next) => {
   if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
   User.findById(req.params.id)
     .then(user => {
