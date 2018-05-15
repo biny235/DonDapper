@@ -31,7 +31,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/:userId', auth, (req, res, next) => {
-  if (!req.user || (req.user.id !== req.params.userId || !req.user.admin)) next({ status: 401 });
+  if (!req.user || (req.user.id !== req.params.userId && !req.user.admin)) next({ status: 401 });
   User.findById(req.params.userId)
     .then(user => {
       Object.assign(user, req.body.user);
