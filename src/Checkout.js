@@ -56,7 +56,7 @@ class Checkout extends Component {
       .then(res => res.data)
       .then(() => {
         this.props.editOrder({ id: cart.id, status: 'order' }, history);
-        // axios.post(`/api/email/send`, email).then(res => res.data);
+        axios.post(`/api/email/send`, email).then(res => res.data);
       })
       .catch(err => console.log(err));
   }
