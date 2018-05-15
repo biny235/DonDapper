@@ -42,8 +42,8 @@ class Main extends Component {
             )}
           />
           <Container>
-            <Route path="/" exact render={() => <Home />} />
             <Switch>
+              <Route path="/" exact render={() => <Home />} />
               <Route
                 path="/dashboard"
                 exact
@@ -61,12 +61,6 @@ class Main extends Component {
                   <Product id={match.params.id * 1} history={history} />
                 )}
               />
-              <Route path="/categories" exact render={() => <Categories />} />
-              <Route
-                path="/categories/:id"
-                exact
-                render={({ match }) => <Category id={match.params.id * 1} />}
-              />
               <Route
                 path="/cart"
                 exact
@@ -83,16 +77,6 @@ class Main extends Component {
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
               <Route path="/user" exact render={() => <User />} />
-              <Route
-                path="/user/password"
-                exact
-                render={({ history }) => <PasswordChange history={history} />}
-              />
-              <Route
-                path="/test/google"
-                exact
-                render={() => <Autocomplete />}
-              />
             </Switch>
           </Container>
           <Footer />

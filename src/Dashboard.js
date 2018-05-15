@@ -38,7 +38,6 @@ class Dashboard extends Component {
   makeAdmin(user) {
     user = omit(user, 'name');
     user.admin = !user.admin;
-    console.log(user);
     this.props.createOrUpdateUser(user);
   }
   onClick(productId) {
@@ -71,7 +70,7 @@ class Dashboard extends Component {
               return (
                 <div key={_user.id}>
                   <strong>{_user.name}</strong>
-                  {'  '} <Link to="#">{_user.email}</Link>
+                  {'  '} <Link to={`mailto:${_user.email}`}>{_user.email}</Link>
                   <div>
                     <label className="switch">
                       <input

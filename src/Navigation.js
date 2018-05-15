@@ -14,7 +14,7 @@ import ProductsDropdown from './ProductsDropdown';
 const Navigation = ({ user, counter, history, path }) => {
   return (
     <Navbar color="light" light>
-      <NavbarBrand href="/#/">Grace Shopper</NavbarBrand>
+      <NavbarBrand href="/#/">Don Dapper</NavbarBrand>
       <Nav>
         <NavItem>
           <ProductsDropdown />

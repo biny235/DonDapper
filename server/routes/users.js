@@ -50,8 +50,8 @@ router.post('/login', (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:id/cart', auth, (req, res, next) => {
-  User.findOrCreateCart(req.params.id)
+router.get('/:userId/cart', auth, (req, res, next) => {
+  User.findOrCreateCart(req.params.userId)
     .spread(cart => res.send(cart))
     .catch(next);
 });

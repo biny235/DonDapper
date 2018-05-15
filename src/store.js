@@ -133,7 +133,7 @@ const createOrUpdateUser = (user, history, admin) => {
     return axios[putOrPost](`/api/users/${id ? id : ''}`, { user })
       .then(res => res.data)
       .then(user => {
-        admin ? dispatch(showUsers()) : dispatch(login(user, dispatch));
+        admin ? dispatch(showUsers()) : dispatch(login(user));
         if (history) {
           history.push(`/user`);
         }
