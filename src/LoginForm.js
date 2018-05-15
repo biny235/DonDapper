@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUser, logout } from './redux/user';
+import { Alert } from 'reactstrap';
 
 class LoginForm extends Component {
   constructor() {
@@ -13,30 +14,31 @@ class LoginForm extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onSignOut = this.onSignOut.bind(this);
-    this.setError = this.setError.bind(this);
   }
 
   onChange(ev) {
     const change = {};
     change[ev.target.name] = ev.target.value;
+    change.error = '';
     this.setState(change);
   }
 
   onSubmit() {
     this.props.fetchUser(this.state);
+    if (!this.state.user) {
+      this.setState({ error: 'E-mail or Password is incorrect' });
+    }
   }
 
   onSignOut() {
     const { path, history } = this.props;
     this.props.logout(path, history);
-  }
-
-  setError() {
-
+    this.setState({ error: '' });
   }
 
   render() {
     const { user } = this.props;
+    const { error } = this.state;
     const { onChange, onSubmit, onSignOut } = this;
     if (user.name) {
       return (
@@ -61,6 +63,7 @@ class LoginForm extends Component {
           name="password"
           type="password"
         />
+        {!!error && <Alert color="info">{error}</Alert>}
         <button className="btn btn-success" type="submit" onClick={onSubmit}>
           Sign In
         </button>
