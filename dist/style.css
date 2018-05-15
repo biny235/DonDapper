@@ -295,5 +295,9 @@ input:checked+.slider:before {
 .nav{
     padding-top: 20px;
     display: grid;
-    grid-template-columns: 4fr 1fr 1fr 1fr 2fr
+    grid-template-columns: 4fr 1.5fr 1fr 1fr 1fr
+}
+.footer-logo{
+    height: -webkit-fill-available;
+    filter: invert(100%);
 }
