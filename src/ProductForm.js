@@ -38,7 +38,7 @@ class ProductForm extends Component {
   }
 
   categoryAssign(ev) {
-    let value = ev.target.value;
+    let value = ev.target.value * 1;
     let key = ev.target.name;
     let { product } = this.state;
     product = Object.assign({}, product, { [key]: value });

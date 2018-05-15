@@ -30,9 +30,9 @@ router.post('/', (req, res, next) => {
     .catch(next);
 });
 
-router.put('/:id', auth, (req, res, next) => {
-  if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
-  User.findById(req.params.id)
+router.put('/:userId', auth, (req, res, next) => {
+  if (!req.user || (req.user.id !== req.params.userId && !req.user.admin)) next({ status: 401 });
+  User.findById(req.params.userId)
     .then(user => {
       Object.assign(user, req.body.user);
       return user.save();
