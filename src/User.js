@@ -42,8 +42,11 @@ class User extends Component {
     const { onClick, hide, passwordClick, onUpdate } = this;
     return (
       <div>
-        {!user.id && <h1>Account</h1>}
-        {!user.id ? <div>Please sign in.</div> :
+        {!user.id ? 
+          <div>
+            <h1>Account</h1>
+            Please sign in.
+          </div> :
           <div className="account">
             <h2 className="user">{user.name}</h2>
             <div className="orders">

@@ -14,10 +14,10 @@ class Autocomplete extends Component {
   }
 
   onChange(ev) {
-    ev.target.value.length < 4 ?
+    ev.target.value.length < 3 ?
       this.setState({ predictions: [] })
       :
-      ev.target.value.length > 5 ?
+      ev.target.value.length > 3 ?
         axios.post('/api/google/getpredictions', { input: ev.target.value })
           .then(res => res.data)
           .then(predictions => {

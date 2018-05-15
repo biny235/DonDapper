@@ -48,12 +48,7 @@ const Address = conn.define(
     },
     zipCode: {
       type: Sequelize.STRING,
-      allowNull: false,
       validate: {
-        notEmpty: {
-          args: [true],
-          msg: 'Zip Code cannot be empty'
-        },
         isLength: {
           args: { min: 5, max: 5 },
           msg: 'Zip Code is invalid'
@@ -76,7 +71,7 @@ const Address = conn.define(
   {
     getterMethods: {
       fullAddress() {
-        return `${this.lineOne}${this.lineTwo ? ' ' + this.lineTwo : ''}, ${this.city}, ${this.state} ${this.zipCode}`;
+        return `${this.lineOne}${this.lineTwo ? ' ' + this.lineTwo : ''}, ${this.city}, ${this.state} ${this.zipCode || ''}`;
       }
     }
   }

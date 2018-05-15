@@ -27,7 +27,6 @@ class Checkout extends Component {
       text: `Hi, ${user.firstName}. Your order ID is ${cart.id}.`
     };
     // axios.post(`/api/email/send`, email).then(res => res.data);
-    this.props.editOrder({ id: cart.id, status: 'order' }, history);
     const charge = {
       amount: total * 100,
       currency: 'usd',
@@ -35,7 +34,10 @@ class Checkout extends Component {
       source: token.id,
       receipt_email: user.email
     };
-    axios.post(`/api/stripe/pay`, charge).then(res => res.data);
+    axios.post(`/api/stripe/pay`, charge)
+      .then(res => res.data)
+      .then(()=>this.props.editOrder({ id: cart.id, status: 'order' }, history))
+      .catch(err => console.log(err))
   }
 
   onEdit() {
