@@ -9,6 +9,7 @@ class LoginForm extends Component {
     this.state = {
       email: '',
       password: '',
+      edited: false,
       error: ''
     };
     this.onChange = this.onChange.bind(this);
@@ -20,6 +21,7 @@ class LoginForm extends Component {
     const change = {};
     change[ev.target.name] = ev.target.value;
     change.error = '';
+    change.edited = true;
     this.setState(change);
   }
 
@@ -28,18 +30,21 @@ class LoginForm extends Component {
     if (!this.state.user) {
       this.setState({ error: 'E-mail or Password is incorrect' });
     }
+    this.setState({ edited: false });
   }
 
   onSignOut() {
     const { path, history } = this.props;
     this.props.logout(path, history);
-    this.setState({ error: '' });
+    this.setState({ edited: false, error: '' });
   }
 
   render() {
     const { user } = this.props;
-    const { error } = this.state;
+    const { edited, error } = this.state;
     const { onChange, onSubmit, onSignOut } = this;
+    const fields = { email: 'E-mail', password: 'Password' };
+    const empty = Object.keys(fields).filter(field => !this.state[field]);
     if (user.name) {
       return (
         <div>
@@ -56,15 +61,17 @@ class LoginForm extends Component {
           onChange={onChange}
           name="email"
           type="email"
+          placeholder="E-mail"
         />
         <input
           className="form-control"
           onChange={onChange}
           name="password"
           type="password"
+          placeholder="Password"
         />
         {!!error && <Alert color="info">{error}</Alert>}
-        <button className="btn btn-success" type="submit" onClick={onSubmit}>
+        <button className="btn btn-success" type="submit" onClick={onSubmit} disabled={!edited || empty.length}>
           Sign In
         </button>
       </div>
