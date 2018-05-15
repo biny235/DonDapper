@@ -7,11 +7,13 @@ class LoginForm extends Component {
     super();
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onSignOut = this.onSignOut.bind(this);
+    this.setError = this.setError.bind(this);
   }
 
   onChange(ev) {
@@ -27,6 +29,10 @@ class LoginForm extends Component {
   onSignOut() {
     const { path, history } = this.props;
     this.props.logout(path, history);
+  }
+
+  setError() {
+
   }
 
   render() {
@@ -54,16 +60,12 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = ({ user }) => {
-  return {
-    user
-  };
+  return { user };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUser: user => {
-      dispatch(fetchUser(user));
-    },
+    fetchUser: user => { dispatch(fetchUser(user)) },
     logout: (path, history) => dispatch(logout(path, history, dispatch))
   };
 };

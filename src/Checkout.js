@@ -36,8 +36,8 @@ class Checkout extends Component {
     };
     axios.post(`/api/stripe/pay`, charge)
       .then(res => res.data)
-      .then(()=>this.props.editOrder({ id: cart.id, status: 'order' }, history))
-      .catch(err => console.log(err))
+      .then(() => this.props.editOrder({ id: cart.id, status: 'order' }, history))
+      .catch(err => console.log(err));
   }
 
   onEdit() {
