@@ -16,7 +16,14 @@ const Navigation = ({ user, counter, history, path }) => {
   return (
     <Navbar color="light" light>
       <div className="nav">
-        <Link className="navbar-brand" to="/"><img style={{'width': '25%'}} className="navbar-brand" src="/images/logo.png"/></Link>
+        <Link className="navbar-brand" to="/"><img style={{'width': '25%'}} className="navbar-logo" src="/images/logo.png"/></Link>
+        <div>
+        {user.admin && (
+          <NavItem>
+            <NavLink href="/#/dashboard">Admin Dashboard</NavLink>
+          </NavItem>)
+        }
+        </div>
         <NavItem>
           <ProductsDropdown />
         </NavItem>
@@ -26,11 +33,6 @@ const Navigation = ({ user, counter, history, path }) => {
         <NavItem>
           <AccountDropdown path={path} history={history} />
         </NavItem>
-        {user.admin && (
-          <NavItem>
-            <NavLink href="/#/dashboard">Admin Dashboard</NavLink>
-          </NavItem>)
-        }
       </div>
     </Navbar>
   );

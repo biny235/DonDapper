@@ -8,15 +8,17 @@ const auth = (req, res, next) => {
   User.exchangeToken(req.headers.token).then(user => {
     req.user = user.dataValues;
     next();
-  });
+  })
+  .catch(next)
+
 };
 
 const mustHaveUser = (req, res, next) => {
   if (!req.user) {
-    return next({ status: 401 });
+    throw next({ status: 401 });
   }
-  if (req.user.id !== req.params.userId * 1) return next({ status: 401 });
+  if (req.user.id !== req.params.userId * 1) throw next({ status: 401 });
   next();
 };
 
-module.exports = auth;
+module.exports = auth, mustHaveUser;

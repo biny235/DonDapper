@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const db = require('../../db');
 const auth = require('../auth');
+const mustHaveUser = require('../auth');
 const { User, LineItem } = db.models;
 
 router.get('/', (req, res, next) => {
@@ -30,7 +31,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/:id', auth, (req, res, next) => {
-  if (!req.user) next({ status: 401 });
+  if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
   User.findById(req.params.id)
     .then(user => {
       Object.assign(user, req.body.user);
@@ -51,13 +52,15 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/:userId/cart', auth, (req, res, next) => {
+  if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
   User.findOrCreateCart(req.params.userId)
     .spread(cart => res.send(cart))
     .catch(next);
 });
 
-router.get('/:id/orders', auth, (req, res, next) => {
-  User.findById(req.params.id)
+router.get('/:userId/orders', auth, (req, res, next) => {
+  if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
+  User.findById(req.params.userId)
     .then(user =>
       user.getOrders({
         where: { status: 'order' },
@@ -67,8 +70,9 @@ router.get('/:id/orders', auth, (req, res, next) => {
     .catch(next);
 });
 
-router.get('/:id/addresses', auth, (req, res, next) => {
-  User.findById(req.params.id)
+router.get('/:userId/addresses', [auth, mustHaveUser], (req, res, next) => {
+  if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
+  User.findById(req.params.userId)
     .then(user =>
       user.getAddresses({
         where: { userId: user.id }
