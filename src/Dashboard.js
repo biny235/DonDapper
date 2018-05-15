@@ -22,8 +22,9 @@ class Dashboard extends Component {
     this.makeAdmin = this.makeAdmin.bind(this);
   }
   componentWillReceiveProps(nextProps) {
-    const { history, user } = nextProps;
+    const { history, user,products } = nextProps;
     if (!user.admin) history.push('/');
+    this.props.products=products;
   }
   componentWillMount() {
     this.props.showUsers();
