@@ -32,7 +32,7 @@ router.post('/', (req, res, next) => {
 
 router.put('/:userId', auth, (req, res, next) => {
   if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
-  User.findById(req.params.id)
+  User.findById(req.params.userId)
     .then(user => {
       Object.assign(user, req.body.user);
       return user.save();
