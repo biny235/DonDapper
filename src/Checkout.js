@@ -51,11 +51,12 @@ class Checkout extends Component {
         Thank you for your purchase.
       </div>`
     };
-    axios.post(`/api/stripe/pay`, charge)
+    axios
+      .post(`/api/stripe/pay`, charge)
       .then(res => res.data)
       .then(() => {
         this.props.editOrder({ id: cart.id, status: 'order' }, history);
-        axios.post(`/api/email/send`, email).then(res => res.data);
+        // axios.post(`/api/email/send`, email).then(res => res.data);
       })
       .catch(err => console.log(err));
   }
@@ -96,10 +97,9 @@ class Checkout extends Component {
                   <button className="btn btn-warning" onClick={onEdit}>
                     Edit Address
                   </button>
-
-                    </div>
-                  </div>
-                )}
+                </div>
+              </div>
+            )}
             <AddressDropdown onEdit={onEdit} />
             <StripeCheckout
               name="Payment"
