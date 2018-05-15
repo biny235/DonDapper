@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { deleteLineItem, editLineItem } from './store';
+import { deleteLineItem, editLineItem } from './redux/lineitems';
 import { connect } from 'react-redux';
 
 class LineItem extends Component {
@@ -35,18 +35,18 @@ class LineItem extends Component {
         {!cart ? (
           <div>{lineItem.quantity}</div>
         ) : (
-            <form>
-              <input
-                className="order-qty"
-                onChange={ev => onChange(ev, lineItem.id)}
-                name="quantity"
-                value={quantity}
-                type="number"
-                step="1"
-                min="1"
-              />
-            </form>
-          )}
+          <form>
+            <input
+              className="order-qty"
+              onChange={ev => onChange(ev, lineItem.id)}
+              name="quantity"
+              value={quantity}
+              type="number"
+              step="1"
+              min="1"
+            />
+          </form>
+        )}
         <div>$ {lineItem.quantity * product.price}</div>
         {cart && (
           <button
@@ -71,7 +71,9 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = ({ products }, { lineItem }) => {
   const product =
-    products && lineItem && products.find(product => lineItem.productId === product.id);
+    products &&
+    lineItem &&
+    products.find(product => lineItem.productId === product.id);
   return {
     product
   };

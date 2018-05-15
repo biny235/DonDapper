@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
+import { editOrder } from './redux/orders.js';
 import axios from 'axios';
 import { editOrder } from './store';
 import AddressDropdown from './AddressDropdown';
@@ -27,6 +28,7 @@ class Checkout extends Component {
       source: token.id,
       receipt_email: user.email
     };
+
     const email = {
       from: '"Don Dapper" <donald@don-dapper.com>',
       to: user.email,
@@ -89,12 +91,13 @@ class Checkout extends Component {
             ) : editing ? (
               <AddressForm cart={cart} onEdit={onEdit} />
             ) : (
-                  <div>
-                    <div>
-                      <div>{address && address.fullAddress}</div>
-                      <button className="btn btn-warning" onClick={onEdit}>
-                        Edit Address
+              <div>
+                <div>
+                  <div>{address && address.fullAddress}</div>
+                  <button className="btn btn-warning" onClick={onEdit}>
+                    Edit Address
                   </button>
+
                     </div>
                   </div>
                 )}
@@ -134,7 +137,9 @@ const mapStateToProps = ({ cart, user, lineItems, products }) => {
     user.id &&
     lineItems &&
     lineItems.reduce((quantity, lineItem) => {
-      const product = products.find(product => product.id === lineItem.productId);
+      const product = products.find(
+        product => product.id === lineItem.productId
+      );
       if (product) {
         quantity += product.price * lineItem.quantity;
       }

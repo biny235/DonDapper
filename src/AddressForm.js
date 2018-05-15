@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import { createOrUpdateAddress, editOrder, deleteAddress } from './store';
+import { createOrUpdateAddress, deleteAddress } from './store';
+import { editOrder } from './redux/orders';
 import { connect } from 'react-redux';
 
 class AddressForm extends Component {
@@ -26,7 +27,8 @@ class AddressForm extends Component {
 
   componentDidMount() {
     const { lineOne, lineTwo, city, state, zipCode } = this.props.address;
-    this.props.address && this.setState({ address: { lineOne, lineTwo, city, state, zipCode } });
+    this.props.address &&
+      this.setState({ address: { lineOne, lineTwo, city, state, zipCode } });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -52,7 +54,8 @@ class AddressForm extends Component {
     address.userId = user && user.id;
     address.id = this.props.addressId;
     this.setState({ edited: false });
-    this.props.createOrUpdateAddress(address, cart)
+    this.props
+      .createOrUpdateAddress(address, cart)
       .then(() => {
         this.props.onEdit();
       })
@@ -79,23 +82,58 @@ class AddressForm extends Component {
     const { error, address, edited } = this.state;
     const { lineOne, lineTwo, city, state, zipCode } = address;
     const { onChange, onSubmit, onDelete, onCancel } = this;
+
     const fields = { lineOne: 'Street', city: 'City', state: 'State', zipCode: 'Zip Code' };
     const empty = Object.keys(fields).filter(field => !this.state.address[field]);
+    
     return (
       <div>
         <form>
-          <input className="form-control" onChange={onChange} name='lineOne' value={lineOne || ''} placeholder="Street" />
-          <input className="form-control" onChange={onChange} name='lineTwo' value={lineTwo || ''} placeholder="Apt, Suite, Unit, etc." />
-          <input className="form-control" onChange={onChange} name='city' value={city || ''} placeholder="City" />
-          <input className="form-control" onChange={onChange} name='state' value={state.toUpperCase() || ''} placeholder="State" maxLength="2" />
-          <input className="form-control" onChange={onChange} name='zipCode' value={zipCode || ''} placeholder="Zip Code" maxLength="5" />
+          <input
+            className="form-control"
+            onChange={onChange}
+            name="lineOne"
+            value={lineOne || ''}
+            placeholder="Street"
+          />
+          <input
+            className="form-control"
+            onChange={onChange}
+            name="lineTwo"
+            value={lineTwo || ''}
+            placeholder="Apt, Suite, Unit, etc."
+          />
+          <input
+            className="form-control"
+            onChange={onChange}
+            name="city"
+            value={city || ''}
+            placeholder="City"
+          />
+          <input
+            className="form-control"
+            onChange={onChange}
+            name="state"
+            value={state.toUpperCase() || ''}
+            placeholder="State"
+            maxLength="2"
+          />
+          <input
+            className="form-control"
+            onChange={onChange}
+            name="zipCode"
+            value={zipCode || ''}
+            placeholder="Zip Code"
+            maxLength="5"
+          />
         </form>
-        {error &&
-          <Alert color="info">
-            {error}
-          </Alert>
-        }
-        <button className="btn btn-primary" type="submit" onClick={onSubmit} disabled={!edited || empty.length}>
+        {error && <Alert color="info">{error}</Alert>}
+        <button
+          className="btn btn-primary"
+          type="submit"
+          onClick={onSubmit}
+          disabled={!edited || empty.length}
+        >
           Save Address
         </button>
         <button className="btn btn-danger" type="submit" onClick={onDelete}>

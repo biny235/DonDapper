@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Alert } from 'reactstrap';
-import { createOrUpdateProduct } from './store';
+import { createOrUpdateProduct } from './redux/products';
 import { connect } from 'react-redux';
 import { RIEInput, RIETextArea, RIENumber } from 'riek';
 import Category from './Category';
 
-let setErrors = function (err) {
+let setErrors = function(err) {
   this.setState({ errors: err });
 };
 

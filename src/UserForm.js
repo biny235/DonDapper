@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Alert } from 'reactstrap';
-import { createOrUpdateUser } from './store';
+import { createOrUpdateUser } from './redux/user';
 
 class UserForm extends Component {
   constructor(props) {
@@ -44,10 +44,9 @@ class UserForm extends Component {
 
   onSubmit(id) {
     const user = Object.assign({}, { id }, this.state.user);
-    this.props.createOrUpdateUser(user)
-      .catch(err => {
-        this.setError(err.response.data);
-      });
+    this.props.createOrUpdateUser(user).catch(err => {
+      this.setError(err.response.data);
+    });
     this.setState({ user, edited: false, strength: '' });
   }
 
@@ -57,13 +56,16 @@ class UserForm extends Component {
 
   testPassword() {
     const { password } = this.state.user;
-    const mediumStrength = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    const highStrength = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    const mediumStrength = new RegExp(
+      '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
+    );
+    const highStrength = new RegExp(
+      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+    );
     let strength;
     if (!mediumStrength.test(password)) {
       strength = `Password is very weak`;
-    }
-    else if (!highStrength.test(password)) {
+    } else if (!highStrength.test(password)) {
       strength = `Password could be stronger`;
     } else {
       strength = '';

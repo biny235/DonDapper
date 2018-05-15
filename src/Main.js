@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  fetchProducts,
-  fetchCategories,
-  authenticateUser,
-  fetchCart
-} from './store';
+import { fetchProducts } from './redux/products';
+import { fetchCategories } from './redux/categories';
+import { authenticateUser } from './redux/user';
+import { fetchCart } from './redux/cart';
 import { Container } from 'reactstrap';
 
 import Navigation from './Navigation';

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  editOrder,
-  createOrUpdateProduct,
-  createOrUpdateUser,
-  showUsers
-} from './store';
+import { editOrder } from './redux/orders';
+import { createOrUpdateProduct } from './redux/products';
+import { createOrUpdateUser } from './redux/user';
+import { showUsers } from './redux/users';
 import omit from 'object.omit';
 import ProductForm from './ProductForm';
 

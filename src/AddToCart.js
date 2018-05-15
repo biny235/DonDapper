@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addLineItem, editLineItem } from './store';
+import { addLineItem, editLineItem } from './redux/lineitems';
 
 class AddToCart extends Component {
   constructor() {
@@ -45,7 +45,7 @@ class AddToCart extends Component {
     const { onChange, onSubmit } = this;
     const { quantity } = this.state;
     return (
-      <div style={{'width': '50%'}}>
+      <div style={{ width: '50%' }}>
         <form className="input-group">
           <input
             className="form-control"
@@ -57,9 +57,11 @@ class AddToCart extends Component {
             min="1"
           />
           <div className="input-group-append">
-            <button type="submit" 
-            className="btn btn-outline-success"
-            onClick={onSubmit}>
+            <button
+              type="submit"
+              className="btn btn-outline-success"
+              onClick={onSubmit}
+            >
               Add to Cart
             </button>
           </div>
