@@ -6,7 +6,9 @@ router.post('/pay', (req, res, next) => {
     if (err) {
       res.status(500).send({ error: err });
     }
-  });
+  })
+    .then(() => res.sendStatus(201))
+    .catch(next);
 });
 
 module.exports = router;

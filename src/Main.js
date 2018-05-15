@@ -10,24 +10,21 @@ import { Container } from 'reactstrap';
 import Navigation from './Navigation';
 import Products from './Products';
 import Product from './Product';
-import Categories from './Categories';
-import Category from './Category';
 import User from './User';
 import Order from './Order';
 import Home from './Home';
 import Cart from './Cart';
 import Dashboard from './Dashboard';
 import Checkout from './Checkout';
-import Autocomplete from './Autocomplete';
-import PasswordChange from './PasswordChange';
 import Footer from './Footer';
 
 class Main extends Component {
   componentDidMount() {
-    window.localStorage.getItem('token') && this.props.authenticateUser();
+    window.localStorage.getItem('token') ?
+      this.props.authenticateUser() :
+      this.props.fetchCart();
     this.props.fetchProducts();
     this.props.fetchCategories();
-    this.props.fetchCart();
   }
 
   render() {
