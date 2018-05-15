@@ -31,7 +31,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/:id', auth, (req, res, next) => {
-  if (!req.user) next({ status: 401 });
+  if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
   User.findById(req.params.id)
     .then(user => {
       Object.assign(user, req.body.user);
@@ -59,6 +59,7 @@ router.get('/:userId/cart', auth, (req, res, next) => {
 });
 
 router.get('/:userId/orders', auth, (req, res, next) => {
+  if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
   User.findById(req.params.userId)
     .then(user =>
       user.getOrders({
@@ -70,6 +71,7 @@ router.get('/:userId/orders', auth, (req, res, next) => {
 });
 
 router.get('/:userId/addresses', [auth, mustHaveUser], (req, res, next) => {
+  if (!req.user || req.user.id !== req.params.userId) next({ status: 401 });
   User.findById(req.params.userId)
     .then(user =>
       user.getAddresses({

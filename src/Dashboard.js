@@ -62,71 +62,81 @@ class Dashboard extends Component {
     const { showForm, productId } = this.state;
 
     return !user.admin ? null : (
-      <div>
-        <div>
+      <div className="dashboard">
+        <div className="dashboard-item">
           <h1>Users</h1>
-          {users &&
-            users.map(_user => {
-              return (
-                <div key={_user.id}>
-                  <strong>{_user.name}</strong>
-                  {'  '} <Link to={`mailto:${_user.email}`}>{_user.email}</Link>
+          <div className="dashboard-users">
+            <h5>Name</h5>
+            <h5>Email</h5>
+            <h5>Admin?</h5>
+            {users &&
+              users.map(_user => {
+                return (
+                  <div className="user-row" key={_user.id}>
+                    <strong>{_user.name}</strong>
+                     <Link to={`mailto:${_user.email}`}>{_user.email}</Link>
+                    <div>
+                      <label className="switch">
+                        <input
+                          checked={_user.admin}
+                          type="checkbox"
+                          datatype="toggle"
+                          onChange={() => makeAdmin(_user)}
+                        />
+                        <span className="slider" />
+                      </label>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+        </div>
+        <div className="dashboard-item">
+          <h1>All Orders</h1>
+          <div className="dashboard-orders">
+            <h5>Order ID</h5>
+            <h5>Shipped?</h5>
+            {orders.length &&
+              orders.map(order => (
+                <div className="dashboard-order-row" key={order.id}>
+                  <Link to={`/orders/${order.id}`}> {order.id}</Link>
                   <div>
                     <label className="switch">
                       <input
-                        checked={_user.admin}
+                        checked={order.shipped}
                         type="checkbox"
                         datatype="toggle"
-                        onChange={() => makeAdmin(_user)}
+                        onChange={() => onChange(order)}
                       />
                       <span className="slider" />
                     </label>
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
         </div>
-        <div>
-          <h1>All Orders</h1>
-          <div>
-            <h3>Order ID</h3>
-          </div>
-          {orders.length &&
-            orders.map(order => (
-              <div key={order.id}>
-                <Link to={`/orders/${order.id}`}> {order.id}</Link>
-                <div>
-                  <label className="switch">
-                    <input
-                      checked={order.shipped}
-                      type="checkbox"
-                      datatype="toggle"
-                      onChange={() => onChange(order)}
-                    />
-                    <span className="slider" />
-                  </label>
-                </div>
-              </div>
-            ))}
-        </div>
-        <div>
+        <div className="dashboard-item">
           <h1>Products By Category</h1>
           {categories.map(category => {
             return (
-              <div key={category.id}>
+              <div  key={category.id}>
                 <h2>{category.name}</h2>
-                {products.map(product => {
-                  if (product.categoryId === category.id) {
-                    return (
-                      <button
-                        key={product.id}
-                        onClick={() => onClick(product.id)}
-                      >
-                        {product.name}
-                      </button>
-                    );
-                  }
+                <div className="btn-group">
+                  {products.map(product => {
+                    if (product.categoryId === category.id) {
+                      return (
+                        <button
+                          className="btn btn-secondary"
+                          key={product.id}
+                          onClick={() => onClick(product.id)}
+                        >
+                          {product.name}
+                        </button>
+                      );
+                    }
+                  
                 })}
+                </div>
               </div>
             );
           })}
@@ -135,7 +145,7 @@ class Dashboard extends Component {
           {showForm && <ProductForm productId={productId} hide={hide} />}
           <br />
           <div>
-            <button onClick={() => onClick(null)}>Add New Product</button>
+            <button className="btn btn-secondary" onClick={() => onClick(null)}>Add New Product</button>
           </div>
         </div>
       </div>
