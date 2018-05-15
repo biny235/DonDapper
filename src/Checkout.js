@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import { editOrder } from './redux/orders.js';
 import axios from 'axios';
-import { editOrder } from './store';
 import AddressDropdown from './AddressDropdown';
 import AddressForm from './AddressForm';
 import Autocomplete from './Autocomplete';
