@@ -6,6 +6,7 @@ import {
   NavLink,
   Nav
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import AccountDropdown from './AccountDropdown';
@@ -14,8 +15,8 @@ import ProductsDropdown from './ProductsDropdown';
 const Navigation = ({ user, counter, history, path }) => {
   return (
     <Navbar color="light" light>
-      <NavbarBrand href="/#/">Don Dapper</NavbarBrand>
-      <Nav>
+      <div className="nav">
+        <Link className="navbar-brand" to="/"><img style={{'width': '25%'}} className="navbar-brand" src="/images/logo.png"/></Link>
         <NavItem>
           <ProductsDropdown />
         </NavItem>
@@ -30,7 +31,7 @@ const Navigation = ({ user, counter, history, path }) => {
             <NavLink href="/#/dashboard">Admin Dashboard</NavLink>
           </NavItem>)
         }
-      </Nav>
+      </div>
     </Navbar>
   );
 };
