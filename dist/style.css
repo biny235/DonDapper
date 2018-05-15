@@ -293,9 +293,11 @@ input:checked+.slider:before {
     border-left: lightgray .5px solid;
 }
 .nav{
-    padding-top: 20px;
     display: grid;
     grid-template-columns: 4fr 1.5fr 1fr 1fr 1fr
+}
+.nav-item{
+    padding-top: 10px;
 }
 .footer-logo{
     height: -webkit-fill-available;

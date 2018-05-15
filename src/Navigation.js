@@ -16,7 +16,7 @@ const Navigation = ({ user, counter, history, path }) => {
   return (
     <Navbar color="light" light>
       <div className="nav">
-        <Link className="navbar-brand" to="/"><img style={{'width': '25%'}} className="navbar-brand" src="/images/logo.png"/></Link>
+        <Link className="navbar-brand" to="/"><img style={{'width': '25%'}} className="navbar-logo" src="/images/logo.png"/></Link>
         <div>
         {user.admin && (
           <NavItem>
