@@ -7,11 +7,9 @@ import {
 } from './lineitems';
 
 /* ------------     CONSTANTS      ------------------ */
-
 const GET_CART = 'GET_CART';
 
 /* ------------          REDUCER         ------------------ */
-
 export default function reducer(cart = {}, action) {
   switch (action.type) {
     case GET_CART:
@@ -21,6 +19,7 @@ export default function reducer(cart = {}, action) {
   }
   return cart;
 }
+
 /* ------------       THUNK CREATORS     ------------------ */
 export const fetchCart = userId => {
   return dispatch => {
@@ -54,8 +53,7 @@ export const fetchCart = userId => {
                   .put(`/api/lineItems/${cartLineItem.id}`, { quantity })
                   .then(res => res.data)
                   .then(lineItem =>
-                    dispatch({ type: UPDATE_LINE_ITEM, lineItem })
-                  )
+                    dispatch({ type: UPDATE_LINE_ITEM, lineItem }))
                   .catch(err => console.log(err));
               } else {
                 lineItem.orderId = cart.id;
@@ -63,8 +61,7 @@ export const fetchCart = userId => {
                   .post(`/api/lineItems`, lineItem)
                   .then(res => res.data)
                   .then(lineItem =>
-                    dispatch({ type: CREATE_LINE_ITEM, lineItem })
-                  )
+                    dispatch({ type: CREATE_LINE_ITEM, lineItem }))
                   .catch(err => console.log(err));
               }
             });

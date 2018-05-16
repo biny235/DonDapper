@@ -56,7 +56,7 @@ class Checkout extends Component {
       .then(res => res.data)
       .then(() => {
         this.props.editOrder({ id: cart.id, status: 'order' }, history);
-        // axios.post(`/api/email/send`, email).then(res => res.data);
+        axios.post(`/api/email/send`, email).then(res => res.data);
       })
       .catch(err => console.log(err));
   }
@@ -91,15 +91,15 @@ class Checkout extends Component {
             ) : editing ? (
               <AddressForm cart={cart} onEdit={onEdit} />
             ) : (
-              <div>
-                <div>
-                  <div>{address && address.fullAddress}</div>
-                  <button className="btn btn-warning" onClick={onEdit}>
-                    Edit Address
+                  <div>
+                    <div>
+                      <div>{address && address.fullAddress}</div>
+                      <button className="btn btn-warning" onClick={onEdit}>
+                        Edit Address
                   </button>
-                </div>
-              </div>
-            )}
+                    </div>
+                  </div>
+                )}
             <AddressDropdown onEdit={onEdit} />
             <StripeCheckout
               name="Payment"
