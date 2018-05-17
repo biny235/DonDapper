@@ -6,7 +6,7 @@ const Order = ({ order, lineItems, total }) => {
   return (
     <div>
       {order.status === 'order' && <h3>{`Order ID: ${order && order.id}`}</h3>}
-      <div className="order">
+      <div className='order'>
         <div>Item</div>
         <div>Price</div>
         <div>Qty</div>
@@ -15,7 +15,7 @@ const Order = ({ order, lineItems, total }) => {
           lineItems.map((lineItem, index) => (
             <LineItem key={lineItem.id || index} lineItem={lineItem} />
           ))}
-        <div className="order-total">Order Total</div>
+        <div className='order-total'>Order Total</div>
         <div>$ {total}</div>
       </div>
     </div>

@@ -86,45 +86,45 @@ class UserForm extends Component {
     };
     const empty = Object.keys(fields).filter(field => !this.state.user[field]);
     return (
-      <div className="form-inline">
+      <div className='form-inline'>
         <div>
           <input
-            className="form-control"
-            name="firstName"
-            placeholder="First Name"
+            className='form-control'
+            name='firstName'
+            placeholder='First Name'
             value={firstName || ''}
             onChange={onChange}
           />
           <input
-            className="form-control"
-            name="lastName"
-            placeholder="Last Name"
+            className='form-control'
+            name='lastName'
+            placeholder='Last Name'
             value={lastName || ''}
             onChange={onChange}
           />
           <input
-            className="form-control"
-            name="email"
-            placeholder="E-mail"
+            className='form-control'
+            name='email'
+            placeholder='E-mail'
             value={email || ''}
             onChange={onChange}
           />
           {!user.id && (
             <input
-              className="form-control"
-              type="password"
-              name="password"
-              placeholder="Password"
+              className='form-control'
+              type='password'
+              name='password'
+              placeholder='Password'
               value={password || ''}
               onChange={onChange}
             />
           )}
-          {!!error && <Alert color="info">{error}</Alert>}
+          {!!error && <Alert color='info'>{error}</Alert>}
           {strength &&
-            !!password.length && <Alert color="info">{strength}</Alert>}
+            !!password.length && <Alert color='info'>{strength}</Alert>}
           <button
-            type="submit"
-            className="btn btn-success"
+            type='submit'
+            className='btn btn-success'
             style={{ width: '100%' }}
             onClick={() => onSubmit(user.id)}
             disabled={!edited || empty.length}

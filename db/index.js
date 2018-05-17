@@ -1,5 +1,3 @@
-const conn = require('./conn');
-
 const Category = require('./Category');
 const Product = require('./Product');
 const Order = require('./Order');

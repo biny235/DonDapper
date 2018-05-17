@@ -38,40 +38,40 @@ class Main extends Component {
           />
           <Container>
             <Switch>
-              <Route path="/" exact render={() => <Home />} />
+              <Route path='/' exact render={() => <Home />} />
               <Route
-                path="/dashboard"
+                path='/dashboard'
                 exact
                 render={({ history }) => <Dashboard history={history} />}
               />
               <Route
-                path="/products"
+                path='/products'
                 exact
                 render={({ history }) => <Products history={history} />}
               />
               <Route
-                path="/products/:id"
+                path='/products/:id'
                 exact
                 render={({ match, history }) => (
                   <Product id={match.params.id * 1} history={history} />
                 )}
               />
               <Route
-                path="/cart"
+                path='/cart'
                 exact
                 render={({ history }) => <Cart history={history} />}
               />
               <Route
-                path="/checkout"
+                path='/checkout'
                 exact
                 render={({ history }) => <Checkout history={history} />}
               />
               <Route
-                path="/orders/:id"
+                path='/orders/:id'
                 exact
                 render={({ match }) => <Order id={match.params.id * 1} />}
               />
-              <Route path="/user" exact render={() => <User />} />
+              <Route path='/user' exact render={() => <User />} />
             </Switch>
           </Container>
           <Footer />

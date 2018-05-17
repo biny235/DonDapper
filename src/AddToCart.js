@@ -46,20 +46,20 @@ class AddToCart extends Component {
     const { quantity } = this.state;
     return (
       <div style={{ width: '50%' }}>
-        <form className="input-group">
+        <form className='input-group'>
           <input
-            className="form-control"
+            className='form-control'
             onChange={onChange}
-            name="quantity"
+            name='quantity'
             value={quantity}
-            type="number"
-            step="1"
-            min="1"
+            type='number'
+            step='1'
+            min='1'
           />
-          <div className="input-group-append">
+          <div className='input-group-append'>
             <button
-              type="submit"
-              className="btn btn-outline-success"
+              type='submit'
+              className='btn btn-outline-success'
               onClick={onSubmit}
             >
               Add to Cart

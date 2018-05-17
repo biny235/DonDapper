@@ -11,7 +11,7 @@ router.get('/github', passport.authenticate('github', { session: false }));
 router.get(
   '/github/callback',
   passport.authenticate('github', { failureRedirect: '/', session: false }),
-  function(req, res) {
+  function (req, res) {
     const token = req.user.generateToken();
     res.redirect(`/?token=${token}`);
   }
@@ -26,7 +26,7 @@ passport.use(
       clientSecret: clientSecret,
       callbackURL: 'http://localhost:3000/api/auth/github/callback'
     },
-    function(accessToken, refreshToken, profile, cb) {
+    function (accessToken, refreshToken, profile, cb) {
       const attr = { githubId: profile.id };
       User.findOne({ where: attr })
         .then(user => {

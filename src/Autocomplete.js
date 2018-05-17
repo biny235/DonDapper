@@ -17,14 +17,12 @@ class Autocomplete extends Component {
     ev.target.value.length < 3 ?
       this.setState({ predictions: [] })
       :
-      ev.target.value.length > 3 ?
-        axios.post('/api/google/getpredictions', { input: ev.target.value })
-          .then(res => res.data)
-          .then(predictions => {
-            this.setState({ predictions })
-          })
-        :
-        null
+      ev.target.value.length > 3 &&
+      axios.post('/api/google/getpredictions', { input: ev.target.value })
+        .then(res => res.data)
+        .then(predictions => {
+          this.setState({ predictions });
+        });
   }
 
   onClick(placeId) {
@@ -32,13 +30,13 @@ class Autocomplete extends Component {
     axios.post('/api/google/getplace', { query: placeId })
       .then(res => res.data)
       .then((_address) => {
-        _address = _address[0]
+        _address = _address[0];
         // get the formatted address and split it up
         let address = _address.formatted_address.split(', ');
         // split up the state and zip
         address[2] = address[2].split(' ');
         const { lat, lng } = _address.geometry.location;
-        address = { lineOne: address[0], city: address[1], state: address[2][0], zipCode: address[2][1], lat, lng }
+        address = { lineOne: address[0], city: address[1], state: address[2][0], zipCode: address[2][1], lat, lng };
         address.userId = user && user.id;
         this.props.createOrUpdateAddress(address, cart);
       })
@@ -51,14 +49,14 @@ class Autocomplete extends Component {
     return (
       <div>
         <input onChange={onChange} />
-        <img src="/images/powered_by_google_on_white.png" />
+        <img src='/images/powered_by_google_on_white.png' />
         <ul>
           {predictions.length ? predictions.map(pred => (
             <li key={pred.place_id} onClick={() => onClick(pred.place_id)}>{pred.description}</li>
           )) : null}
         </ul>
       </div>
-    )
+    );
   }
 }
 
@@ -66,14 +64,13 @@ const mapStateToProps = ({ user, cart }) => {
   return {
     user,
     cart
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     createOrUpdateAddress: (address, cart) => dispatch(createOrUpdateAddress(address, cart))
-  }
-}
-
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Autocomplete);

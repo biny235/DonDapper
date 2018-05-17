@@ -20,11 +20,11 @@ export default class AccountDropdown extends Component {
   render() {
     const { path, history } = this.props;
     return (
-      <Dropdown className="nav-link" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle className="remove-all" caret>
+      <Dropdown className='nav-link' isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+        <DropdownToggle className='remove-all' caret>
           Account
         </DropdownToggle>
-        <DropdownMenu className="account-dropdown">
+        <DropdownMenu className='account-dropdown'>
           <LoginModal path={path} history={history} />
         </DropdownMenu>
       </Dropdown>

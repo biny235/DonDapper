@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 /* ------------    CONSTANTS      ------------------ */
-
 const GET_CATEGORIES = 'GET_CATEGORIES';
 
 /* ------------          REDUCER         ------------------ */
@@ -12,8 +11,8 @@ export default function reducer(categories = [], action) {
   }
   return categories;
 }
-/* ------------       THUNK CREATORS     ------------------ */
 
+/* ------------       THUNK CREATORS     ------------------ */
 export const fetchCategories = () => {
   return dispatch => {
     axios

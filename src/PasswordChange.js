@@ -80,29 +80,29 @@ class PasswordChange extends Component {
       <div>
         <div>
           <input
-            className="form-control"
-            type="password"
-            name="oldPassword"
-            placeholder="Old Password"
+            className='form-control'
+            type='password'
+            name='oldPassword'
+            placeholder='Old Password'
             onChange={onChange}
             value={oldPassword}
           />
           <input
-            className="form-control"
-            type="password"
-            name="newPassword"
-            placeholder="New Password"
+            className='form-control'
+            type='password'
+            name='newPassword'
+            placeholder='New Password'
             onChange={onChange}
             value={newPassword}
           />
           {errors.oldPassword && (
-            <Alert color="info">{errors.oldPassword}</Alert>
+            <Alert color='info'>{errors.oldPassword}</Alert>
           )}
           {strength &&
-            !!newPassword.length && <Alert color="info">{strength}</Alert>}
+            !!newPassword.length && <Alert color='info'>{strength}</Alert>}
           <button
-            type="submit"
-            className="btn btn-success"
+            type='submit'
+            className='btn btn-success'
             style={{ width: '100%' }}
             onClick={() => onSubmit(user.id)}
             disabled={!oldPassword.length || !newPassword.length}

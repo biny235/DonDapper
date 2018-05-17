@@ -88,56 +88,56 @@ class AddressForm extends Component {
       <div>
         <form>
           <input
-            className="form-control"
+            className='form-control'
             onChange={onChange}
-            name="lineOne"
+            name='lineOne'
             value={lineOne || ''}
-            placeholder="Street"
+            placeholder='Street'
           />
           <input
-            className="form-control"
+            className='form-control'
             onChange={onChange}
-            name="lineTwo"
+            name='lineTwo'
             value={lineTwo || ''}
-            placeholder="Apt, Suite, Unit, etc."
+            placeholder='Apt, Suite, Unit, etc.'
           />
           <input
-            className="form-control"
+            className='form-control'
             onChange={onChange}
-            name="city"
+            name='city'
             value={city || ''}
-            placeholder="City"
+            placeholder='City'
           />
           <input
-            className="form-control"
+            className='form-control'
             onChange={onChange}
-            name="state"
+            name='state'
             value={state.toUpperCase() || ''}
-            placeholder="State"
-            maxLength="2"
+            placeholder='State'
+            maxLength='2'
           />
           <input
-            className="form-control"
+            className='form-control'
             onChange={onChange}
-            name="zipCode"
+            name='zipCode'
             value={zipCode || ''}
-            placeholder="Zip Code"
-            maxLength="5"
+            placeholder='Zip Code'
+            maxLength='5'
           />
         </form>
-        {error && <Alert color="info">{error}</Alert>}
+        {error && <Alert color='info'>{error}</Alert>}
         <button
-          className="btn btn-primary"
-          type="submit"
+          className='btn btn-primary'
+          type='submit'
           onClick={onSubmit}
           disabled={!edited || empty.length}
         >
           Save Address
         </button>
-        <button className="btn btn-danger" type="submit" onClick={onDelete}>
+        <button className='btn btn-danger' type='submit' onClick={onDelete}>
           Delete Address
         </button>
-        <button className="btn btn-warning" type="submit" onClick={onCancel}>
+        <button className='btn btn-warning' type='submit' onClick={onCancel}>
           Cancel
         </button>
       </div>

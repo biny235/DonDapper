@@ -26,32 +26,32 @@ class LineItem extends Component {
       return null;
     }
     return (
-      <div className="line-item order-line">
+      <div className='line-item order-line'>
         <div>
           {product.name}
-          <div className="product-description-text">{product.description}</div>
+          <div className='product-description-text'>{product.description}</div>
         </div>
         <div>$ {product.price}</div>
         {!cart ? (
           <div>{lineItem.quantity}</div>
         ) : (
-          <form>
-            <input
-              className="order-qty"
-              onChange={ev => onChange(ev, lineItem.id)}
-              name="quantity"
-              value={quantity}
-              type="number"
-              step="1"
-              min="1"
-            />
-          </form>
-        )}
+            <form>
+              <input
+                className='order-qty'
+                onChange={ev => onChange(ev, lineItem.id)}
+                name='quantity'
+                value={quantity}
+                type='number'
+                step='1'
+                min='1'
+              />
+            </form>
+          )}
         <div>$ {lineItem.quantity * product.price}</div>
         {cart && (
           <button
-            className="btn btn-link"
-            type="submit"
+            className='btn btn-link'
+            type='submit'
             onClick={ev => onDelete(ev, lineItem)}
           >
             &#10060;

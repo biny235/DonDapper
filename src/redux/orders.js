@@ -6,6 +6,7 @@ import { fetchCart } from './cart';
 const ADD_ORDER = 'ADD_ORDER';
 const GET_ORDERS = 'GET_ORDERS';
 const EDIT_ORDER = 'EDIT_ORDER';
+
 /* ------------          REDUCER         ------------------ */
 export default function reducer(orders = [], action) {
   switch (action.type) {

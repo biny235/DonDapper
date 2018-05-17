@@ -70,6 +70,7 @@ class Checkout extends Component {
     const { onSubmit, onEdit } = this;
     const { user, cart, address, lineItems, total } = this.props;
     const { editing } = this.state;
+    const stripeKey = 'pk_test_t4Gsi41KZkmzWDyxcwcFMHhp';
     if (!user.id) {
       return (
         <div>
@@ -79,44 +80,44 @@ class Checkout extends Component {
       );
     } else {
       return (
-        <div className="checkout">
+        <div className='checkout'>
           <div>
             <h1>Review Order</h1>
             <Order order={cart} lineItems={lineItems} />
           </div>
-          <div className="checkout-right">
+          <div className='checkout-right'>
             <h3>Shipping To:</h3>
             {!cart.addressId ? (
               <Autocomplete cart={cart} />
             ) : editing ? (
               <AddressForm cart={cart} onEdit={onEdit} />
             ) : (
-              <div>
-                <div>
-                  <div>{address && address.fullAddress}</div>
-                  <button className="btn btn-warning" onClick={onEdit}>
-                    Edit Address
+                  <div>
+                    <div>
+                      <div>{address && address.fullAddress}</div>
+                      <button className='btn btn-warning' onClick={onEdit}>
+                        Edit Address
                   </button>
-                </div>
-              </div>
-            )}
+                    </div>
+                  </div>
+                )}
             <AddressDropdown onEdit={onEdit} />
             <StripeCheckout
-              name="Payment"
-              description="Please review your order"
-              image="/images/favicon.png"
-              panelLabel="Place Order - "
+              name='Payment'
+              description='Please review your order'
+              image='/images/favicon.png'
+              panelLabel='Place Order - '
               amount={total * 100}
-              currency="USD"
+              currency='USD'
               allowRememberMe={false}
               email={user.email}
               token={onSubmit}
-              stripeKey="pk_test_t4Gsi41KZkmzWDyxcwcFMHhp"
+              stripeKey={stripeKey}
             >
               <button
                 disabled={!cart.addressId}
-                type="submit"
-                className="btn btn-success"
+                type='submit'
+                className='btn btn-success'
               >
                 Check Out
               </button>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { editOrder } from './redux/orders';
-import { createOrUpdateProduct } from './redux/products';
 import { createOrUpdateUser } from './redux/user';
 import { showUsers } from './redux/users';
 import omit from 'object.omit';
@@ -13,18 +12,19 @@ class Dashboard extends Component {
     super();
     this.state = {
       showForm: false,
-      productId: null,
-      users: []
+      productId: null
     };
     this.onClick = this.onClick.bind(this);
     this.onChange = this.onChange.bind(this);
     this.hide = this.hide.bind(this);
     this.makeAdmin = this.makeAdmin.bind(this);
   }
+
   componentWillReceiveProps(nextProps) {
     const { history, user } = nextProps;
     if (!user.admin) history.push('/');
   }
+
   componentWillMount() {
     this.props.showUsers();
   }
@@ -33,14 +33,17 @@ class Dashboard extends Component {
     order.shipped = !order.shipped;
     this.props.editOrder(order);
   }
+
   makeAdmin(user) {
     user = omit(user, 'name');
     user.admin = !user.admin;
     this.props.createOrUpdateUser(user);
   }
+
   onClick(productId) {
     this.setState({ showForm: true, productId: productId });
   }
+
   hide() {
     this.setState({ showForm: false });
   }
@@ -51,80 +54,78 @@ class Dashboard extends Component {
       categories,
       products,
       user,
-      users,
-      createOrUpdateProduct,
-      createOrUpdateUser,
-      showUsers
+      users
     } = this.props;
     const { onChange, onClick, hide, makeAdmin } = this;
     const { showForm, productId } = this.state;
 
     return !user.admin ? null : (
-      <div className="dashboard">
-        <div className="dashboard-item">
+      <div className='dashboard'>
+        <div className='dashboard-item'>
           <h1>Users</h1>
-          <div className="dashboard-users">
+          <div className='dashboard-users'>
             <h5>Name</h5>
             <h5>Email</h5>
             <h5>Admin?</h5>
             {users &&
               users.map(_user => {
                 return (
-                  <div className="user-row" key={_user.id}>
+                  <div className='user-row' key={_user.id}>
                     <strong>{_user.name}</strong>
-                     <Link to={`mailto:${_user.email}`}>{_user.email}</Link>
+                    <Link to={`mailto:${_user.email}`}>{_user.email}</Link>
                     <div>
-                      <label className="switch">
+                      <label className='switch'>
                         <input
                           checked={_user.admin}
-                          type="checkbox"
-                          datatype="toggle"
+                          type='checkbox'
+                          datatype='toggle'
                           onChange={() => makeAdmin(_user)}
                         />
-                        <span className="slider" />
+                        <span className='slider' />
                       </label>
                     </div>
                   </div>
                 );
               })}
-            </div>
+          </div>
         </div>
-        <div className="dashboard-item">
+        <div className='dashboard-item'>
           <h1>All Orders</h1>
-          <div className="dashboard-orders">
+          <div className='dashboard-orders'>
             <h5>Order ID</h5>
             <h5>Shipped?</h5>
             {orders.length &&
               orders.map(order => (
-                <div className="dashboard-order-row" key={order.id}>
+                <div className='dashboard-order-row' key={order.id}>
                   <Link to={`/orders/${order.id}`}> {order.id}</Link>
                   <div>
-                    <label className="switch">
+                    <label className='switch'>
                       <input
                         checked={order.shipped}
-                        type="checkbox"
-                        datatype="toggle"
+                        type='checkbox'
+                        datatype='toggle'
                         onChange={() => onChange(order)}
                       />
-                      <span className="slider" />
+                      <span className='slider' />
                     </label>
                   </div>
                 </div>
               ))}
-            </div>
+          </div>
         </div>
-        <div className="dashboard-item">
+        <div className='dashboard-item'>
           <h1>Products By Category</h1>
           {categories.map(category => {
             return (
-              <div  key={category.id}>
+              <div key={category.id}>
                 <h2>{category.name}</h2>
-                <div className="btn-group">
+                <div className='btn-group'>
                   {products.map(product => {
                     if (product.categoryId === category.id) {
                       return (
                         <button
-                          className="btn btn-secondary"
+                          type='submit'
+                          className='btn btn-secondary'
                           key={product.id}
                           onClick={() => onClick(product.id)}
                         >
@@ -132,8 +133,8 @@ class Dashboard extends Component {
                         </button>
                       );
                     }
-                  
-                })}
+
+                  })}
                 </div>
               </div>
             );
@@ -143,7 +144,7 @@ class Dashboard extends Component {
           {showForm && <ProductForm productId={productId} hide={hide} />}
           <br />
           <div>
-            <button className="btn btn-secondary" onClick={() => onClick(null)}>Add New Product</button>
+            <button type='submit' className='btn btn-secondary' onClick={() => onClick(null)}>Add New Product</button>
           </div>
         </div>
       </div>

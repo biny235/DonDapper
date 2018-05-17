@@ -2,14 +2,12 @@ import axios from 'axios';
 import { RESET_STATE } from './user';
 
 /* ------------     CONSTANTS      ------------------ */
-
 export const GET_CART_LINE_ITEMS = 'GET_CART_LINE_ITEMS';
 export const CREATE_LINE_ITEM = 'CREATE_LINE_ITEM';
 export const UPDATE_LINE_ITEM = 'UPDATE_LINE_ITEM';
 export const DELETE_LINE_ITEM = 'DELETE_LINE_ITEM';
 
 /* ------------          REDUCER         ------------------ */
-
 export default function reducer(lineItems = [], action) {
   switch (action.type) {
     case GET_CART_LINE_ITEMS:
@@ -33,7 +31,6 @@ export default function reducer(lineItems = [], action) {
 }
 
 /* ------------       THUNK CREATORS     ------------------ */
-
 export const addLineItem = (lineItem, user, history) => {
   return dispatch => {
     if (!user.id) {

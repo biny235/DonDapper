@@ -1,13 +1,11 @@
 import axios from 'axios';
 
 /* -----------------    CONSTANTS    ------------------ */
-
 const GET_PRODUCTS = 'GET_PRODUCTS';
 const EDIT_PRODUCT = 'EDIT_PRODUCT';
 const CREATE_PRODUCT = 'CREATE_PRODUCT';
 
 /* ------------          REDUCER         ------------------ */
-
 export default function reducer(products = [], action) {
   switch (action.type) {
     case GET_PRODUCTS:
@@ -23,7 +21,6 @@ export default function reducer(products = [], action) {
 }
 
 /* ------------       THUNK CREATORS     ------------------ */
-
 export const fetchProducts = () => {
   return dispatch => {
     axios
