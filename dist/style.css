@@ -148,9 +148,6 @@
     display: none;
 }
 
-
-/* The slider */
-
 .slider {
     position: absolute;
     cursor: pointer;
@@ -288,25 +285,31 @@ input:checked+.slider:before {
     display: grid;
     grid-template-columns: 3fr 2fr;
 }
+
 .checkout-right{
     padding: 30px 0px 0px 10px;
     border-left: lightgray .5px solid;
 }
+
 .nav{
     display: grid;
     grid-template-columns: 4fr 1.5fr 1fr 1fr 1fr
 }
+
 .nav-item{
     padding-top: 10px;
 }
+
 .footer-logo{
     height: -webkit-fill-available;
     filter: invert(100%);
 }
+
 .dashboard{
     display: grid;
     grid-row-gap: 4em;
 }
+
 .dashboard-item{
     border-bottom: 1px solid lightgray;
 }
@@ -316,16 +319,19 @@ input:checked+.slider:before {
     grid-template-columns: 1fr 1fr 1fr;
     padding: 0px 0px 0px 2em;
 }
+
 .user-row{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-column: 1/4;
 }
+
 .dashboard-orders{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     padding: 0px 0px 0px 2em;
 }
+
 .dashboard-order-row{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
