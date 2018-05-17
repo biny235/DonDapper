@@ -58,13 +58,6 @@ const seed = () => {
           price: 21,
           categoryId: 3
         }),
-        // Product.create({
-        //   name: 'Comb',
-        //   description: `Our multi-purpose comb can tidy your hair up top, on your face, anywhere.`,
-        //   imageUrl: 'images/comb.jpg',
-        //   price: 8,
-        //   categoryId: 1
-        // }),
         Product.create({
           name: 'Conditioner',
           description: `Keep your hair soft and luscious with our proprietary conditioner.`,

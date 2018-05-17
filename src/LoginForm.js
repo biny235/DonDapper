@@ -48,30 +48,30 @@ class LoginForm extends Component {
     if (user.name) {
       return (
         <div>
-          <button className="btn btn-danger" type="reset" onClick={onSignOut}>
+          <button className='btn btn-danger' type='reset' onClick={onSignOut}>
             Sign Out
           </button>
         </div>
       );
     }
     return (
-      <div className="form-inline">
+      <div className='form-inline'>
         <input
-          className="form-control"
+          className='form-control'
           onChange={onChange}
-          name="email"
-          type="email"
-          placeholder="E-mail"
+          name='email'
+          type='email'
+          placeholder='E-mail'
         />
         <input
-          className="form-control"
+          className='form-control'
           onChange={onChange}
-          name="password"
-          type="password"
-          placeholder="Password"
+          name='password'
+          type='password'
+          placeholder='Password'
         />
-        {!!error && <Alert color="info">{error}</Alert>}
-        <button className="btn btn-success" type="submit" onClick={onSubmit} disabled={!edited || empty.length}>
+        {!!error && <Alert color='info'>{error}</Alert>}
+        <button className='btn btn-success' type='submit' onClick={onSubmit} disabled={!edited || empty.length}>
           Sign In
         </button>
       </div>
@@ -85,7 +85,7 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUser: user => { dispatch(fetchUser(user)) },
+    fetchUser: user => { dispatch(fetchUser(user)); },
     logout: (path, history) => dispatch(logout(path, history, dispatch))
   };
 };

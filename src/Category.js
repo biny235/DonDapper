@@ -4,9 +4,9 @@ import ProductCard from './ProductCard';
 
 const Category = ({ category, categoryProducts }) => {
   return (
-    <div className="category">
-      <h1 className="category-head small-clip">{category && category.name}</h1>
-      <div className="category-products">
+    <div className='category'>
+      <h1 className='category-head small-clip'>{category && category.name}</h1>
+      <div className='category-products'>
         {categoryProducts.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}

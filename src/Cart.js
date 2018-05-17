@@ -8,7 +8,7 @@ const Cart = ({ lineItems, total }) => {
     <div>
       <h1>Cart</h1>
       {!lineItems.length ? <div>Your have no items in your cart.</div> : (
-        <div className="order order-container">
+        <div className='order order-container'>
           <div>Item</div>
           <div>Price</div>
           <div>Quantity</div>
@@ -17,10 +17,10 @@ const Cart = ({ lineItems, total }) => {
           {lineItems.map((lineItem, index) => (
             <LineItem key={lineItem.id || index} lineItem={lineItem} quantity={lineItem.quantity} cart={true} />
           ))}
-          <Link to="/checkout" className="btn btn-success">
+          <Link to='/checkout' className='btn btn-success'>
             Proceed to Checkout
           </Link>
-          <div className="order-total">Total:</div>
+          <div className='order-total'>Total:</div>
           <div>$ {total}</div>
         </div>
       )}

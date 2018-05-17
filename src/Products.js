@@ -16,9 +16,9 @@ class Products extends Component {
     const { categories } = this.props;
     return (
       <div>
-        <div className="clip">PRODUCTS</div>
-        <div className="products">
-          <div className="products-grid">
+        <div className='clip'>PRODUCTS</div>
+        <div className='products'>
+          <div className='products-grid'>
             {categories.map(category => (
               <div key={category.id} id={category.id}>
                 <Category id={category.id} />

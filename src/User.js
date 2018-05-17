@@ -42,16 +42,16 @@ class User extends Component {
     const { onClick, hide, passwordClick, onUpdate } = this;
     return (
       <div>
-        {!user.id ? 
+        {!user.id ?
           <div>
             <h1>Account</h1>
             Please sign in.
           </div> :
-          <div className="account">
-            <h2 className="user">{user.name}</h2>
-            <div className="orders">
+          <div className='account'>
+            <h2 className='user'>{user.name}</h2>
+            <div className='orders'>
               <h3>Orders</h3>
-              <div className="header-row">
+              <div className='header-row'>
                 <div>ID</div>
                 <div>Status</div>
                 <div>Total</div>
@@ -62,23 +62,23 @@ class User extends Component {
                 </span>
               ))}
             </div>
-            <div className="user-form">
+            <div className='user-form'>
               <h3>Update Info</h3>
               {password ? (
                 <div>
                   <PasswordChange onUpdate={onUpdate} />
-                  <button className="btn btn-warning" style={{ "width": "100%" }} onClick={passwordClick}> Cancel </button>
+                  <button className='btn btn-warning' style={{ width: '100%' }} onClick={passwordClick}> Cancel </button>
                 </div>
               ) : (
                   <div>
                     <UserForm />
-                    <button className="btn btn-primary" style={{ "width": "100%" }} onClick={passwordClick}> Change Password </button>
+                    <button className='btn btn-primary' style={{ width: '100%' }} onClick={passwordClick}> Change Password </button>
                   </div>
                 )}
             </div>
             {showOrder && orderId && (
-              <div id="order" className="account-order" >
-                <div className="close" onClick={hide}>Hide</div>
+              <div id='order' className='account-order' >
+                <div className='close' onClick={hide}>Hide</div>
                 <Order id={orderId} />
               </div>
             )}

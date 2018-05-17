@@ -28,8 +28,8 @@ class ProductsDropdown extends Component {
   render() {
     const { categories } = this.props;
     return (
-      <Dropdown className="nav-link" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle className="remove-all" caret>
+      <Dropdown className='nav-link' isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+        <DropdownToggle className='remove-all' caret>
           Products
         </DropdownToggle>
         <DropdownMenu>
@@ -42,7 +42,7 @@ class ProductsDropdown extends Component {
             }
             else {
               return (
-                <Link key={category.id} className="remove-all" to={{ pathname: '/products', state: { id: category.id } }} >
+                <Link key={category.id} className='remove-all' to={{ pathname: '/products', state: { id: category.id } }} >
                   <DropdownItem onClick={() => this.onClick(category.id)}>
                     {category.name}
                   </DropdownItem>
@@ -50,7 +50,7 @@ class ProductsDropdown extends Component {
               );
             }
           })}
-          <Link className="remove-all" to={'/products'}><DropdownItem>All</DropdownItem></Link>
+          <Link className='remove-all' to="/products"><DropdownItem>All</DropdownItem></Link>
         </DropdownMenu>
       </Dropdown>
     );

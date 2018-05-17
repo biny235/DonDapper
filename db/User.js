@@ -3,8 +3,7 @@ const { Sequelize } = conn;
 const jwt = require('jwt-simple');
 const secret = process.env.SECRET;
 
-const User = conn.define(
-  'user',
+const User = conn.define('user',
   {
     id: {
       allowNull: false,

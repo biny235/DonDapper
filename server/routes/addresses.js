@@ -4,7 +4,7 @@ const auth = require('../auth');
 const { Address } = db.models;
 
 router.get('/', auth, (req, res, next) => {
-  if(!req.user) throw { status: 401 };
+  if (!req.user) throw { status: 401 };
   Address.findAll()
     .then(addresses => {
       res.send(addresses);
@@ -13,21 +13,21 @@ router.get('/', auth, (req, res, next) => {
 });
 
 router.post('/', auth, (req, res, next) => {
-  if(!req.user) throw { status: 401 };
+  if (!req.user) throw { status: 401 };
   Address.create(req.body.address)
     .then(address => res.send(address))
     .catch(next);
 });
 
 router.get('/:id', auth, (req, res, next) => {
-  if(!req.user) throw { status: 401 };
+  if (!req.user) throw { status: 401 };
   Address.findById(req.params.id)
     .then(order => res.send(order))
     .catch(next);
 });
 
 router.delete('/:id', auth, (req, res, next) => {
-  if(!req.user) throw { status: 401 };
+  if (!req.user) throw { status: 401 };
   Address.findById(req.params.id)
     .then(address => address.destroy())
     .then(() => res.sendStatus(204))
@@ -35,7 +35,7 @@ router.delete('/:id', auth, (req, res, next) => {
 });
 
 router.put('/:id', auth, (req, res, next) => {
-  if(!req.user) throw { status: 401 };
+  if (!req.user) throw { status: 401 };
   Address.findById(req.params.id)
     .then(address => {
       Object.assign(address, req.body.address);

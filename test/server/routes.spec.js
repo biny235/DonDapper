@@ -1,5 +1,4 @@
 const expect = require('chai').expect;
-const db = require('../../db');
 const app = require('../../server/app');
 const request = require('supertest');
 

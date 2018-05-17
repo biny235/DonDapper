@@ -1,7 +1,6 @@
 const expect = require('chai').expect;
 const db = require('../../db');
 const { User, Order } = db.models;
-const Sequelize = require('sequelize');
 let userList;
 
 beforeEach(() => {

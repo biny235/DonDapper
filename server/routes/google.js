@@ -1,6 +1,5 @@
 const router = require('express').Router();
-const secret = require('../../secret');
-const googleSecret = process.env.G_SECRET || secret.google;
+const googleSecret = process.env.G_SECRET;
 
 const googleMapsClient = require('@google/maps').createClient({
   key: googleSecret,

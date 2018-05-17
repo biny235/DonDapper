@@ -3,11 +3,6 @@ import { Alert } from 'reactstrap';
 import { createOrUpdateProduct } from './redux/products';
 import { connect } from 'react-redux';
 import { RIEInput, RIETextArea, RIENumber } from 'riek';
-import Category from './Category';
-
-let setErrors = function(err) {
-  this.setState({ errors: err });
-};
 
 class ProductForm extends Component {
   constructor(props) {
@@ -21,8 +16,7 @@ class ProductForm extends Component {
         price: props.price || null,
         quantity: props.quantity || null,
         categoryId: props.categoryId || null
-      },
-      errors: ''
+      }
     };
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -49,10 +43,6 @@ class ProductForm extends Component {
     const { product } = this.state;
     this.props.createOrUpdateProduct(product);
     this.props.hide();
-  }
-
-  clearErrors() {
-    this.setState({ errors: '' });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -140,11 +130,11 @@ class ProductForm extends Component {
       categoryId
     } = this.state.product;
     const { onChange, onClick } = this;
-    const { createOrUpdateProduct, hide, categories, product } = this.props;
+    const { categories } = this.props;
     return (
       <div>
         {errors ? (
-          <Alert color="info" isOpen={!!errors} toggle={this.clearErrors}>
+          <Alert color='info' isOpen={!!errors} toggle={this.clearErrors}>
             {errors}
           </Alert>
         ) : null}
@@ -158,7 +148,7 @@ class ProductForm extends Component {
             <RIEInput
               value={name || 'shampoo'}
               change={onChange}
-              propName="name"
+              propName='name'
             />
           </div>
           <div>
@@ -170,7 +160,7 @@ class ProductForm extends Component {
             <RIEInput
               value={imageUrl || './image'}
               change={onChange}
-              propName="imageUrl"
+              propName='imageUrl'
             />
           </div>
           <div>
@@ -182,7 +172,7 @@ class ProductForm extends Component {
             <RIETextArea
               value={description || 'soft'}
               change={onChange}
-              propName="description"
+              propName='description'
             />
           </div>
           <div>
@@ -194,7 +184,7 @@ class ProductForm extends Component {
             <RIENumber
               value={price || '100'}
               change={onChange}
-              propName="price"
+              propName='price'
             />
           </div>
           <div>
@@ -206,23 +196,23 @@ class ProductForm extends Component {
             <RIENumber
               value={quantity || '100'}
               change={onChange}
-              propName="quantity"
+              propName='quantity'
             />
           </div>
           <select
-            name="categoryId"
+            name='categoryId'
             value={categoryId || '-1'}
             onChange={this.categoryAssign}
           >
             {categories &&
               categories.map(category => (
-                <option key={category.id} name="categoryId" value={category.id}>
+                <option key={category.id} name='categoryId' value={category.id}>
                   {category.name}
                 </option>
               ))}
           </select>
         </form>
-        <button type="submit" onClick={onClick}>
+        <button type='submit' onClick={onClick}>
           Save
         </button>
       </div>
@@ -241,9 +231,7 @@ const mapStateToProps = ({ products, categories }, { productId }) => {
 const mapDispatchToProps = dispatch => {
   return {
     createOrUpdateProduct: product => {
-      dispatch(createOrUpdateProduct(product)).catch(err => {
-        setErrors(err.response.data);
-      });
+      dispatch(createOrUpdateProduct(product));
     }
   };
 };
