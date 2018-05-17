@@ -8,7 +8,7 @@ This project is a collaborative effort by Ben Rosenbaum, Alon Adelson, and Marco
 You may browse through products and shop as you would on any other e-commerce website. You can add to cart, edit your cart, and remove items. You can update your user info and change password. Feel free to sign up with your e-mail address to receive an e-mail upon placing an order. To check out, you can use the test card number "4242 4242 4242 4242" with any CVC number and a valid expiration date.
 
 ## Deployed Build
-This project has been deployed via Heroku and can be access through the following link.
+This project has been deployed via Heroku and can be accessed through the following link.
 - https://dondapper.herokuapp.com
 
 ## Local Build
