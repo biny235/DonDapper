@@ -2,5 +2,5 @@ node_modules
 dist/bundle.js.map
 dist/bundle.js
 .vscode
-secret.js
+.env
 .DS_store
