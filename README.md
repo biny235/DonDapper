@@ -1,5 +1,5 @@
-# Grace Shopper
-This project is a collaborative effort by Ben Rosenbaum, Alon Adelson, and Marco Poetry Chen. Their GitHub profiles can be found below.
+# Don Dapper
+This project is for the Grace Shopper portion of Fullstack Academy. It is a collaborative effort by Ben Rosenbaum, Alon Adelson, and Marco Poetry Chen. Their GitHub profiles can be found below.
 - https://github.com/biny235
 - https://github.com/ajkatom
 - https://github.com/marcopchen
