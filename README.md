@@ -5,7 +5,7 @@ This project is for the Grace Shopper portion of Fullstack Academy. It is a coll
 - https://github.com/marcopchen
 
 ## Using Site
-You may browse through products and shop as you would on any other e-commerce website. You can add to cart, edit your cart, and remove items. You can update your user info and change password. You'll have to log in or sign up in order to check out. Feel free to use your own e-mail address to receive an e-mail upon placing an order. You can use the test card number "4242 4242 4242 4242" with any CVC number and a valid expiration date for Stripe.
+You may browse through products and shop as you would on any other e-commerce website. You can add to cart, edit your cart, and remove items. You can update your user info and change password. You'll have to log in or sign up in order to check out. Feel free to use your own e-mail address to receive an e-mail upon placing an order. You can use the test card number "4242 4242 4242 4242" with any CVC number and a valid expiration date for Stripe. This site is for demonstrative purposes only, so using sensitive information like your usual password or address on the deployed build is not recommended.
 
 ## Deployed Build
 This project has been deployed via Heroku and can be accessed through the following link.
