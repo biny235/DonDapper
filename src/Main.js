@@ -74,7 +74,6 @@ class Main extends Component {
               <Route path='/user' exact render={() => <User />} />
             </Switch>
           </Container>
-          <Footer />
         </div>
       </Router>
     );
