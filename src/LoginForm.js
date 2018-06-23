@@ -71,7 +71,13 @@ class LoginForm extends Component {
           placeholder='Password'
         />
         {!!error && <Alert color='info'>{error}</Alert>}
-        <button className='btn btn-success' type='submit' onClick={onSubmit} disabled={!edited || empty.length}>
+        <button
+          className='btn btn-success'
+          type='submit'
+          onClick={onSubmit}
+          disabled={!edited || empty.length}
+          style={{ width: '100%' }}
+        >
           Sign In
         </button>
       </div>
