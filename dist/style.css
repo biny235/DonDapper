@@ -266,7 +266,7 @@ input:checked+.slider:before {
 }
 
 .clip {
-    background-image: url('https://cdn.voyager.pgsitecore.com/en-us/-/media/Gillette/Images/Editorials/Article%20Hero%20Images%202016/Against%20the%20Grain%20hero%202016.jpg?la=en-US&v=2-201704210627');
+    background-image: url(https://cdn.pixabay.com/photo/2014/10/22/16/43/shaving-brush-498215_960_720.jpg);
     background-attachment: fixed;
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
